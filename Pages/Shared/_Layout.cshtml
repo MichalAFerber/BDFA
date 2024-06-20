@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Buy Direct From Authors</title>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BDFA.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    <header class="border-bottom">
+        <nav class="navbar sticky-top bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-page="index">
+                    <span class="fw-bold" style="color:#E4405F">Buy Direct From Authors</span>
+                </a>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search by keyword/genre" aria-label="Search">
+                      <a class="navbar-brand ms-2" asp-area="" asp-page="Login">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    &copy; 2024 - Buy Direct From Authors - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a asp-area="" asp-page="/Terms">Terms</a>
+                </div>
+                <div class="col">
+                    Site designed and maintained by <a href="https://ari-integration.com" target="_blank">Ari Integration</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,118 @@
+﻿@page
+@model BDFA.Pages.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<form asp-page="Profile" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <input asp-for="ID" type="hidden" disabled />
+        <p>@Model.About</p>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-at"></i>
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" />
+        <div id="EmailHelp" class="form-text">Your Email</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-regular fa-address-card"></i>
+        <label asp-for="Author" class="form-label">Author Name</label>
+        <input asp-for="Author" class="form-control" type="text" aria-describedby="AuthorHelp" placeholder="Firstname Lastname"/>
+        <div id="AuthorHelp" class="form-text">Author Name (this will appear on the website so please use the pen name you prefer)</div>
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-image"></i>
+        <label asp-for="Image" class="form-label"></label>
+        <input asp-for="Image" class="form-control" type="file" aria-describedby="ImageHelp" />
+        <div id="ImageHelp" class="form-text">Please upload a png or jpg file that is LESS than 1 MB. Images greater than 1MB will not be accepted. You can use a site like this to compress your image: <a href="https://tinyjpg.com" target="_blank">https://tinyjpg.com</a></div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-file-lines"></i>
+        <label asp-for="Tagline" class="form-label">Tagline</label>
+        <input asp-for="Tagline" class="form-control" type="text" aria-describedby="TaglineHelp" placeholder="Steamy Heartfelt Romance" />
+        <div id="TaglineHelp" class="form-text">Tagline (ONE sentence ONLY) - this will appear on the website under your store link.</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-hashtag"></i>
+        <label asp-for="Tags" class="form-label">Search terms/tropes</label>
+        <input asp-for="Tags" class="form-control" type="text" aria-describedby="TagsHelp" placeholder="steamy romance, small town romance, romantasy, enemies to lovers, grumpy-sunshine, vampire romance" />
+        <div id="TagsHelp" class="form-text">Search terms/tropes - these will be searchable on the site to help readers find you. 8 search terms MAXIMUM.</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-store"></i>
+        <label asp-for="UrlStore" class="form-label">Direct Store Link</label>
+        <input asp-for="UrlStore" class="form-control" type="url" aria-describedby="UrlStoreHelp" placeholder="https://your-store.com" />
+        <div id="UrlStoreHelp" class="form-text">Direct Store Link (this will be your store link featured on the site. You can use any link you want. A link to your bundle page. A link to your store's home page. Whatever you prefer)</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-envelope-open"></i>
+        <label asp-for="UrlNewsletter" class="form-label">Newsletter</label>
+        <input asp-for="UrlNewsletter" class="form-control" type="url" aria-describedby="UrlNewsletterHelp" placeholder="https://newsletter-link.com" />
+        <div id="UrlNewsletterHelp" class="form-text">Newsletter sign-up link if you'd like it linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-facebook"></i>
+        <label asp-for="UrlFBPage" class="form-label">Facebook Page</label>
+        <input asp-for="UrlFBPage" class="form-control" type="url" aria-describedby="UrlFBPageHelp" placeholder="https://facebook.com/page" />
+        <div id="UrlFBPageHelp" class="form-text">Link to your Facebook page if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-square-facebook"></i>
+        <label asp-for="UrlFBGroup" class="form-label">Facebook Group</label>
+        <input asp-for="UrlFBGroup" class="form-control" type="url" aria-describedby="UrlFBGroupHelp" placeholder="https://facebook.com/group" />
+        <div id="UrlFBGroupHelp" class="form-text">Link to your Facebook reader group if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-instagram"></i>
+        <label asp-for="UrlIG" class="form-label">Instagram</label>
+        <input asp-for="UrlIG" class="form-control" type="url" aria-describedby="UrlIGHelp" placeholder="https://instagram.com/profile" />
+        <div id="UrlIGHelp" class="form-text">Link to IG if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-tiktok"></i>
+        <label asp-for="UrlTikTok" class="form-label">TikTok</label>
+        <input asp-for="UrlTikTok" class="form-control" type="url" aria-describedby="UrlTikTokHelp" placeholder="https://tiktok.com/profile" />
+        <div id="UrlTikTokHelp" class="form-text">Link to TikTok if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-threads"></i>
+        <label asp-for="UrlThreads" class="form-label">Threads</label>
+        <input asp-for="UrlThreads" class="form-control" type="url" aria-describedby="UrlThreadsHelp" placeholder="https://threads.net/profile" />
+        <div id="UrlThreadsHelp" class="form-text">Link to Threads if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-brands fa-x-twitter"></i>
+        <label asp-for="UrlX" class="form-label">X</label>
+        <input asp-for="UrlX" class="form-control" type="url" aria-describedby="UrlXHelp" placeholder="https://x.com/profile" />
+        <div id="UrlXHelp" class="form-text">Link to X if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <div class="mb-3">
+        <i class="fa-solid fa-link"></i>
+        <label asp-for="UrlOther" class="form-label">Other Link</label>
+        <input asp-for="UrlOther" class="form-control" type="url" aria-describedby="UrlOtherHelp" placeholder="https://substack.com/profile" />
+        <div id="UrlOtherHelp" class="form-text">If you have a Ream/Patreon/Subscription that isn't your main direct store, please list the link here if you'd like it to be linked at the bottom of your listing</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Profile</button>
+</form>
+
