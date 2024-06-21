@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "EmailTemplates/SendLoginCode.min.html",
+    "inputFiles": [
+      "EmailTemplates/SendLoginCode.html"
+    ]
+  }
+]

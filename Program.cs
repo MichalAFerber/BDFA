@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using BDFA.Pages;
-
 public class Program
 {
     public static void Main(string[] args)

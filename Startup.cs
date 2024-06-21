@@ -1,6 +1,4 @@
-using BDFA.BL;
-using BDFA.Settings;
-using Microsoft.EntityFrameworkCore;
+﻿using BDFA.BL;
 
 public class Startup
 {
@@ -16,10 +14,6 @@ public class Startup
     {
         // Add services to the container.
         services.AddRazorPages();
-
-        // Register BDFAdbContext with dependency injection
-        services.AddDbContext<BDFAdbContext>(options =>
-            options.UseSqlite(Configuration.GetConnectionString("BDFAdb")));
 
         Manager.InitializeSMTPSettings(Configuration);
     }

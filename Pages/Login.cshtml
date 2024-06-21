@@ -11,18 +11,16 @@
         @if (Model.ShowSendCode)
         {
             <label for="Email">Email Address</label>
-            <span asp-validation-for="Email" class="text-danger"></span>
             <input asp-for="Email" type="email" class="form-control" id="Email" placeholder="name@example.com" required>
             <input type="submit" asp-page-handler="SendCode" class="mt-3 w-100 btn btn-lg btn-primary" value="Send Code" />
         }
 
         @if (Model.ShowSignIn)
         {
-            <label for="Password">Password</label>
-            <span asp-validation-for="Password" class="text-danger"></span>
-            <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Code" required>
-            <label for="RememberMe"></label>
+            <label for="Code">Authorization Code</label>
+            <input asp-for="Code" type="password" class="form-control" id="Code" placeholder="######" required>
             <input asp-for="RememberMe" type="checkbox" />
+            <label for="RememberMe"> Remember Me </label>
             <input type="submit" asp-page-handler="SignIn" class="mt-3 w-100 btn btn-lg btn-primary" value="Sign In" />
         }
     </div>
