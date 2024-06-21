@@ -1,4 +1,7 @@
 ﻿using BDFA.BL;
+using BDFA.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 public class Startup
 {
@@ -15,7 +18,18 @@ public class Startup
         // Add services to the container.
         services.AddRazorPages();
 
+        services.AddDbContext<DirectoryContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DirectoryContext")));
+
+        services.AddDbContext<SiteAdminContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("SiteAdminContext")));
+
+        services.AddDbContext<SiteSettingsContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("SiteSettingsContext")));
+
         Manager.InitializeSMTPSettings(Configuration);
+        Manager.InitializeDBSettings(Configuration);
+        Manager.InitializeSiteAdmin();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

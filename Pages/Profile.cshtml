@@ -6,47 +6,51 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-page="Profile" enctype="multipart/form-data">
-    @Html.AntiForgeryToken()
+<p>@Model.About</p>
 
-    <div class="mb-3">
-        <input asp-for="ID" type="hidden" disabled />
-        <p>@Model.About</p>
-    </div>
+<form asp-page="Profile" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
+    <input asp-for="ID" type="hidden" />
 
     <div class="mb-3">
         <i class="fa-solid fa-at"></i>
         <label asp-for="Email" class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" />
+        <i class="fa-solid fa-star-of-life text-primary"></i>
+        <input asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" required />
         <div id="EmailHelp" class="form-text">Your Email</div>
     </div>
 
     <div class="mb-3">
         <i class="fa-regular fa-address-card"></i>
         <label asp-for="Author" class="form-label">Author Name</label>
-        <input asp-for="Author" class="form-control" type="text" aria-describedby="AuthorHelp" placeholder="Firstname Lastname"/>
+        <i class="fa-solid fa-star-of-life text-primary"></i>
+        <input asp-for="Author" class="form-control" type="text" aria-describedby="AuthorHelp" placeholder="Firstname Lastname" required />
         <div id="AuthorHelp" class="form-text">Author Name (this will appear on the website so please use the pen name you prefer)</div>
         <span asp-validation-for="Author" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <i class="fa-solid fa-image"></i>
-        <label asp-for="Image" class="form-label"></label>
-        <input asp-for="Image" class="form-control" type="file" aria-describedby="ImageHelp" />
+        <label asp-for="Image" class="form-label">Image</label>
+        <i class="fa-solid fa-star-of-life text-primary"></i>
+        <input asp-for="Image" class="form-control" type="file" aria-describedby="ImageHelp" required />
         <div id="ImageHelp" class="form-text">Please upload a png or jpg file that is LESS than 1 MB. Images greater than 1MB will not be accepted. You can use a site like this to compress your image: <a href="https://tinyjpg.com" target="_blank">https://tinyjpg.com</a></div>
     </div>
 
     <div class="mb-3">
         <i class="fa-solid fa-file-lines"></i>
         <label asp-for="Tagline" class="form-label">Tagline</label>
-        <input asp-for="Tagline" class="form-control" type="text" aria-describedby="TaglineHelp" placeholder="Steamy Heartfelt Romance" />
+        <i class="fa-solid fa-star-of-life text-primary"></i>
+        <input asp-for="Tagline" class="form-control" type="text" aria-describedby="TaglineHelp" placeholder="Steamy Heartfelt Romance" required />
         <div id="TaglineHelp" class="form-text">Tagline (ONE sentence ONLY) - this will appear on the website under your store link.</div>
     </div>
 
     <div class="mb-3">
         <i class="fa-solid fa-hashtag"></i>
         <label asp-for="Tags" class="form-label">Search terms/tropes</label>
-        <input asp-for="Tags" class="form-control" type="text" aria-describedby="TagsHelp" placeholder="steamy romance, small town romance, romantasy, enemies to lovers, grumpy-sunshine, vampire romance" />
+        <i class="fa-solid fa-star-of-life text-primary"></i>
+        <input asp-for="Tags" class="form-control" type="text" aria-describedby="TagsHelp" placeholder="steamy romance, small town romance, romantasy, enemies to lovers, grumpy-sunshine, vampire romance" required />
         <div id="TagsHelp" class="form-text">Search terms/tropes - these will be searchable on the site to help readers find you. 8 search terms MAXIMUM.</div>
     </div>
 

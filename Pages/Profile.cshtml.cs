@@ -1,5 +1,8 @@
+using BDFA.BL;
+using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace BDFA.Pages
@@ -38,18 +41,44 @@ namespace BDFA.Pages
         public string UrlX { get; set; }
         [BindProperty]
         public string UrlOther { get; set; }
-    }
 
-    public class BufferedSingleFileUploadDbModel : PageModel
-    {
         [BindProperty]
-        public required BufferedSingleFileUploadDb FileUpload { get; set; }
-    }
+        public Profile Profile { get; set; } = default!;
 
-    public class BufferedSingleFileUploadDb
-    {
-        [Required]
-        [Display(Name = "Profile Image")]
-        public required IFormFile Image { get; set; }
+        private readonly BDFA.Data.DirectoryContext _context;
+
+        public ProfileModel(BDFA.Data.DirectoryContext context)
+        {
+            _context = context;
+        }
+
+        public void OnGet()
+        {
+            About = Manager.SettingsProfileAbout;
+        }
+
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            // Check if the email already exists in the database
+            var existingProfile = await _context.Profiles
+                                                .FirstOrDefaultAsync(p => p.Email == Profile.Email);
+            if (existingProfile != null)
+            {
+                // Add a model error on the Email field
+                ModelState.AddModelError("Profile.Email", "The email address already exists.");
+                return Page();
+            }
+
+            _context.Profiles.Add(Profile);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+        }
     }
 }

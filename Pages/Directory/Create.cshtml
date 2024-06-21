@@ -1,0 +1,115 @@
+﻿@page
+@model BDFA.Pages.Directory.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Profile</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Profile.Active" class="control-label"></label>
+                <input asp-for="Profile.Active" class="form-control" type="checkbox" />
+                <span asp-validation-for="Profile.Active" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Image" class="control-label"></label>
+                <input asp-for="Profile.Image" class="form-control" type="file" />
+                <span asp-validation-for="Profile.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Author" class="control-label"></label>
+                <input asp-for="Profile.Author" class="form-control" />
+                <span asp-validation-for="Profile.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Email" class="control-label"></label>
+                <input asp-for="Profile.Email" class="form-control" />
+                <span asp-validation-for="Profile.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Tagline" class="control-label"></label>
+                <input asp-for="Profile.Tagline" class="form-control" />
+                <span asp-validation-for="Profile.Tagline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Tags" class="control-label"></label>
+                <input asp-for="Profile.Tags" class="form-control" />
+                <span asp-validation-for="Profile.Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlStore" class="control-label"></label>
+                <input asp-for="Profile.UrlStore" class="form-control" />
+                <span asp-validation-for="Profile.UrlStore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlNewsletter" class="control-label"></label>
+                <input asp-for="Profile.UrlNewsletter" class="form-control" />
+                <span asp-validation-for="Profile.UrlNewsletter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlFBGroup" class="control-label"></label>
+                <input asp-for="Profile.UrlFBGroup" class="form-control" />
+                <span asp-validation-for="Profile.UrlFBGroup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlFBPage" class="control-label"></label>
+                <input asp-for="Profile.UrlFBPage" class="form-control" />
+                <span asp-validation-for="Profile.UrlFBPage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlIG" class="control-label"></label>
+                <input asp-for="Profile.UrlIG" class="form-control" />
+                <span asp-validation-for="Profile.UrlIG" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlTikTok" class="control-label"></label>
+                <input asp-for="Profile.UrlTikTok" class="form-control" />
+                <span asp-validation-for="Profile.UrlTikTok" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlThreads" class="control-label"></label>
+                <input asp-for="Profile.UrlThreads" class="form-control" />
+                <span asp-validation-for="Profile.UrlThreads" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlX" class="control-label"></label>
+                <input asp-for="Profile.UrlX" class="form-control" />
+                <span asp-validation-for="Profile.UrlX" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.UrlOther" class="control-label"></label>
+                <input asp-for="Profile.UrlOther" class="form-control" />
+                <span asp-validation-for="Profile.UrlOther" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.AuthToken" class="control-label"></label>
+                <input asp-for="Profile.AuthToken" class="form-control" />
+                <span asp-validation-for="Profile.AuthToken" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.Expires" class="control-label"></label>
+                <input asp-for="Profile.Expires" class="form-control" />
+                <span asp-validation-for="Profile.Expires" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,133 @@
+﻿@page
+@model BDFA.Pages.Directory.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Tagline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Tags)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlStore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlNewsletter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlFBGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlFBPage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlIG)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlTikTok)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlThreads)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].UrlOther)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].AuthToken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile[0].Expires)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Profile) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tagline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tags)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlStore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlNewsletter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlFBGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlFBPage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlIG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlTikTok)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlThreads)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlOther)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthToken)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Expires)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
