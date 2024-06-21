@@ -4,30 +4,26 @@
     ViewData["Title"] = "Login";
 }
 
-<main class="form-signin">
-    <form>
-        <div class="form-floating mb-3">
-            <label for="Email">Email Address</label>
-            <input asp-for="Email" type="email" class="form-control" id="Email" placeholder="name@example.com">
-            <button class="mt-3 w-100 btn btn-lg btn-primary" type="button" id="sendCodeButton" onclick="sendCode()">Send Code</button>
-        </div>
-        <div id="passwordSection" style="display:none;" class="form-floating">
-            <label for="Password">Password</label>
-            <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Code" required>
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember Me
-                </label>
-            </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit" id="loginButton">Sign In</button>
-        </div>
-    </form>
-</main>
+<form asp-page="Login" method="post">
+    @Html.AntiForgeryToken()
 
-<script>
-    function sendCode() {
-        // Hide the Send Code button and show the password input and Login button
-        document.getElementById('sendCodeButton').style.display = 'none';
-        document.getElementById('passwordSection').style.display = 'block';
-    }
-</script>
+    <div class="form-signin pt-6 mb-3">
+        @if (Model.ShowSendCode)
+        {
+            <label for="Email">Email Address</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Email" type="email" class="form-control" id="Email" placeholder="name@example.com" required>
+            <input type="submit" asp-page-handler="SendCode" class="mt-3 w-100 btn btn-lg btn-primary" value="Send Code" />
+        }
+
+        @if (Model.ShowSignIn)
+        {
+            <label for="Password">Password</label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Code" required>
+            <label for="RememberMe"></label>
+            <input asp-for="RememberMe" type="checkbox" />
+            <input type="submit" asp-page-handler="SignIn" class="mt-3 w-100 btn btn-lg btn-primary" value="Sign In" />
+        }
+    </div>
+</form>

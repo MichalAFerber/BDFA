@@ -1,19 +1,14 @@
+using BDFA.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata;
 
 namespace BDFA.Pages
 {
     public class ProfileModel : PageModel
     {
         private readonly BDFAdbContext _dbContext;
-
-        public ProfileModel(BDFAdbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
 
         [BindProperty]
         public string About { get; set; } = "This is where you can add a short bio about yourself. You can also add links to your store, newsletter, social media, and other platforms.";
@@ -93,24 +88,24 @@ namespace BDFA.Pages
             }
             else
             {
-                profile = new Profile
-                {
-                    ID = ID,
-                    Author = Author,
-                    Email = Email,
-                    Tagline = Tagline,
-                    Tags = Tags,
-                    UrlStore = UrlStore,
-                    UrlNewsletter = UrlNewsletter,
-                    UrlFBGroup = UrlFBGroup,
-                    UrlFBPage = UrlFBPage,
-                    UrlIG = UrlIG,
-                    UrlTikTok = UrlTikTok,
-                    UrlThreads = UrlThreads,
-                    UrlX = UrlX,
-                    UrlOther = UrlOther
-                };
-                _dbContext.Profiles.Add(profile);
+                //profile = new Profile
+                //{
+                //    ID = ID,
+                //    Author = Author,
+                //    Email = Email,
+                //    Tagline = Tagline,
+                //    Tags = Tags,
+                //    UrlStore = UrlStore,
+                //    UrlNewsletter = UrlNewsletter,
+                //    UrlFBGroup = UrlFBGroup,
+                //    UrlFBPage = UrlFBPage,
+                //    UrlIG = UrlIG,
+                //    UrlTikTok = UrlTikTok,
+                //    UrlThreads = UrlThreads,
+                //    UrlX = UrlX,
+                //    UrlOther = UrlOther
+                //};
+                //_dbContext.Profiles.Add(profile);
             }
 
             await _dbContext.SaveChangesAsync();
@@ -118,6 +113,7 @@ namespace BDFA.Pages
             return RedirectToPage();
         }
     }
+
     public class BufferedSingleFileUploadDbModel : PageModel
     {
         [BindProperty]
@@ -130,21 +126,23 @@ namespace BDFA.Pages
         [Display(Name = "Profile Image")]
         public required IFormFile Image { get; set; }
     }
-    public class BDFAdbContext : DbContext
-    {
-        public DbSet<Profile> Profiles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Data", "bdfa-master.db");
-            optionsBuilder.UseSqlite($"Data Source={path}");
-        }
+    //public class BDFAdbContext : DbContext
+    //{
+    //    public DbSet<Profile> Profiles { get; set; }
+    //    public object Admins { get; internal set; }
 
-        internal async Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    {
+    //        var path = Path.Combine(Directory.GetCurrentDirectory(), "Data", "bdfa-master.db");
+    //        optionsBuilder.UseSqlite($"Data Source={path}");
+    //    }
+
+    //    internal async Task SaveChangesAsync()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
     public class Profile
     {

@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using BDFA.BL;
+using BDFA.Settings;
 using Microsoft.EntityFrameworkCore;
-using BDFA.Pages; // Adjust the namespace to match your project's structure
 
 public class Startup
 {
@@ -23,6 +20,8 @@ public class Startup
         // Register BDFAdbContext with dependency injection
         services.AddDbContext<BDFAdbContext>(options =>
             options.UseSqlite(Configuration.GetConnectionString("BDFAdb")));
+
+        Manager.InitializeSMTPSettings(Configuration);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,9 +50,4 @@ public class Startup
             endpoints.MapRazorPages();
         });
     }
-}
-public class BDFAdbContext(DbContextOptions<BDFAdbContext> options) : DbContext(options)
-{
-
-    // Your DbSet properties
 }

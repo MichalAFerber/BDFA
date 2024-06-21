@@ -1,54 +1,78 @@
+using BDFA.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text;
+using System.Web.WebPages;
 
 namespace BDFA.Pages
 {
     public class LoginModel : PageModel
     {
+        private readonly BDFAdbContext _dbContext;
+
+        public LoginModel(BDFAdbContext db)
+        {
+            _dbContext = db;
+        }
+
+        public bool ShowSendCode { get; set; } = true;
+
+        public bool ShowSignIn { get; set; } = false;
+
         [BindProperty]
         public string Email { get; set; } = string.Empty;
+
         [BindProperty]
         public string Password { get; set; } = string.Empty;
+
+        [BindProperty]
+        public bool RememberMe { get; set; } = false;
 
         public void OnGet()
         {
         }
 
-        public IActionResult OnPostSendCode()
+        public async Task<IActionResult> OnPostSendCodeAsync()
         {
-            // Query BDFAdb admins table to check if email exists
-            bool emailExists = CheckIfEmailExists(Email);
-
-            if (!emailExists)
+            if (Email.IsEmpty())
             {
-                // Generate unique 6-digit one-time code
-                string code = GenerateOneTimeCode();
-
-                // Send email with the code
-                Manager.SendEmail(Email, "Login code requested for the Buy Direct From Authors website.", GenerateOneTimeCode());
-
-                // Return success message
-                return Content("Code sent successfully");
+                return Page();
             }
-            else
-            {
 
-                // Return success message
-                return Content("Code sent successfully");
-            }
+            BL.Manager.SendMail(Email, "Login Code", GenerateEmail());
+
+            ShowSignIn = true;
+            ShowSendCode = true;
+            await _dbContext.SaveChangesAsync();
+            return Page();
         }
 
-        private bool CheckIfEmailExists(string? email)
+        public async Task<IActionResult> OnPostSignInAsync()
         {
-            // Query BDFAdb admins table to check if email exists
-            return BDFAdbContext.admins.Any(a => a.Email == email);
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            BL.Manager.SendMail(Email, "Login Code", GenerateEmail());
+            Email = "WORKS";
+            return RedirectToPage("/Profile");
         }
 
-        private string GenerateOneTimeCode()
+        private static string GenerateOneTimeCode()
         {
-            // Generate unique 6-digit one-time code
-            Random random = new Random();
+            Random random = new();
             return random.Next(100000, 999999).ToString();
+        }
+
+        private static string GenerateEmail()
+        {
+            StringBuilder emailBody = new();
+            emailBody.Append("Your one-time code is: ");
+            emailBody.Append(GenerateOneTimeCode());
+            emailBody.Append("<br><br>Thank you for using our service.");
+
+            return emailBody.ToString();
         }
     }
 }
