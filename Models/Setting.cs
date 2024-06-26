@@ -6,6 +6,5 @@ namespace BDFA.Models
     {
         [Key]
         public int ID { get; set; }
-        public string Profile_About { get; set; }
     }
 }

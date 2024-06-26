@@ -1,10 +1,9 @@
-﻿using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+﻿using BDFA.Data;
+using BDFA.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SQLite;
 using System.Net;
 using System.Net.Mail;
-using BDFA.Models;
-using BDFA.Data;
-using System.Data.SQLite;
 
 namespace BDFA.BL
 {
@@ -19,8 +18,6 @@ namespace BDFA.BL
         private static string  _SMTPHost;
         private static int _SMTPPort = 25;
         private static bool _SMTPSSL = true;
-        private static string _Profile_About;
-        private static bool _IsAdmin = false;
 
         //global variables
         public static string SettingsProfileAbout { get; set; }
@@ -44,7 +41,6 @@ namespace BDFA.BL
         public static void InitializeSiteAdmin()
         {
             GetSiteSettings(1);
-            SettingsProfileAbout = _Profile_About;
         }
 
         public static Setting GetSiteSettings(int id)
@@ -63,7 +59,6 @@ namespace BDFA.BL
                             record = new Setting
                             {
                                 ID = Convert.ToInt32(reader["ID"]),
-                                Profile_About = reader["Profile_About"].ToString()
                             };
                         }
                     }
@@ -96,6 +91,15 @@ namespace BDFA.BL
             mailMessage.To.Add(toEmail);
 
             client.Send(mailMessage);
+        }
+
+        public static async Task<bool> IsAdminAsync(DirectoryContext context, string email)
+        {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email cannot be null or whitespace.", nameof(email));
+
+            // Check if any admin has the specified email.
+            return await context.Admins.AnyAsync(admin => admin.Email == email);
         }
     }
 }

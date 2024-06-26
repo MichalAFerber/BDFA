@@ -6,6 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Directory\**" />
+    <Compile Remove="Pages\SiteAdmin\**" />
+    <Compile Remove="Pages\SiteSettings\**" />
+    <Content Remove="Pages\Directory\**" />
+    <Content Remove="Pages\SiteAdmin\**" />
+    <Content Remove="Pages\SiteSettings\**" />
+    <EmbeddedResource Remove="Pages\Directory\**" />
+    <EmbeddedResource Remove="Pages\SiteAdmin\**" />
+    <EmbeddedResource Remove="Pages\SiteSettings\**" />
+    <None Remove="Pages\Directory\**" />
+    <None Remove="Pages\SiteAdmin\**" />
+    <None Remove="Pages\SiteSettings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="bundleconfig.json" />
   </ItemGroup>
 

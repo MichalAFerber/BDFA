@@ -15,8 +15,16 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        // Add services to the container.
-        services.AddRazorPages();
+        services.AddDistributedMemoryCache(); // Stores session in-memory
+
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout.
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+        
+        services.AddRazorPages(); // Add services to the container.
 
         services.AddDbContext<DirectoryContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DirectoryContext")));
@@ -52,6 +60,8 @@ public class Startup
         app.UseRouting();
 
         app.UseAuthorization();
+
+        app.UseSession(); // Enable session
 
         app.UseEndpoints(endpoints =>
         {

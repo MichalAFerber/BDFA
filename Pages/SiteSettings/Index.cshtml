@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Setting[0].Profile_About)
+
             </th>
             <th></th>
         </tr>
@@ -24,7 +24,7 @@
 @foreach (var item in Model.Setting) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Profile_About)
+                
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

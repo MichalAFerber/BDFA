@@ -1,0 +1,20 @@
+﻿@page
+@model BDFA.Pages.AdminModel
+<span class="body-title"><h1>@ViewData["Title"]</h1></span>
+
+<nav class="navbar bg-body-tertiary mb-5">
+    <form class="container-fluid justify-content-start">
+        <button id="showView" class="btn btn-outline-success me-2 active" type="button">View ?</button>
+        <button id="showEdit" class="btn btn-outline-success me-2" type="button">Edit ?</button>
+        <button id="showSubscription" class="btn btn-outline-success me-2" type="button">Payhip</button>
+    </form>
+</nav>
+
+<h2>Profiles</h2>
+
+<ul>
+    @foreach (var profile in Model.Profiles)
+    {
+        <li>@profile.Email</li>
+    }
+</ul>
