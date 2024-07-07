@@ -10,9 +10,9 @@ namespace BDFA.Data
         {
         }
 
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Admin> Admins { get; set; } = null!;
+        public DbSet<Profile> Profiles { get; set; } = null!;
+        public DbSet<Setting> Settings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

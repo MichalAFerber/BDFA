@@ -1,7 +1,6 @@
 ﻿using BDFA.BL;
 using BDFA.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 public class Startup
 {
@@ -29,11 +28,11 @@ public class Startup
         services.AddDbContext<DirectoryContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DirectoryContext")));
 
-        services.AddDbContext<SiteAdminContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SiteAdminContext")));
+        //services.AddDbContext<SiteAdminContext>(options =>
+        //        options.UseSqlite(Configuration.GetConnectionString("SiteAdminContext")));
 
-        services.AddDbContext<SiteSettingsContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SiteSettingsContext")));
+        //services.AddDbContext<SiteSettingsContext>(options =>
+        //        options.UseSqlite(Configuration.GetConnectionString("SiteSettingsContext")));
 
         Manager.InitializeSMTPSettings(Configuration);
         Manager.InitializeDBSettings(Configuration);

@@ -4,6 +4,13 @@
     ViewData["Title"] = "Login";
 }
 
+
+<span class="body-title"><h1>@ViewData["Title"]</h1></span>
+
+<p>Please enter your information below to create your Buy Direct From Authors listing. All of the site links are optional except for the direct store link which is required. You can enter any link on your store as your store link (example: a link to one of your bundles or a link to your main site). You can update your listing profile anytime, and any changes you update and save will automatically be shown on your listing. Please email any questions to <a href="mailto:admin@buydirectfromauthors.com">admin@buydirectfromauthors.com</a>.</p>
+
+<p>Thank you for joining and we look forward to growing our stores together!</p>
+
 <form asp-page="Login" method="post">
     @Html.AntiForgeryToken()
 

@@ -42,6 +42,7 @@ namespace BDFA.Pages
                 AuthCode = string.Empty;
                 HttpContext.Session.SetInt32("IsAdmin", 0);
                 HttpContext.Session.SetInt32("IsAuth", 0);
+                HttpContext.Session.SetInt32("IdKey", 0);
                 HttpContext.Session.SetString("EmailKey", string.Empty);
                 return Page();
             }
@@ -88,7 +89,8 @@ namespace BDFA.Pages
                     existingProfile.AuthToken = AuthCode;
                     existingProfile.Expires = DateTime.UtcNow.AddMinutes(15);
                 }
-                // Set session variable to the email
+
+                // Set session variable for the email
                 HttpContext.Session.SetString("EmailKey", InputEmail);
 
                 // Save changes to the database
@@ -105,6 +107,7 @@ namespace BDFA.Pages
                     return Page();
                 }
 
+                // Set session variable for the email
                 HttpContext.Session.SetString("EmailKey", InputEmail);
 
                 // If an existing profile is found, update its properties
