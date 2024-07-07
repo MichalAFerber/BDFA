@@ -65,16 +65,14 @@
                             {
                                 <h5 class="card-title">@profile.Author</h5>
                             }
-                            @if (profile.Tagline != null)
+                            @if (profile.Tagline != null && profile.Tags != null)
                             {
-                                <p class="card-text">@profile.Tagline</p>
-                            }
-                            @if (profile.Tags != null)
-                            {
-                                <p class="text-muted"><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@profile.Tags</p>
+                                <p class="card-text">@profile.Tagline
+                                    <br /><br /><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@profile.Tags
+                                </p>
                             }
                         </div>
-                        <div class="card-text">
+                        <div class="card-link" style="padding: 15px;">
                             @if (profile.UrlStore != null)
                             {
                                 <p><a href="@profile.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
