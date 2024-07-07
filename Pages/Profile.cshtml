@@ -12,57 +12,67 @@
 <div class="container mb-5">
 
     <div id="View" class="row row-cols-1 row-cols-md-4 mb-5">
-        <div class="col">
-            <div class="card align-content-center">
+        <div class="col text-center">
+            <div class="card">
                 @if (Model.UrlStore != null)
                 {
                     <a href="@Model.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@Model.Image" class="card-img-top" alt="@Model.Author"></a>
                 }
-                @if (Model.Tagline != null)
-                {
-                    <p class="card-text">@Model.Tagline</p>
-                }
-                @if (Model.Tags != null)
-                {
-                    <p><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@Model.Tags</p>
-                }
-                @if (Model.UrlStore != null)
-                {
-                    <p><a href="@Model.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
-                    <a href="@Model.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg me-0" style="color: #212121;"></i></a>
-                }
-                @if (Model.UrlNewsletter != null)
-                {
-                    <a href="@Model.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg me-0" style="color: #25D366;"></i></a>
-                }
-                @if (Model.UrlFBPage != null)
-                {
-                    <a href="@Model.UrlFBPage" class="me-1" target="_blank" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
-                }
-                @if (Model.UrlFBGroup != null)
-                {
-                    <a href="@Model.UrlFBGroup" class="me-1" target="_blank" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
-                }
-                @if (Model.UrlIG != null)
-                {
-                    <a href="@Model.UrlIG" class="me-1" target="_blank" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
-                }
-                @if (Model.UrlTikTok != null)
-                {
-                    <a href="@Model.UrlTikTok" class="me-1" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
-                }
-                @if (Model.UrlThreads != null)
-                {
-                    <a href="@Model.UrlThreads" class="me-1" target="_blank" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
-                }
-                @if (Model.UrlX != null)
-                {
-                    <a href="@Model.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
-                }
-                @if (Model.UrlOther != null)
-                {
-                    <a href="@Model.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
-                }
+                <div class="card-body">
+                    @if (Model.Author != null)
+                    {
+                        <h5 class="card-title">@Model.Author</h5>
+                    }
+                    else
+                    {
+                        <p class="card-text">Once created, your profile will show here. Click on the edit profile button above.</p>
+                    }
+                    @if (Model.Tagline != null)
+                    {
+                        <p class="card-text">@Model.Tagline</p>
+                    }
+                    @if (Model.Tags != null)
+                    {
+                        <p><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@Model.Tags</p>
+                    }
+                    @if (Model.UrlStore != null)
+                    {
+                        <p><a href="@Model.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
+                        <a href="@Model.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg me-0" style="color: #212121;"></i></a>
+                    }
+                    @if (Model.UrlNewsletter != null)
+                    {
+                        <a href="@Model.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg me-0" style="color: #25D366;"></i></a>
+                    }
+                    @if (Model.UrlFBPage != null)
+                    {
+                        <a href="@Model.UrlFBPage" class="me-1" target="_blank" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                    }
+                    @if (Model.UrlFBGroup != null)
+                    {
+                        <a href="@Model.UrlFBGroup" class="me-1" target="_blank" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                    }
+                    @if (Model.UrlIG != null)
+                    {
+                        <a href="@Model.UrlIG" class="me-1" target="_blank" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                    }
+                    @if (Model.UrlTikTok != null)
+                    {
+                        <a href="@Model.UrlTikTok" class="me-1" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                    }
+                    @if (Model.UrlThreads != null)
+                    {
+                        <a href="@Model.UrlThreads" class="me-1" target="_blank" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                    }
+                    @if (Model.UrlX != null)
+                    {
+                        <a href="@Model.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                    }
+                    @if (Model.UrlOther != null)
+                    {
+                        <a href="@Model.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                    }
+                </div>
             </div>
         </div>
     </div>

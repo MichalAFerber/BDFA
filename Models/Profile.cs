@@ -6,7 +6,6 @@ namespace BDFA.Models
     {
         [Key]
         public string Email { get; set; }
-        public int ID { get; set; }
         public int Active { get; set; }
         public string? Image { get; set; }
         public string? Author { get; set; }

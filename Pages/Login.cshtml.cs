@@ -75,6 +75,7 @@ namespace BDFA.Pages
                     Profile = new Profile
                     {
                         // Populate the Profile properties with data
+                        Active = 1,
                         Email = InputEmail,
                         AuthToken = AuthCode,
                         Expires = DateTime.UtcNow.AddMinutes(15)

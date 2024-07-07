@@ -57,9 +57,6 @@ namespace BDFA.Pages
             var _isAuth = HttpContext.Session.GetInt32("IsAuth");
             var _email = HttpContext.Session.GetString("EmailKey");
 
-            // Log the session values for debugging
-            Console.WriteLine($"IsAuth: {_isAuth}, Email: {_email}");
-
             if (_isAuth == 0 || _email == null)
             {
                 return RedirectToPage("./Login");
@@ -72,12 +69,7 @@ namespace BDFA.Pages
                 // Log the result of the query
                 if (profile == null)
                 {
-                    Console.WriteLine("Profile not found.");
                     return NotFound("Profile not found.");
-                }
-                else
-                {
-                    Console.WriteLine("Profile found.");
                 }
 
                 // Populate the bound properties with the profile data
