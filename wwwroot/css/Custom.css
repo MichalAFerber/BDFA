@@ -52,3 +52,16 @@ body {
     display: block;
     margin-bottom: 40px;
 }
+
+.card-text {
+    display: block;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.image-profile {
+    min-height: 256px;
+    max-height: 256px;
+    min-width: 256px;
+    max-width: 256px;
+}

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BDFA.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModelcopy : PageModel
     {
         private readonly DirectoryContext _context;
 
-        public IndexModel(DirectoryContext context)
+        public IndexModelcopy(DirectoryContext context)
         {
             _context = context;
         }
