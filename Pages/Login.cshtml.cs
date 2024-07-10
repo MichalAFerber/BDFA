@@ -76,6 +76,8 @@ namespace BDFA.Pages
                     {
                         // Populate the Profile properties with data
                         Active = true,
+                        FeaturedAuthor = false,
+                        FeaturedDeal = false,
                         Email = InputEmail,
                         AuthToken = AuthCode,
                         Expires = DateTime.UtcNow.AddMinutes(15)

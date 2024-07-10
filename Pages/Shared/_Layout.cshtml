@@ -11,22 +11,14 @@
 <body>
 
     <header class="border-bottom">
-        <nav class="navbar sticky-top bg-body-tertiary">
-            <div class="container-fluid row">
-                <div class="col-2">
-                    <a class="navbar-brand" asp-area="" asp-page="/Index">
-                        <span class="fw-bold" style="color:#E4405F">Buy Direct From Authors</span>
-                    </a>
-                </div>
-                <div class="col-8">
-                    <form class="p-2 flex-grow-1" role="search">
-                        <input class="form-control text-center" type="search" placeholder="Search by keyword/genre" aria-label="Search">
-                    </form>
-                </div>
-                <div class="col-2">
-                    <a asp-area="" asp-page="/FAQ" class="btn btn-primary" tabindex="-1" role="button">Authors Click Here</a>
-                </div>
-            </div>
+        <nav class="navbar navbar-expand">
+            <form class="container-fluid search-form">
+                <a class="navbar-brand" href="/">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                <input class="search-input form-control text-center me-2" type="search" placeholder="Search" aria-label="Search">
+                <a asp-page="/FAQ" class="btn btn-primary text-nowrap" role="button">Authors Click Here</a>
+            </form>
         </nav>
     </header>
 
@@ -36,18 +28,33 @@
         </main>
     </div>
 
-    <footer class="footer text-muted">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col">
-                    &copy; 2024 - Buy Direct From Authors - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a asp-area="" asp-page="/Terms">Terms</a> - <a asp-area="" asp-page="/FAQ">FAQs</a>
-                </div>
-                <div class="col">
-                    Site designed and maintained by <a href="https://ari-integration.com" target="_blank">Ari Integration</a>
-                </div>
+    <footer class="footer">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <span class="navbar-text text-muted">
+                    &copy; @DateTime.Now.Year Buy Direct From Authors. All rights reserved.</span>
+                <span class="nav-link text-muted">
+                    <a asp-page="/Privacy">Privacy</a> - <a asp-page="/Terms">Terms</a> - <a asp-page="/FAQ">FAQs</a></span>
+                <span class="navbar-text text-muted">
+                    Site designed and maintained by <a href="https://ari-integration.com" target="_blank">Ari Integration</a></span>
             </div>
-        </div>
+        </nav>
     </footer>
+
+    <script>
+        document.querySelectorAll('.search-input').forEach(input => {
+            input.addEventListener('input', function () {
+                var searchQuery = input.value;
+
+                fetch(`/Index?handler=ProfilesPartial&searchQuery=${encodeURIComponent(searchQuery)}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('profilesContainer').innerHTML = html;
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

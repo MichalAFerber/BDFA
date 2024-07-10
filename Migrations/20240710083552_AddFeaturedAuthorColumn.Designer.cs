@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BDFA.Migrations
 {
     [DbContext(typeof(DirectoryContext))]
-    [Migration("20240707032653_AddProfileImage")]
-    partial class AddProfileImage
+    [Migration("20240710083552_AddFeaturedAuthorColumn")]
+    partial class AddFeaturedAuthorColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace BDFA.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Active")
+                    b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("AuthToken")
@@ -60,14 +60,20 @@ namespace BDFA.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("Expires")
+                    b.Property<DateTime>("Expires")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ID")
+                    b.Property<bool>("FeaturedAuthor")
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("BLOB");
+                    b.Property<bool>("FeaturedDeal")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RowId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Tagline")
                         .HasColumnType("TEXT");

@@ -8,6 +8,8 @@ namespace BDFA.Models
         public string Email { get; set; }
         public int RowId { get; set; }
         public bool Active { get; set; }
+        public bool FeaturedAuthor { get; set; }
+        public bool FeaturedDeal { get; set; }
         public string? Image { get; set; }
         public string? Author { get; set; }
         public string? Tagline { get; set; }

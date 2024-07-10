@@ -1,4 +1,6 @@
-﻿html {
+﻿html, body {
+    height: 100%;
+    padding: 4px;
     font-size: 14px;
 }
 
@@ -8,6 +10,18 @@
     }
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+footer {
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -15,10 +29,6 @@
 html {
     position: relative;
     min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
 }
 
 .form-signin {
@@ -54,8 +64,15 @@ body {
 }
 
 .image-profile {
-    min-height: 285px;
-    max-height: 285px;
-    min-width: 285px;
-    max-width: 285px;
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 200px;
+    max-width: 200px;
+}
+
+.image-profile-featured {
+    min-height: 300px;
+    max-height: 300px;
+    min-width: 300px;
+    max-width: 300px;
 }
