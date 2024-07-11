@@ -1,25 +1,29 @@
+using BDFA.Data;
 using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace BDFA.Pages
 {
     public class AdminModel : PageModel
     {
-        private readonly BDFA.Data.DirectoryContext _context;
-        public AdminModel(BDFA.Data.DirectoryContext context)
+        private readonly ILogger<AdminModel> _logger;
+        private readonly DirectoryContext _context;
+
+        public IList<Profile> Profiles { get; set; }
+
+        public AdminModel(ILogger<AdminModel> logger, DirectoryContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
-        // Property to hold the list of profiles
-        public IList<Profile> Profiles { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["Title"] = ViewData["Title"] ?? "Admin";
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Admin Dashboard - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Admin Dashboard";
 
             var _isAuth = HttpContext.Session.GetInt32("IsAuth");
             var _isAdmin = HttpContext.Session.GetInt32("IsAdmin");

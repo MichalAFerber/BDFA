@@ -6,6 +6,7 @@ namespace BDFA.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
+
     public class ErrorModel : PageModel
     {
         public string RequestId { get; set; }
@@ -21,6 +22,9 @@ namespace BDFA.Pages
 
         public void OnGet()
         {
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Error - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Error";
+
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
     }

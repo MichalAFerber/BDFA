@@ -64,15 +64,11 @@ html {
 }
 
 .image-profile {
-    min-height: 200px;
     max-height: 200px;
-    min-width: 200px;
     max-width: 200px;
 }
 
 .image-profile-featured {
-    min-height: 300px;
     max-height: 300px;
-    min-width: 300px;
     max-width: 300px;
 }

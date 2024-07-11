@@ -1,33 +1,30 @@
 ﻿@page
-@model IndexModel
-@{
-    ViewData["Title"] = "Home";
-}
+@model BDFA.Pages.IndexModel
 
 <div class="text-center">
 
     <div class="container p-4">
-        <div class="row p-4 align-items-center rounded-3 border shadow-lg">
+        <div class="row p-4 align-items-center rounded-3 border shadow">
             <div class="col">
                 <h1 style="color:#E4405F">Buy Direct From Authors</h1>
             </div>
         </div>
     </div>
 
-    <div class="container p-4">
+    <div class="container p-4 text-center">
         <div class="card">
             <div class="card-header fw-bold">
                 Featured Authors
             </div>
             <div class="card-body">
-                <div class="row justify-content-center row-cols-1 row-cols-md-3 g-4">
+                <div class="row justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
                     @foreach (var featuredAuthor in Model.FeaturedAuthors)
                     {
                         <div class="col d-flex align-items-stretch">
                             <div class="card">
                                 @if (featuredAuthor.UrlStore != null)
                                 {
-                                    <a href="@featuredAuthor.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top pt-4 image-profile-featured" alt="@featuredAuthor.Author"></a>
+                                    <a href="@featuredAuthor.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredAuthor.Author"></a>
                                 }
                                 <div class="card-body">
                                     @if (featuredAuthor.Author != null)
@@ -42,15 +39,15 @@
                                         </p>
                                     }
                                 </div>
-                                <div class="card-link" style="padding: 15px;">
+                                <div class="card-link" style="padding: 5px;">
                                     @if (featuredAuthor.UrlStore != null)
                                     {
                                         <p><a href="@featuredAuthor.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
-                                        <a href="@featuredAuthor.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg me-0" style="color: #212121;"></i></a>
+                                        <a href="@featuredAuthor.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlNewsletter != null)
                                     {
-                                        <a href="@featuredAuthor.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg me-0" style="color: #25D366;"></i></a>
+                                        <a href="@featuredAuthor.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlFBPage != null)
                                     {
@@ -76,6 +73,14 @@
                                     {
                                         <a href="@featuredAuthor.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                                     }
+                                    @if (featuredAuthor.UrlReam != null)
+                                    {
+                                        <a href="@featuredAuthor.UrlReam" class="me-1" target="_blank" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                    }
+                                    @if (featuredAuthor.UrlPatreon != null)
+                                    {
+                                        <a href="@featuredAuthor.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                    }
                                     @if (featuredAuthor.UrlOther != null)
                                     {
                                         <a href="@featuredAuthor.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
@@ -89,20 +94,20 @@
         </div>
     </div>
 
-    <div class="container p-4">
+    <div class="container p-4 text-center">
         <div class="card">
             <div class="card-header fw-bold">
                 Featured Deals
             </div>
             <div class="card-body">
-                <div class="row justify-content-center row-cols-1 row-cols-md-3 g-4">
+                <div class="row justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
                     @foreach (var featuredDeals in Model.FeaturedDeals)
                     {
                         <div class="col d-flex align-items-stretch">
                             <div class="card">
                                 @if (featuredDeals.UrlStore != null)
                                 {
-                                    <a href="@featuredDeals.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredDeals.Image" class="card-img-top pt-4 image-profile-featured" alt="@featuredDeals.Author"></a>
+                                    <a href="@featuredDeals.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredDeals.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredDeals.Author"></a>
                                 }
                                 <div class="card-body">
                                     @if (featuredDeals.Author != null)
@@ -117,15 +122,15 @@
                                         </p>
                                     }
                                 </div>
-                                <div class="card-link" style="padding: 15px;">
+                                <div class="card-link" style="padding: 5px;">
                                     @if (featuredDeals.UrlStore != null)
                                     {
                                         <p><a href="@featuredDeals.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
-                                        <a href="@featuredDeals.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg me-0" style="color: #212121;"></i></a>
+                                        <a href="@featuredDeals.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
                                     }
                                     @if (featuredDeals.UrlNewsletter != null)
                                     {
-                                        <a href="@featuredDeals.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg me-0" style="color: #25D366;"></i></a>
+                                        <a href="@featuredDeals.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
                                     }
                                     @if (featuredDeals.UrlFBPage != null)
                                     {
@@ -151,6 +156,14 @@
                                     {
                                         <a href="@featuredDeals.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                                     }
+                                    @if (featuredDeals.UrlReam != null)
+                                    {
+                                        <a href="@featuredDeals.UrlReam" class="me-1" target="_blank" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                    }
+                                    @if (featuredDeals.UrlPatreon != null)
+                                    {
+                                        <a href="@featuredDeals.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                    }
                                     @if (featuredDeals.UrlOther != null)
                                     {
                                         <a href="@featuredDeals.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
@@ -165,22 +178,22 @@
     </div>
 
     <div class="container p-4">
-        <div class="row p-4 align-items-center rounded-3 border shadow-lg">
+        <div class="row p-4 align-items-center rounded-3 border shadow">
             <div class="col">
                 <div class="row">
-                    <p class="h4">Search to find our awesome authors!</p>
+                    <p class="h4">Search by keyword or genre</p>
                 </div>
                 <div class="row d-grid d-md-flex">
                     <form class="search-form form-inline">
-                        <input class="search-input form-control text-center" type="search" placeholder="Search here by keyword (examples: steamy romance, cozy mystery, sci-fi)" aria-label="Search">
+                        <input class="search-input form-control text-center" type="search" placeholder="examples: steamy romance, cozy mystery, sci-fi" aria-label="Search">
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container p-4">
-        <div id="profilesContainer" class="row justify-content-center row-cols-1 row-cols-md-5 g-4">
+    <div class="container p-4 text-center">
+        <div id="profilesContainer" class="row justify-content-center row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
             @await Html.PartialAsync("_ProfilesList", Model.Profiles)
         </div>
     </div>

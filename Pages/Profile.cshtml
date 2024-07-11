@@ -1,6 +1,6 @@
 ﻿@page
 @model BDFA.Pages.ProfileModel
-<div class="body-title"><h1>@ViewData["Title"]</h1></div>
+<div class="body-title"><h1>@ViewData["TitleBody"]</h1></div>
 
 <nav class="navbar bg-body-tertiary mb-5">
     <form class="container-fluid justify-content-start">
@@ -9,14 +9,14 @@
     </form>
 </nav>
 
-<div class="container mb-5">
+<div class="container">
 
-    <div id="View" class="row row-cols-1 row-cols-md-4 mb-5">
-        <div class="col text-center">
+    <div id="View" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
+        <div class="col-12 d-flex align-items-stretch text-center">
             <div class="card">
                 @if (Model.UrlStore != null)
                 {
-                    <a href="@Model.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@Model.Image" class="card-img-top" alt="@Model.Author"></a>
+                    <a href="@Model.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@Model.Image" class="card-img-top p-1" alt="@Model.Author"></a>
                 }
                 <div class="card-body">
                     @if (Model.Author != null)
@@ -27,14 +27,15 @@
                     {
                         <p class="card-text">Once created, your profile will show here. Click on the edit profile button above.</p>
                     }
-                    @if (Model.Tagline != null)
+                    @if (Model.Tagline != null && Model.Tags != null)
                     {
-                        <p class="card-text">@Model.Tagline</p>
+                        <p class="card-text">
+                            @Model.Tagline
+                            <br /><br /><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@Model.Tags
+                        </p>
                     }
-                    @if (Model.Tags != null)
-                    {
-                        <p><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@Model.Tags</p>
-                    }
+                </div>
+                <div class="card-link" style="padding: 5px;">
                     @if (Model.UrlStore != null)
                     {
                         <p><a href="@Model.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
@@ -68,6 +69,14 @@
                     {
                         <a href="@Model.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                     }
+                    @if (Model.UrlReam != null)
+                    {
+                        <a href="@Model.UrlReam" class="me-1" target="_blank" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                    }
+                    @if (Model.UrlPatreon != null)
+                    {
+                        <a href="@Model.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                    }
                     @if (Model.UrlOther != null)
                     {
                         <a href="@Model.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
@@ -76,125 +85,137 @@
             </div>
         </div>
     </div>
-</div>
 
+    <div id="Edit" class="row" style="display:none;">
+        <div class="col-12">
+            <form asp-page="Profile" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
 
-<div id="Edit" class="row" style="display:none;">
-    <div class="col-12">
-        <form asp-page="Profile" method="post" enctype="multipart/form-data">
-            @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-at"></i>
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input value="@Model.Email" asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" required disabled />
+                    <div id="EmailHelp" class="form-text">Your Email</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-at"></i>
-                <label asp-for="Email" class="form-label">Email</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input value="@Model.Email" asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" required disabled />
-                <div id="EmailHelp" class="form-text">Your Email</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-regular fa-address-card"></i>
+                    <label asp-for="Author" class="form-label">Author Name</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input value="@Model.Author" asp-for="Author" class="form-control" type="text" aria-describedby="AuthorHelp" placeholder="Firstname Lastname" required />
+                    <div id="AuthorHelp" class="form-text">Author Name (this will appear on the website so please use the pen name you prefer)</div>
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-regular fa-address-card"></i>
-                <label asp-for="Author" class="form-label">Author Name</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input value="@Model.Author" asp-for="Author" class="form-control" type="text" aria-describedby="AuthorHelp" placeholder="Firstname Lastname" required />
-                <div id="AuthorHelp" class="form-text">Author Name (this will appear on the website so please use the pen name you prefer)</div>
-                <span asp-validation-for="Author" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-image"></i>
+                    <label asp-for="ImageFile" class="form-label">Image</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input asp-for="ImageFile" class="form-control" type="file" aria-describedby="ImageHelp" />
+                    <div id="ImageHelp" class="form-text">Please upload a png or jpg file that is LESS than 2 MB. Images greater than 1MB will not be accepted. You can use a site like this to compress your image: <a href="https://tinyjpg.com" target="_blank">https://tinyjpg.com</a></div>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-image"></i>
-                <label asp-for="ImageFile" class="form-label">Image</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input asp-for="ImageFile" class="form-control" type="file" aria-describedby="ImageHelp" />
-                <div id="ImageHelp" class="form-text">Please upload a png or jpg file that is LESS than 2 MB. Images greater than 1MB will not be accepted. You can use a site like this to compress your image: <a href="https://tinyjpg.com" target="_blank">https://tinyjpg.com</a></div>
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <label asp-for="Tagline" class="form-label">Tagline</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input value="@Model.Tagline" asp-for="Tagline" class="form-control" type="text" aria-describedby="TaglineHelp" placeholder="Steamy Heartfelt Romance" required />
+                    <div id="TaglineHelp" class="form-text">Tagline (ONE sentence ONLY) - this will appear on the website under your store link.</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-file-lines"></i>
-                <label asp-for="Tagline" class="form-label">Tagline</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input value="@Model.Tagline" asp-for="Tagline" class="form-control" type="text" aria-describedby="TaglineHelp" placeholder="Steamy Heartfelt Romance" required />
-                <div id="TaglineHelp" class="form-text">Tagline (ONE sentence ONLY) - this will appear on the website under your store link.</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <label asp-for="Tags" class="form-label">Search terms/tropes</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input value="@Model.Tags" asp-for="Tags" class="form-control" type="text" aria-describedby="TagsHelp" placeholder="steamy romance, small town romance, romantasy, enemies to lovers, grumpy-sunshine, vampire romance" required />
+                    <div id="TagsHelp" class="form-text">Search terms/tropes - these will be searchable on the site to help readers find you. 8 search terms MAXIMUM.</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-hashtag"></i>
-                <label asp-for="Tags" class="form-label">Search terms/tropes</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input value="@Model.Tags" asp-for="Tags" class="form-control" type="text" aria-describedby="TagsHelp" placeholder="steamy romance, small town romance, romantasy, enemies to lovers, grumpy-sunshine, vampire romance" required />
-                <div id="TagsHelp" class="form-text">Search terms/tropes - these will be searchable on the site to help readers find you. 8 search terms MAXIMUM.</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-store"></i>
+                    <label asp-for="UrlStore" class="form-label">Direct Store Link</label>
+                    <i class="fa-solid fa-star-of-life text-primary"></i>
+                    <input value="@Model.UrlStore" asp-for="UrlStore" class="form-control" type="url" aria-describedby="UrlStoreHelp" placeholder="https://your-store.com" required />
+                    <div id="UrlStoreHelp" class="form-text">Direct Store Link (this will be your store link featured on the site. You can use any link you want. A link to your bundle page. A link to your store's home page. Whatever you prefer)</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-store"></i>
-                <label asp-for="UrlStore" class="form-label">Direct Store Link</label>
-                <i class="fa-solid fa-star-of-life text-primary"></i>
-                <input value="@Model.UrlStore" asp-for="UrlStore" class="form-control" type="url" aria-describedby="UrlStoreHelp" placeholder="https://your-store.com" required />
-                <div id="UrlStoreHelp" class="form-text">Direct Store Link (this will be your store link featured on the site. You can use any link you want. A link to your bundle page. A link to your store's home page. Whatever you prefer)</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-envelope-open"></i>
+                    <label asp-for="UrlNewsletter" class="form-label">Newsletter</label>
+                    <input value="@Model.UrlNewsletter" asp-for="UrlNewsletter" class="form-control" type="url" aria-describedby="UrlNewsletterHelp" placeholder="https://newsletter-link.com" />
+                    <div id="UrlNewsletterHelp" class="form-text">Newsletter sign-up link if you'd like it linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-envelope-open"></i>
-                <label asp-for="UrlNewsletter" class="form-label">Newsletter</label>
-                <input value="@Model.UrlNewsletter" asp-for="UrlNewsletter" class="form-control" type="url" aria-describedby="UrlNewsletterHelp" placeholder="https://newsletter-link.com" />
-                <div id="UrlNewsletterHelp" class="form-text">Newsletter sign-up link if you'd like it linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-facebook"></i>
+                    <label asp-for="UrlFBPage" class="form-label">Facebook Page</label>
+                    <input value="@Model.UrlFBPage" asp-for="UrlFBPage" class="form-control" type="url" aria-describedby="UrlFBPageHelp" placeholder="https://facebook.com/page" />
+                    <div id="UrlFBPageHelp" class="form-text">Link to your Facebook page if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-facebook"></i>
-                <label asp-for="UrlFBPage" class="form-label">Facebook Page</label>
-                <input value="@Model.UrlFBPage" asp-for="UrlFBPage" class="form-control" type="url" aria-describedby="UrlFBPageHelp" placeholder="https://facebook.com/page" />
-                <div id="UrlFBPageHelp" class="form-text">Link to your Facebook page if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-square-facebook"></i>
+                    <label asp-for="UrlFBGroup" class="form-label">Facebook Group</label>
+                    <input value="@Model.UrlFBGroup" asp-for="UrlFBGroup" class="form-control" type="url" aria-describedby="UrlFBGroupHelp" placeholder="https://facebook.com/group" />
+                    <div id="UrlFBGroupHelp" class="form-text">Link to your Facebook reader group if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-square-facebook"></i>
-                <label asp-for="UrlFBGroup" class="form-label">Facebook Group</label>
-                <input value="@Model.UrlFBGroup" asp-for="UrlFBGroup" class="form-control" type="url" aria-describedby="UrlFBGroupHelp" placeholder="https://facebook.com/group" />
-                <div id="UrlFBGroupHelp" class="form-text">Link to your Facebook reader group if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-instagram"></i>
+                    <label asp-for="UrlIG" class="form-label">Instagram</label>
+                    <input value="@Model.UrlIG" asp-for="UrlIG" class="form-control" type="url" aria-describedby="UrlIGHelp" placeholder="https://instagram.com/profile" />
+                    <div id="UrlIGHelp" class="form-text">Link to IG if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-instagram"></i>
-                <label asp-for="UrlIG" class="form-label">Instagram</label>
-                <input value="@Model.UrlIG" asp-for="UrlIG" class="form-control" type="url" aria-describedby="UrlIGHelp" placeholder="https://instagram.com/profile" />
-                <div id="UrlIGHelp" class="form-text">Link to IG if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <label asp-for="UrlTikTok" class="form-label">TikTok</label>
+                    <input value="@Model.UrlTikTok" asp-for="UrlTikTok" class="form-control" type="url" aria-describedby="UrlTikTokHelp" placeholder="https://tiktok.com/profile" />
+                    <div id="UrlTikTokHelp" class="form-text">Link to TikTok if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-tiktok"></i>
-                <label asp-for="UrlTikTok" class="form-label">TikTok</label>
-                <input value="@Model.UrlTikTok" asp-for="UrlTikTok" class="form-control" type="url" aria-describedby="UrlTikTokHelp" placeholder="https://tiktok.com/profile" />
-                <div id="UrlTikTokHelp" class="form-text">Link to TikTok if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-threads"></i>
+                    <label asp-for="UrlThreads" class="form-label">Threads</label>
+                    <input value="@Model.UrlThreads" asp-for="UrlThreads" class="form-control" type="url" aria-describedby="UrlThreadsHelp" placeholder="https://threads.net/profile" />
+                    <div id="UrlThreadsHelp" class="form-text">Link to Threads if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-threads"></i>
-                <label asp-for="UrlThreads" class="form-label">Threads</label>
-                <input value="@Model.UrlThreads" asp-for="UrlThreads" class="form-control" type="url" aria-describedby="UrlThreadsHelp" placeholder="https://threads.net/profile" />
-                <div id="UrlThreadsHelp" class="form-text">Link to Threads if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <label asp-for="UrlX" class="form-label">X</label>
+                    <input value="@Model.UrlX" asp-for="UrlX" class="form-control" type="url" aria-describedby="UrlXHelp" placeholder="https://x.com/profile" />
+                    <div id="UrlXHelp" class="form-text">Link to X if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-brands fa-x-twitter"></i>
-                <label asp-for="UrlX" class="form-label">X</label>
-                <input value="@Model.UrlX" asp-for="UrlX" class="form-control" type="url" aria-describedby="UrlXHelp" placeholder="https://x.com/profile" />
-                <div id="UrlXHelp" class="form-text">Link to X if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <label asp-for="UrlReam" class="form-label">Ream Stories</label>
+                    <input value="@Model.UrlReam" asp-for="UrlReam" class="form-control" type="url" aria-describedby="UrlReamHelp" placeholder="https://reamstories.com/page/profile" />
+                    <div id="UrlReamHelp" class="form-text">Link to Ream Stories if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <div class="mb-3">
-                <i class="fa-solid fa-link"></i>
-                <label asp-for="UrlOther" class="form-label">Other Link</label>
-                <input value="@Model.UrlOther" asp-for="UrlOther" class="form-control" type="url" aria-describedby="UrlOtherHelp" placeholder="https://substack.com/profile" />
-                <div id="UrlOtherHelp" class="form-text">If you have a Ream/Patreon/Subscription that isn't your main direct store, please list the link here if you'd like it to be linked at the bottom of your listing</div>
-            </div>
+                <div class="mb-3">
+                    <i class="fa-brands fa-patreon"></i>
+                    <label asp-for="UrlPatreon" class="form-label">Patreon</label>
+                    <input value="@Model.UrlPatreon" asp-for="UrlPatreon" class="form-control" type="url" aria-describedby="UrlPatreonHelp" placeholder="https://patreon.com/profile" />
+                    <div id="UrlPatreonHelp" class="form-text">Link to Patreon if you'd like it to be linked at the bottom of your listing</div>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Save Profile</button>
-        </form>
+                <div class="mb-3">
+                    <i class="fa-solid fa-link"></i>
+                    <label asp-for="UrlOther" class="form-label">Other Link</label>
+                    <input value="@Model.UrlOther" asp-for="UrlOther" class="form-control" type="url" aria-describedby="UrlOtherHelp" placeholder="https://substack.com/profile" />
+                    <div id="UrlOtherHelp" class="form-text">If you have a Substack or other URL that isn't your main direct store, please list the link here if you'd like it to be linked at the bottom of your listing</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+        </div>
     </div>
-</div>
 
 </div>
 

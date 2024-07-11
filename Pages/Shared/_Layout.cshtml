@@ -3,10 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Buy Direct From Authors</title>
+    <title>@ViewData["TitlePage"]</title>
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
 
@@ -16,7 +20,7 @@
                 <a class="navbar-brand" href="/">
                     <i class="fa-solid fa-house"></i>
                 </a>
-                <input class="search-input form-control text-center me-2" type="search" placeholder="Search" aria-label="Search">
+                <input class="search-input form-control text-center me-2" type="search" placeholder="Search by keyword or genre" aria-label="Search">
                 <a asp-page="/FAQ" class="btn btn-primary text-nowrap" role="button">Authors Click Here</a>
             </form>
         </nav>
@@ -38,7 +42,7 @@
                     <a asp-page="/Privacy">Privacy</a> - <a asp-page="/Terms">Terms</a> - <a asp-page="/FAQ">FAQs</a>
                 </span>
                 <span class="navbar-text text-muted">
-                    Site designed and maintained by <a href="https://ari-integration.com" target="_blank">Ari Integration</a>
+                    Site designed and maintained by <a href="https://techguywithabeard.com/" target="_blank">TechGuyWithABeard</a>
                 </span>
             </div>
         </nav>

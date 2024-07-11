@@ -36,23 +36,30 @@ namespace BDFA.Pages
         [BindProperty]
         public string UrlX { get; set; }
         [BindProperty]
+        public string UrlReam { get; set; }
+        [BindProperty]
+        public string UrlPatreon { get; set; }
+        [BindProperty]
         public string UrlOther { get; set; }
 
         // Add a property to store the filename
         public string ImageFilename { get; set; }
 
+        private readonly ILogger<ProfileModel> _logger;
         private readonly DirectoryContext _context;
         private readonly IWebHostEnvironment _hostenvironment;
 
-        public ProfileModel(DirectoryContext context, IWebHostEnvironment hostenvironment)
+        public ProfileModel(ILogger<ProfileModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment)
         {
+            _logger = logger;
             _context = context;
             _hostenvironment = hostenvironment;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["Title"] = ViewData["Title"] ?? "My Profile";
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "My Profile - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "My Profile";
 
             var _isAuth = HttpContext.Session.GetInt32("IsAuth");
             var _email = HttpContext.Session.GetString("EmailKey");
@@ -86,6 +93,8 @@ namespace BDFA.Pages
                 UrlTikTok = profile.UrlTikTok;
                 UrlThreads = profile.UrlThreads;
                 UrlX = profile.UrlX;
+                UrlReam = profile.UrlReam;
+                UrlPatreon = profile.UrlPatreon;
                 UrlOther = profile.UrlOther;
 
                 return Page();
@@ -143,6 +152,8 @@ namespace BDFA.Pages
             profile.UrlTikTok = UrlTikTok;
             profile.UrlThreads = UrlThreads;
             profile.UrlX = UrlX;
+            profile.UrlReam = UrlReam;
+            profile.UrlPatreon = UrlPatreon;
             profile.UrlOther = UrlOther;
 
             // Mark the Profile entity as modified

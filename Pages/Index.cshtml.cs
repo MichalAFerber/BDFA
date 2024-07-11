@@ -8,20 +8,24 @@ namespace BDFA.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly ILogger<IndexModel> _logger;
         private readonly DirectoryContext _context;
-
-        public IndexModel(DirectoryContext context)
-        {
-            _context = context;
-        }
 
         public IList<Profile> FeaturedAuthors { get; set; }
         public IList<Profile> FeaturedDeals { get; set; }
         public IList<Profile> Profiles { get; set; }
 
+        public IndexModel(ILogger<IndexModel> logger, DirectoryContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
+
             // Get all featured authors and active profiles
             FeaturedAuthors = await _context.Profiles
                 .Where(p => p.Active && p.FeaturedAuthor)

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Globalization;
 
 namespace BDFA.Pages
 {
@@ -14,8 +13,8 @@ namespace BDFA.Pages
 
         public void OnGet()
         {
-            string dateTime = DateTime.Now.ToString("d", new CultureInfo("en-US"));
-            ViewData["TimeStamp"] = dateTime;
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Privacy Policy - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Privacy Policy";
         }
     }
 

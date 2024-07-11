@@ -22,6 +22,8 @@ namespace BDFA.Models
         public string? UrlTikTok { get; set; }
         public string? UrlThreads { get; set; }
         public string? UrlX { get; set; }
+        public string? UrlReam { get; set; }
+        public string? UrlPatreon { get; set; }
         public string? UrlOther { get; set; }
         public string AuthToken { get; set; }
         public DateTime Expires { get; set; }
