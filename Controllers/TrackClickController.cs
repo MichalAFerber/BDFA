@@ -2,9 +2,6 @@
 using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System.Configuration;
-using System.Data.SqlClient;
 
 namespace BDFA.Controllers
 {

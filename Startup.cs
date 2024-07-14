@@ -1,10 +1,8 @@
 ﻿using BDFA.BL;
 using BDFA.Data;
+using BDFA.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using BDFA.Models;
 
 public class Startup
 {
@@ -15,20 +13,19 @@ public class Startup
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddRouting(); // Add routing services to the container.
-        services.AddDistributedMemoryCache(); // Stores session in-memory
+        services.AddRouting();
+        services.AddDistributedMemoryCache();
 
         services.AddSession(options =>
         {
-            options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout.
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });
 
-        services.AddRazorPages(); // Add services to the container.
+        services.AddRazorPages();
 
         services.AddDbContext<DirectoryContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DirectoryContext")));
@@ -40,7 +37,6 @@ public class Startup
         Manager.InitializeSiteAdmin();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
@@ -61,7 +57,7 @@ public class Startup
 
         app.UseAuthorization();
 
-        app.UseSession(); // Enable session
+        app.UseSession();
 
         app.UseEndpoints(endpoints =>
         {
@@ -76,15 +72,35 @@ public class Startup
 
             endpoints.MapPost("/track-click", async context =>
             {
+                using var scope = context.RequestServices.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DirectoryContext>();
+
                 using var reader = new StreamReader(context.Request.Body);
                 var body = await reader.ReadToEndAsync();
                 var clickData = JsonSerializer.Deserialize<ClickDataJSON>(body);
 
-                using (var dbContext = app.ApplicationServices.GetRequiredService<DirectoryContext>())
+                // Validate ClickDateTime is not null or empty
+                if (string.IsNullOrWhiteSpace(clickData.ClickDateTime))
                 {
-                    dbContext.Clicks.Add(new ClickData { ProfileId = clickData.ProfileId.ToString(), Link = clickData.Link, ClickDateTime = DateTime.Parse(clickData.ClickDateTime) });
-                    await dbContext.SaveChangesAsync();
+                    context.Response.StatusCode = 400; // Bad Request
+                    await context.Response.WriteAsync("ClickDateTime is required.");
+                    return;
                 }
+
+                DateTime clickDateTime;
+                try
+                {
+                    clickDateTime = DateTime.Parse(clickData.ClickDateTime);
+                }
+                catch (FormatException)
+                {
+                    context.Response.StatusCode = 400; // Bad Request
+                    await context.Response.WriteAsync("ClickDateTime is invalid.");
+                    return;
+                }
+
+                dbContext.Clicks.Add(new ClickData { ProfileId = clickData.ProfileId.ToString(), Link = clickData.Link, ClickDateTime = clickDateTime });
+                await dbContext.SaveChangesAsync();
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = 200;

@@ -24,7 +24,7 @@
                             <div class="card">
                                 @if (featuredAuthor.UrlStore != null)
                                 {
-                                    <a href="@featuredAuthor.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredAuthor.Author"></a>
+                                    <a href="@featuredAuthor.UrlStore" class="profile-link" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredAuthor.Author"></a>
                                 }
                                 <div class="card-body">
                                     @if (featuredAuthor.Author != null)
@@ -42,48 +42,48 @@
                                 <div class="card-link" style="padding: 5px;">
                                     @if (featuredAuthor.UrlStore != null)
                                     {
-                                        <p><a href="@featuredAuthor.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
-                                        <a href="@featuredAuthor.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                        <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link btn btn-primary" data-profile-id="@featuredAuthor.RowId">Author's Direct Store</a></p>
+                                        <a href="@featuredAuthor.UrlStore" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlNewsletter != null)
                                     {
-                                        <a href="@featuredAuthor.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
+                                        <a href="@featuredAuthor.UrlNewsletter" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlFBPage != null)
                                     {
-                                        <a href="@featuredAuthor.UrlFBPage" class="me-1" target="_blank" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredAuthor.UrlFBPage" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlFBGroup != null)
                                     {
-                                        <a href="@featuredAuthor.UrlFBGroup" class="me-1" target="_blank" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredAuthor.UrlFBGroup" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlIG != null)
                                     {
-                                        <a href="@featuredAuthor.UrlIG" class="me-1" target="_blank" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                                        <a href="@featuredAuthor.UrlIG" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlTikTok != null)
                                     {
-                                        <a href="@featuredAuthor.UrlTikTok" class="me-1" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                                        <a href="@featuredAuthor.UrlTikTok" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlThreads != null)
                                     {
-                                        <a href="@featuredAuthor.UrlThreads" class="me-1" target="_blank" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredAuthor.UrlThreads" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlX != null)
                                     {
-                                        <a href="@featuredAuthor.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                                        <a href="@featuredAuthor.UrlX" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlReam != null)
                                     {
-                                        <a href="@featuredAuthor.UrlReam" class="me-1" target="_blank" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                        <a href="@featuredAuthor.UrlReam" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlPatreon != null)
                                     {
-                                        <a href="@featuredAuthor.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                        <a href="@featuredAuthor.UrlPatreon" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
                                     }
                                     @if (featuredAuthor.UrlOther != null)
                                     {
-                                        <a href="@featuredAuthor.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                                        <a href="@featuredAuthor.UrlOther" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
                                     }
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                             <div class="card">
                                 @if (featuredDeals.UrlStore != null)
                                 {
-                                    <a href="@featuredDeals.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@featuredDeals.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredDeals.Author"></a>
+                                    <a href="@featuredDeals.UrlStore" class="profile-link" data-profile-id="@featuredDeals.RowId" title="Author's Direct Store"><img src="./i/@featuredDeals.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredDeals.Author"></a>
                                 }
                                 <div class="card-body">
                                     @if (featuredDeals.Author != null)
@@ -125,48 +125,48 @@
                                 <div class="card-link" style="padding: 5px;">
                                     @if (featuredDeals.UrlStore != null)
                                     {
-                                        <p><a href="@featuredDeals.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
-                                        <a href="@featuredDeals.UrlStore" class="me-1" target="_blank" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                        <p><a href="@featuredDeals.UrlStore" type="button" class="profile-link btn btn-primary" data-profile-id="@featuredDeals.RowId">Author's Direct Store</a></p>
+                                        <a href="@featuredDeals.UrlStore" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
                                     }
                                     @if (featuredDeals.UrlNewsletter != null)
                                     {
-                                        <a href="@featuredDeals.UrlNewsletter" class="me-1" target="_blank" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
+                                        <a href="@featuredDeals.UrlNewsletter" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
                                     }
                                     @if (featuredDeals.UrlFBPage != null)
                                     {
-                                        <a href="@featuredDeals.UrlFBPage" class="me-1" target="_blank" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredDeals.UrlFBPage" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredDeals.UrlFBGroup != null)
                                     {
-                                        <a href="@featuredDeals.UrlFBGroup" class="me-1" target="_blank" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredDeals.UrlFBGroup" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredDeals.UrlIG != null)
                                     {
-                                        <a href="@featuredDeals.UrlIG" class="me-1" target="_blank" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                                        <a href="@featuredDeals.UrlIG" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
                                     }
                                     @if (featuredDeals.UrlTikTok != null)
                                     {
-                                        <a href="@featuredDeals.UrlTikTok" class="me-1" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                                        <a href="@featuredDeals.UrlTikTok" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
                                     }
                                     @if (featuredDeals.UrlThreads != null)
                                     {
-                                        <a href="@featuredDeals.UrlThreads" class="me-1" target="_blank" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                                        <a href="@featuredDeals.UrlThreads" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
                                     }
                                     @if (featuredDeals.UrlX != null)
                                     {
-                                        <a href="@featuredDeals.UrlX" class="me-1" target="_blank" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                                        <a href="@featuredDeals.UrlX" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                                     }
                                     @if (featuredDeals.UrlReam != null)
                                     {
-                                        <a href="@featuredDeals.UrlReam" class="me-1" target="_blank" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                        <a href="@featuredDeals.UrlReam" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
                                     }
                                     @if (featuredDeals.UrlPatreon != null)
                                     {
-                                        <a href="@featuredDeals.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                        <a href="@featuredDeals.UrlPatreon" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
                                     }
                                     @if (featuredDeals.UrlOther != null)
                                     {
-                                        <a href="@featuredDeals.UrlOther" class="me-1" target="_blank" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                                        <a href="@featuredDeals.UrlOther" class="profile-link me-1" data-profile-id="@featuredDeals.RowId" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
                                     }
                                 </div>
                             </div>
