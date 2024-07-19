@@ -13,14 +13,14 @@
         @if (Model.ShowSendCode)
         {
             <label for="InputEmail">Email Address</label>
-            <input asp-for="InputEmail" type="email" class="form-control" id="Email" placeholder="name@example.com" required>
+            <input asp-for="InputEmail" type="email" class="form-control" id="InputEmail" placeholder="name@example.com" required autocomplete="username">
             <input type="submit" asp-page-handler="SendCode" class="mt-3 w-100 btn btn-lg btn-primary" value="Send Code" />
         }
 
         @if (Model.ShowSignIn)
         {
             <label for="InputAuthCode">Authorization Code</label>
-            <input asp-for="InputAuthCode" type="password" class="form-control" id="Code" placeholder="######" required>
+            <input asp-for="InputAuthCode" type="password" class="form-control" id="InputAuthCode" placeholder="######" required autocomplete="one-time-code">
             <input type="submit" asp-page-handler="SignIn" class="mt-3 w-100 btn btn-lg btn-primary" value="Sign In" />
         }
     </div>

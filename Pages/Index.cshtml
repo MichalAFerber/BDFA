@@ -101,7 +101,7 @@
             </div>
             <div class="card-body">
                 <div class="row justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
-                    @foreach (var featuredDeals in Model.FeaturedDeals)
+@*                     @foreach (var featuredDeals in Model.FeaturedDeals)
                     {
                         <div class="col d-flex align-items-stretch">
                             <div class="card">
@@ -172,12 +172,12 @@
                             </div>
                         </div>
                     }
-                </div>
+ *@                </div>
             </div>
         </div>
     </div>
 
-    <div class="container p-4">
+    <div class="container p-4" id="SearchStart">
         <div class="row p-4 align-items-center rounded-3 border shadow">
             <div class="col">
                 <div class="row">
@@ -185,7 +185,7 @@
                 </div>
                 <div class="row d-grid d-md-flex">
                     <form id="formSearchBody" class="search-form form-inline">
-                        <input id="textSearchBody" class="search-input form-control text-center" type="search" placeholder="examples: steamy romance, cozy mystery, sci-fi" aria-label="Search">
+                        <input id="textSearchBody" class="search-input form-control text-center" type="search" placeholder="examples: steamy romance, cozy mystery, sci-fi" aria-label="Search" autocomplete="off">
                     </form>
                 </div>
             </div>

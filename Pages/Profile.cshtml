@@ -96,7 +96,7 @@
                     <i class="fa-solid fa-at"></i>
                     <label asp-for="Email" class="form-label">Email</label>
                     <i class="fa-solid fa-star-of-life text-primary"></i>
-                    <input value="@Model.Email" asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" required disabled />
+                    <input value="@Model.Email" asp-for="Email" class="form-control" type="email" aria-describedby="EmailHelp" placeholder="name@example.com" autocomplete="email" required disabled />
                     <div id="EmailHelp" class="form-text">Your Email</div>
                 </div>
 

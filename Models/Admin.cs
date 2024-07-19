@@ -7,9 +7,9 @@ namespace BDFA.Models
         [Key]
         public int ID { get; set; }
         public int Active { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public string? AuthToken { get; set; }
-        public DateTime? Expires { get; set; }
+        public string AuthToken { get; set; }
+        public DateTime Expires { get; set; }
     }
 }
