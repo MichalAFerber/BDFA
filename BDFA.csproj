@@ -9,15 +9,31 @@
     <Compile Remove="Pages\Directory\**" />
     <Compile Remove="Pages\SiteAdmin\**" />
     <Compile Remove="Pages\SiteSettings\**" />
+    <Compile Remove="wwwroot\lib\bootstrap\**" />
+    <Compile Remove="wwwroot\lib\font-awesome\**" />
+    <Compile Remove="wwwroot\lib\jquery-validation\**" />
+    <Compile Remove="wwwroot\lib\twitter-bootstrap\**" />
     <Content Remove="Pages\Directory\**" />
     <Content Remove="Pages\SiteAdmin\**" />
     <Content Remove="Pages\SiteSettings\**" />
+    <Content Remove="wwwroot\lib\bootstrap\**" />
+    <Content Remove="wwwroot\lib\font-awesome\**" />
+    <Content Remove="wwwroot\lib\jquery-validation\**" />
+    <Content Remove="wwwroot\lib\twitter-bootstrap\**" />
     <EmbeddedResource Remove="Pages\Directory\**" />
     <EmbeddedResource Remove="Pages\SiteAdmin\**" />
     <EmbeddedResource Remove="Pages\SiteSettings\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
+    <EmbeddedResource Remove="wwwroot\lib\font-awesome\**" />
+    <EmbeddedResource Remove="wwwroot\lib\jquery-validation\**" />
+    <EmbeddedResource Remove="wwwroot\lib\twitter-bootstrap\**" />
     <None Remove="Pages\Directory\**" />
     <None Remove="Pages\SiteAdmin\**" />
     <None Remove="Pages\SiteSettings\**" />
+    <None Remove="wwwroot\lib\bootstrap\**" />
+    <None Remove="wwwroot\lib\font-awesome\**" />
+    <None Remove="wwwroot\lib\jquery-validation\**" />
+    <None Remove="wwwroot\lib\twitter-bootstrap\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Data\bdfa-master.db" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="bundleconfig.json" />
     <None Include="wwwroot\js\search.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -50,7 +62,6 @@
 
   <ItemGroup>
     <!--<PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />-->
-    <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
@@ -93,6 +104,10 @@
     <Content Update="wwwroot\site.webmanifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
