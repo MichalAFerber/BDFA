@@ -12,7 +12,7 @@ namespace BDFA.Pages
         private readonly DirectoryContext _context;
 
         public IList<Profile> FeaturedAuthors { get; set; }
-        public IList<Profile> FeaturedDeals { get; set; }
+        public IList<Setting> FeaturedDeals { get; set; }
         public IList<Profile> Profiles { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, DirectoryContext context)
@@ -29,12 +29,6 @@ namespace BDFA.Pages
             // Get all featured authors and active profiles
             FeaturedAuthors = await _context.Profiles
                 .Where(p => p.Active && p.FeaturedAuthor)
-                .OrderBy(p => p.RowId)
-                .ToListAsync();
-
-            // Get all featured deals and active profiles
-            FeaturedDeals = await _context.Profiles
-                .Where(p => p.Active && p.FeaturedDeal)
                 .OrderBy(p => p.RowId)
                 .ToListAsync();
 

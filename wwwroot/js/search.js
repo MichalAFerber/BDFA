@@ -10,3 +10,13 @@
             .catch(error => console.error('Error:', error));
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var searchInput = document.getElementById("textSearchBody");
+
+    // Event listener for pressing the Enter key
+    searchInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();         }
+    });
+});

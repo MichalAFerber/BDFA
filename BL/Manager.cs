@@ -20,7 +20,12 @@ namespace BDFA.BL
         private static bool _SMTPSSL = true;
 
         //global variables
-        public static string SettingsProfileAbout { get; set; }
+        public static string DealImage1 { get; set; }
+        public static string DealURL1 { get; set; }
+        public static string DealImage2 { get; set; }
+        public static string DealURL2 { get; set; }
+        public static string DealImage3 { get; set; }
+        public static string DealURL3 { get; set; }
 
         public static void InitializeSMTPSettings(IConfiguration configuration)
         {
@@ -38,9 +43,9 @@ namespace BDFA.BL
             _ConnectionString = configuration["ConnectionStrings:DirectoryContext"];
         }
 
-        public static void InitializeSiteAdmin()
+        public static void InitializeSiteAdmin(IConfiguration configuration)
         {
-            GetSiteSettings(1);
+            GetSiteSettings(Convert.ToInt32(configuration["Settings:SiteID"]));
         }
 
         public static Setting GetSiteSettings(int id)
@@ -49,17 +54,19 @@ namespace BDFA.BL
             using (var connection = new SQLiteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SQLiteCommand("SELECT * FROM Settings WHERE Id = @Id", connection))
+                using (var command = new SQLiteCommand("SELECT * FROM Settings WHERE Id = " + id, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            record = new Setting
-                            {
-                                ID = Convert.ToInt32(reader["ID"]),
-                            };
+                            DealImage1 = reader["DealImage1"].ToString();
+                            DealURL1 = reader["DealURL1"].ToString();
+                            DealImage2 = reader["DealImage2"].ToString();
+                            DealURL2 = reader["DealURL2"].ToString();
+                            DealImage3 = reader["DealImage3"].ToString();
+                            DealURL3 = reader["DealURL3"].ToString();
                         }
                     }
                 }

@@ -34,7 +34,7 @@ public class Startup
 
         Manager.InitializeSMTPSettings(Configuration);
         Manager.InitializeDBSettings(Configuration);
-        Manager.InitializeSiteAdmin();
+        Manager.InitializeSiteAdmin(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
