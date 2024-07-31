@@ -108,5 +108,43 @@ namespace BDFA.BL
             // Check if any admin has the specified email.
             return await context.Admins.AnyAsync(admin => admin.Email == email);
         }
+
+        public static void ChangeProfileStatus(int ProfileID, bool Active)
+        {
+            using (var connection = new SQLiteConnection(_ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand("UPDATE Profiles SET Active = " + Active + " WHERE rowid = " + ProfileID, connection))
+                {
+                    command.Parameters.AddWithValue("@rowid", ProfileID);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void ChangeFeaturedStatus(int ProfileID, bool Active)
+        {
+            using (var connection = new SQLiteConnection(_ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand("UPDATE Profiles SET FeaturedAuthor = " + Active + " WHERE rowid = " + ProfileID, connection))
+                {
+                    command.Parameters.AddWithValue("@rowid", ProfileID);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteProfile(int ProfileID)
+        {
+            using (var connection = new SQLiteConnection(_ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand("DELETE from Profiles WHERE rowid = " + ProfileID, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

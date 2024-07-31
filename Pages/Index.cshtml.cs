@@ -29,7 +29,7 @@ namespace BDFA.Pages
             // Get all featured authors and active profiles
             FeaturedAuthors = await _context.Profiles
                 .Where(p => p.Active && p.FeaturedAuthor)
-                .OrderBy(p => p.RowId)
+                .OrderBy(p => p.Author)
                 .ToListAsync();
 
             // Get all active profiles
@@ -48,7 +48,7 @@ namespace BDFA.Pages
                 // Fetch profiles if they are not already loaded
                 Profiles = _context.Profiles
                     .Where(p => p.Active)
-                    .OrderBy(p => p.RowId)
+                    .OrderByDescending(p => p.RowId)
                     .ToList();
             }
 

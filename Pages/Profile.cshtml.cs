@@ -1,7 +1,10 @@
 using BDFA.Data;
+using BDFA.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace BDFA.Pages
 {
@@ -65,6 +68,7 @@ namespace BDFA.Pages
 
             var _isAuth = HttpContext.Session.GetInt32("IsAuth");
             var _email = HttpContext.Session.GetString("EmailKey");
+            var _idKey = HttpContext.Session.GetInt32("IdKey");
 
             if (_isAuth == 0 || _email == null)
             {
@@ -72,10 +76,40 @@ namespace BDFA.Pages
             }
             else
             {
-                // Fetch the Profile object from the database
-                var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == _email);
+                string idParam = Request.Query["id"];
+                string _function = Request.Query["function"];
+                Profile profile = null;
 
-                // Log the result of the query
+                if (!string.IsNullOrEmpty(idParam))
+                {
+                    if (int.TryParse(idParam, out int profileId))
+                    {
+                        // Set the session value for the IdKey
+                        HttpContext.Session.SetInt32("IdKey", profileId);
+
+                        // Set a flag in TempData to call the showEdit function
+                        TempData["CallFunction"] = _function;
+
+                        // Fetch the Profile object from the database
+                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == profileId);
+                        _email = profile.Email;
+                    }
+                }
+                else
+                {
+                    if(_idKey != null)
+                    {
+                        // Fetch the Profile object from the database
+                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == _idKey);
+                        _email = profile.Email;
+                    }
+                    else
+                    {
+                        // Fetch the Profile object from the database
+                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == _email);
+                    }
+                }
+
                 if (profile == null)
                 {
                     return NotFound("Profile not found.");
@@ -111,15 +145,37 @@ namespace BDFA.Pages
                 return Page();
             }
 
-            // Retrieve the email from the session
-            var email = HttpContext.Session.GetString("EmailKey");
-            if (string.IsNullOrEmpty(email))
+            var _email = HttpContext.Session.GetString("EmailKey");
+            string idParam = Request.Query["id"];
+            string _function = Request.Query["function"];
+            Profile profile = null;
+
+            // Debugging statements
+            Console.WriteLine($"Email from session: {_email}");
+            Console.WriteLine($"ID from query string: {idParam}");
+
+            if (string.IsNullOrEmpty(_email))
             {
                 return BadRequest("Email is not provided.");
             }
 
-            // Fetch the Profile object from the database
-            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == email);
+            if (idParam != null)
+            {
+                if (int.TryParse(idParam, out int profileId))
+                {
+                    // Set a flag in TempData to call the showEdit function
+                    TempData["CallFunction"] = _function;
+
+                    // Fetch the Profile object from the database
+                    profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == profileId);
+                    _email = profile.Email;
+                }
+            }
+            else
+            {
+                // Fetch the Profile object from the database
+                profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == _email);
+            }
 
             if (profile == null)
             {
@@ -165,8 +221,10 @@ namespace BDFA.Pages
 
             // Save the changes to the database
             await _context.SaveChangesAsync();
+            var queryString = HttpContext.Request.QueryString.Value;
 
-            return RedirectToPage("./Profile");
+            var url = Url.Page("./Profile") + HttpContext.Request.QueryString.Value;
+            return Redirect(url);
         }
     }
 }

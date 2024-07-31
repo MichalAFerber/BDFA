@@ -229,19 +229,7 @@
     </div>
 
     <div id="Stats" class="row" style="display:none;">
-        <div class="col-12 d-flex align-items-stretch text-center">
-            <div class="card">
-                <div class="card-body">
-                    @if (Model.Author != null)
-                    {
-                        <h5 class="card-title">@Model.Author</h5>
-                    }
-                    else
-                    {
-                        <p class="card-text">Once links on your profile have been clicked, they will show here.</p>
-                    }
-                </div>
-            </div>
+        <div class="col-12">
         </div>
     </div>
 
@@ -266,5 +254,45 @@
             $("#Edit").show();
             $("#Stats").hide();
         });
+        $("#showStats").click(function () {
+            $("#showView").removeClass("active");
+            $("#showEdit").removeClass("active");
+            $("#showStats").addClass("active");
+            $("#View").hide();
+            $("#Edit").hide();
+            $("#Stats").show();
+        });
     });
+
+    // Retain query string on form submission
+    $("form").submit(function (event) {
+        var queryString = window.location.search;
+        if (queryString) {
+            var action = $(this).attr("action");
+            $(this).attr("action", action + queryString);
+        }
+    })
+
+    @if (TempData["CallFunction"] != null)
+    {
+        <text>
+            $(document).ready(function () {
+                var functionToCall = "@TempData["CallFunction"]";
+                switch (functionToCall) {
+                    case "view":
+                        $("#showView").click();
+                        break;
+                    case "edit":
+                        $("#showEdit").click();
+                        break;
+                    case "stats":
+                        $("#showStats").click();
+                        break;
+                    default:
+                        $("#showView").click();
+                        break;
+                }
+            });
+        </text>
+    }
 </script>

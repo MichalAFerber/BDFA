@@ -1,11 +1,109 @@
 ﻿@page
 @model BDFA.Pages.AdminModel
 
-<h2>Profiles</h2>
+<nav class="navbar bg-body-tertiary mb-5">
+    <form class="container-fluid justify-content-start">
+        <button id="showProfiles" class="btn btn-outline-success me-2 active" type="button">Profiles</button>
+        <button id="showStats" class="btn btn-outline-success me-2" type="button"><i class="fa-solid fa-chart-simple"></i></button>
+        <button id="showSettings" class="btn btn-outline-success me-2" type="button"><i class="fa-solid fa-gear"></i></button>
+    </form>
+</nav>
 
-<ul>
-    @foreach (var profile in Model.Profiles)
-    {
-        <li>@profile.Email</li>
-    }
-</ul>
+<div class="container">
+
+    <div id="Profiles" class="row">
+        <div class="table-responsive">
+            <table class="table caption-top table-hover">
+                <caption><h3>Profiles</h3></caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th>Author</th>
+                        <th>Email</th>
+                        <th class="text-center">Active</th>
+                        <th class="text-center">Featured</th>
+                        <th class="text-center">Stats</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var profile in Model.Profiles)
+                    {
+                        <tr>
+                            <td nowrap><a href="profile?function=edit&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
+                            <td><a href="profile?function=edit&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
+                            @if (profile.Active)
+                            {
+                                <td align="center"><a href="?function=status&status=0&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
+                            }
+                            else
+                            {
+                                <td align="center"><a href="?function=status&status=1&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
+                            }
+                            @if (profile.FeaturedAuthor)
+                            {
+                                <td align="center"><a href="?function=featured&status=0&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
+                            }
+                            else
+                            {
+                                <td align="center"><a href="?function=featured&status=1&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
+                            }
+                            <td align="center"><a href="profile?function=stats&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
+                            <td align="center"><a href="?function=delete&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="Stats" class="row" style="display:none;">
+        <div class="table-responsive">
+            <table class="table caption-top table-hover">
+                <caption><h3>Site Stats</h3></caption>
+            </table>
+        </div>
+    </div>
+
+    <div id="Settings" class="row" style="display:none;">
+        <div class="table-responsive">
+            <table class="table caption-top table-hover">
+                <caption><h3>Site Settings</h3></caption>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    $(document).ready(function () {
+        $("#showProfiles").click(function () {
+            $("#showProfiles").addClass("active");
+            $("#showSettings").removeClass("active");
+            $("#showStats").removeClass("active");
+            $("#Profiles").show();
+            $("#Settings").hide();
+            $("#Stats").hide();
+        });
+        $("#showStats").click(function () {
+            $("#showProfiles").removeClass("active");
+            $("#showSettings").removeClass("active");
+            $("#showStats").addClass("active");
+            $("#Profiles").hide();
+            $("#Settings").hide();
+            $("#Stats").show();
+        });
+        $("#showSettings").click(function () {
+            $("#showProfiles").removeClass("active");
+            $("#showSettings").addClass("active");
+            $("#showStats").removeClass("active");
+            $("#Profiles").hide();
+            $("#Settings").show();
+            $("#Stats").hide();
+        });
+    });
+</script>

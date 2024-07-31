@@ -27,6 +27,7 @@ namespace BDFA.Pages
 
             var _isAuth = HttpContext.Session.GetInt32("IsAuth");
             var _isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+            var _email = HttpContext.Session.GetString("EmailKey");
 
             if ((_isAuth == null || _isAuth == 0) || (_isAdmin == null || _isAdmin == 0))
             {
@@ -34,7 +35,30 @@ namespace BDFA.Pages
             }
             else
             {
-                Profiles = await _context.Profiles.ToListAsync();
+                int idParam = Convert.ToInt32(Request.Query["id"]);
+                string functionParam = Request.Query["function"];
+                int functionStatus = Convert.ToInt32(Request.Query["status"]);
+
+                // Handle different cases based on the function query string parameter
+                switch (functionParam)
+                {
+                    case "status":
+                        BL.Manager.ChangeProfileStatus(idParam, Convert.ToBoolean(functionStatus));
+                        break;
+                    case "featured":
+                        BL.Manager.ChangeFeaturedStatus(idParam, Convert.ToBoolean(functionStatus));
+                        break;
+                    case "delete":
+                        BL.Manager.DeleteProfile(idParam);
+                        break;
+                    default:
+                        break;
+                }
+
+                Profiles = await _context.Profiles
+                                         .OrderBy(p => p.Author)
+                                         .ToListAsync();
+
                 return Page();
             }
         }
