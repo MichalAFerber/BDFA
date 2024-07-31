@@ -45,7 +45,10 @@ namespace BDFA.BL
 
         public static void InitializeSiteAdmin(IConfiguration configuration)
         {
-            GetSiteSettings(Convert.ToInt32(configuration["Settings:SiteID"]));
+            // Retrieve the site ID from the appsettings.json file
+            var _ConfigSiteID = Convert.ToInt32(configuration["Settings:SiteID"]);
+            // Get the site settings
+            GetSiteSettings(_ConfigSiteID);
         }
 
         public static Setting GetSiteSettings(int id)

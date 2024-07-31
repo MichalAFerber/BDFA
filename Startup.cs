@@ -25,6 +25,8 @@ public class Startup
             options.Cookie.IsEssential = true;
         });
 
+        services.AddMemoryCache();
+
         services.AddRazorPages();
 
         services.AddDbContext<DirectoryContext>(options =>
@@ -35,6 +37,7 @@ public class Startup
         Manager.InitializeSMTPSettings(Configuration);
         Manager.InitializeDBSettings(Configuration);
         Manager.InitializeSiteAdmin(Configuration);
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,12 +55,9 @@ public class Startup
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
-        app.UseAuthorization();
-
         app.UseSession();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {
@@ -105,7 +105,6 @@ public class Startup
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = 200;
             });
-
         });
     }
 

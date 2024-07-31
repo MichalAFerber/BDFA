@@ -12,7 +12,6 @@ namespace BDFA.Pages
         private readonly DirectoryContext _context;
 
         public IList<Profile> FeaturedAuthors { get; set; }
-        public IList<Setting> FeaturedDeals { get; set; }
         public IList<Profile> Profiles { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, DirectoryContext context)

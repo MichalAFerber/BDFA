@@ -61,6 +61,7 @@
             <table class="table caption-top table-hover">
                 <caption><h3>Site Stats</h3></caption>
             </table>
+            Coming Soon
         </div>
     </div>
 
@@ -69,9 +70,95 @@
             <table class="table caption-top table-hover">
                 <caption><h3>Site Settings</h3></caption>
             </table>
+
+            <form asp-page="Admin" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
+
+                <div class="card">
+                    <div class="card-header fw-bold">
+                        <h3>Featured Deals</h3>
+                    </div>
+                    <div>
+                        <div>
+
+                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                <div class="col">
+                                    <div class="card m-2">
+                                        @if (Model.DealImage1 != null)
+                                        {
+                                            <a href="@Model.DealURL1" target="_blank"><img src="./i/@Model.DealImage1" class="card-img-top p-1 image-profile"></a>
+                                        }
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-image"></i>
+                                            <label asp-for="Image1File" class="form-label">Image for Deal 1</label>
+                                            <input asp-for="Image1File" class="form-control" type="file" />
+                                            <span asp-validation-for="Image1File" class="text-danger"></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-link"></i>
+                                            <label asp-for="DealURL1" class="form-label">URL for Deal 1</label>
+                                            <input value="@Model.DealURL1" asp-for="DealURL1" class="form-control" type="text" placeholder="https://example.com" required />
+                                            <span asp-validation-for="DealURL1" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                <div class="col">
+                                    <div class="card m-2">
+                                        @if (Model.DealImage2 != null)
+                                        {
+                                            <a href="@Model.DealURL2" target="_blank"><img src="./i/@Model.DealImage2" class="card-img-top p-1 image-profile"></a>
+                                        }
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-image"></i>
+                                            <label asp-for="Image2File" class="form-label">Image for Deal 2</label>
+                                            <input asp-for="Image2File" class="form-control" type="file" />
+                                            <span asp-validation-for="Image2File" class="text-danger"></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-link"></i>
+                                            <label asp-for="DealURL2" class="form-label">URL for Deal 2</label>
+                                            <input value="@Model.DealURL2" asp-for="DealURL2" class="form-control" type="text" placeholder="https://example.com" required />
+                                            <span asp-validation-for="DealURL2" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                <div class="col">
+                                    <div class="card m-2">
+                                        @if (Model.DealImage3 != null)
+                                        {
+                                            <a href="@Model.DealURL3" target="_blank"><img src="./i/@Model.DealImage3" class="card-img-top p-1 image-profile"></a>
+                                        }
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-image"></i>
+                                            <label asp-for="Image3File" class="form-label">Image for Deal 3</label>
+                                            <input asp-for="Image3File" class="form-control" type="file" />
+                                            <span asp-validation-for="Image3File" class="text-danger"></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <i class="fa-solid fa-link"></i>
+                                            <label asp-for="DealURL3" class="form-label">URL for Deal 3</label>
+                                            <input value="@Model.DealURL3" asp-for="DealURL3" class="form-control" type="text" placeholder="https://example.com" required />
+                                            <span asp-validation-for="DealURL3" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary m-4">Update Featured Deals</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-
 </div>
 
 
