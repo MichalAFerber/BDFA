@@ -9,15 +9,12 @@ namespace BDFA.Models
 
         public string DealImage1 { get; set; }
         public string DealURL1 { get; set; }
-        public int DealClick1 { get; set; }
 
         public string DealImage2 { get; set; }
         public string DealURL2 { get; set; }
-        public int DealClick2 { get; set; }
 
         public string DealImage3 { get; set; }
         public string DealURL3 { get; set; }
-        public int DealClick3 { get; set; }
 
     }
 }

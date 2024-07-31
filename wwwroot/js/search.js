@@ -20,3 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var searchStart = document.getElementById("SearchStart");
+    var textSearchBody = document.getElementById("textSearchBody");
+
+    if (searchStart && textSearchBody) {
+        searchStart.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            textSearchBody.focus(); // Set focus to the textSearchBody element
+        });
+    }
+});

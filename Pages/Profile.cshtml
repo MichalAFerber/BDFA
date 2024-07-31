@@ -1,11 +1,11 @@
 ﻿@page
 @model BDFA.Pages.ProfileModel
-<div class="body-title"><h1>@ViewData["TitleBody"]</h1></div>
 
 <nav class="navbar bg-body-tertiary mb-5">
     <form class="container-fluid justify-content-start">
         <button id="showView" class="btn btn-outline-success me-2 active" type="button">View Profile</button>
         <button id="showEdit" class="btn btn-outline-success me-2" type="button">Edit Profile</button>
+        <button id="showStats" class="btn btn-outline-success me-2" type="button">View Stats</button>
     </form>
 </nav>
 
@@ -25,7 +25,7 @@
                     }
                     else
                     {
-                        <p class="card-text">Once created, your profile will show here. Click on the edit profile button above.</p>
+                        <p class="card-text">Click on the Edit Profile button above to create your listing.</p>
                     }
                     @if (Model.Tagline != null && Model.Tags != null)
                     {
@@ -76,6 +76,10 @@
                     @if (Model.UrlPatreon != null)
                     {
                         <a href="@Model.UrlPatreon" class="me-1" target="_blank" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                    }
+                    @if (Model.UrlYouTube != null)
+                    {
+                        <a href="@Model.UrlYouTube" class="me-1" target="_blank" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i></a>
                     }
                     @if (Model.UrlOther != null)
                     {
@@ -206,6 +210,13 @@
                 </div>
 
                 <div class="mb-3">
+                    <i class="fa-brands fa-youtube"></i>
+                    <label asp-for="UrlYouTube" class="form-label">YouTube</label>
+                    <input value="@Model.UrlYouTube" asp-for="UrlYouTube" class="form-control" type="url" aria-describedby="UrlYouTubeHelp" placeholder="https://youtube.com/profile" />
+                    <div id="UrlYouTubeHelp" class="form-text">Link to YouTube if you'd like it to be linked at the bottom of your listing</div>
+                </div>
+
+                <div class="mb-3">
                     <i class="fa-solid fa-link"></i>
                     <label asp-for="UrlOther" class="form-label">Other Link</label>
                     <input value="@Model.UrlOther" asp-for="UrlOther" class="form-control" type="url" aria-describedby="UrlOtherHelp" placeholder="https://substack.com/profile" />
@@ -217,6 +228,23 @@
         </div>
     </div>
 
+    <div id="Stats" class="row" style="display:none;">
+        <div class="col-12 d-flex align-items-stretch text-center">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.Author != null)
+                    {
+                        <h5 class="card-title">@Model.Author</h5>
+                    }
+                    else
+                    {
+                        <p class="card-text">Once links on your profile have been clicked, they will show here.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -225,18 +253,18 @@
         $("#showView").click(function () {
             $("#showView").addClass("active");
             $("#showEdit").removeClass("active");
-            $("#showSubscription").removeClass("active");
+            $("#showStats").removeClass("active");
             $("#View").show();
             $("#Edit").hide();
-            $("#Subscription").hide();
+            $("#Stats").hide();
         });
         $("#showEdit").click(function () {
             $("#showView").removeClass("active");
             $("#showEdit").addClass("active");
-            $("#showSubscription").removeClass("active");
+            $("#showStats").removeClass("active");
             $("#View").hide();
             $("#Edit").show();
-            $("#Subscription").hide();
+            $("#Stats").hide();
         });
     });
 </script>

@@ -40,6 +40,8 @@ namespace BDFA.Pages
         [BindProperty]
         public string UrlPatreon { get; set; }
         [BindProperty]
+        public string UrlYouTube { get; set; }
+        [BindProperty]
         public string UrlOther { get; set; }
 
         // Add a property to store the filename
@@ -96,6 +98,7 @@ namespace BDFA.Pages
                 UrlReam = profile.UrlReam;
                 UrlPatreon = profile.UrlPatreon;
                 UrlOther = profile.UrlOther;
+                UrlYouTube = profile.UrlYouTube;
 
                 return Page();
             }
@@ -155,6 +158,7 @@ namespace BDFA.Pages
             profile.UrlReam = UrlReam;
             profile.UrlPatreon = UrlPatreon;
             profile.UrlOther = UrlOther;
+            profile.UrlYouTube = UrlYouTube;
 
             // Mark the Profile entity as modified
             _context.Attach(profile).State = EntityState.Modified;

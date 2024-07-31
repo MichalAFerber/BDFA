@@ -3,133 +3,143 @@
 
 <div class="text-center">
 
-    <div class="container p-4">
-        <div class="row p-4 align-items-center rounded-3 border shadow">
-            <div class="col">
-                <h1 style="color:#E4405F">Buy Direct From Authors</h1>
-            </div>
-        </div>
+    <div>
+        <a id="SearchStart" title="SearchStart" href="/#search" class="btn border-primary text-nowrap" role="button"><i class="fa-solid fa-magnifying-glass me-2"></i>Click Here to Search</a>
     </div>
 
-    <div class="container p-4 text-center">
+    <div class="container fluid p-4">
         <div class="card">
             <div class="card-header fw-bold">
-                Featured Authors
+                <h3>Featured Authors</h3>
             </div>
-            <div class="card-body">
-                <div class="row justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
-                    @foreach (var featuredAuthor in Model.FeaturedAuthors)
-                    {
-                        <div class="col d-flex align-items-stretch">
-                            <div class="card">
-                                @if (featuredAuthor.UrlStore != null)
-                                {
-                                    <a href="@featuredAuthor.UrlStore" class="profile-link" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile-featured" alt="@featuredAuthor.Author"></a>
-                                }
-                                <div class="card-body">
-                                    @if (featuredAuthor.Author != null)
-                                    {
-                                        <h5 class="card-title">@featuredAuthor.Author</h5>
-                                    }
-                                    @if (featuredAuthor.Tagline != null && featuredAuthor.Tags != null)
-                                    {
-                                        <p class="card-text">
-                                            @featuredAuthor.Tagline
-                                            <br /><br /><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@featuredAuthor.Tags
-                                        </p>
-                                    }
-                                </div>
-                                <div class="card-link" style="padding: 5px;">
+            <div>
+                <div>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
+
+                        @foreach (var featuredAuthor in Model.FeaturedAuthors)
+                        {
+                            <div class="col">
+                                <div class="card text-center m-2">
                                     @if (featuredAuthor.UrlStore != null)
                                     {
-                                        <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link btn btn-primary" data-profile-id="@featuredAuthor.RowId">Author's Direct Store</a></p>
-                                        <a href="@featuredAuthor.UrlStore" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                        <a href="@featuredAuthor.UrlStore" class="profile-link" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile" alt="@featuredAuthor.Author"></a>
                                     }
-                                    @if (featuredAuthor.UrlNewsletter != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlNewsletter" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlFBPage != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlFBPage" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlFBGroup != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlFBGroup" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlIG != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlIG" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlTikTok != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlTikTok" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlThreads != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlThreads" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlX != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlX" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlReam != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlReam" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlPatreon != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlPatreon" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
-                                    }
-                                    @if (featuredAuthor.UrlOther != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlOther" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
-                                    }
+                                    <div class="card-body">
+                                        @if (featuredAuthor.Author != null)
+                                        {
+                                            <h4 class="card-title">@featuredAuthor.Author</h4>
+                                        }
+                                        @if (featuredAuthor.Tagline != null && featuredAuthor.Tags != null)
+                                        {
+                                            <h5 class="card-subtitle text-muted">
+                                                @featuredAuthor.Tagline
+                                            </h5>
+                                            <h6 class="card-text">
+                                                <i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@featuredAuthor.Tags
+                                            </h6>
+                                        }
+                                    </div>
+                                    <div class="card-link" style="padding: 5px;">
+                                        @if (featuredAuthor.UrlStore != null)
+                                        {
+                                            <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link btn btn-primary" data-profile-id="@featuredAuthor.RowId">Author's Direct Store</a></p>
+                                            <a href="@featuredAuthor.UrlStore" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlNewsletter != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlNewsletter" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlFBPage != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlFBPage" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlFBGroup != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlFBGroup" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlIG != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlIG" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlTikTok != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlTikTok" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlThreads != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlThreads" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlX != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlX" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlReam != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlReam" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlPatreon != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlPatreon" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlYouTube != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlYouTube" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i></a>
+                                        }
+                                        @if (featuredAuthor.UrlOther != null)
+                                        {
+                                            <a href="@featuredAuthor.UrlOther" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container p-4 justify-content-center text-center">
+    <div class="container fluid p-4">
         <div class="card">
             <div class="card-header fw-bold">
-                Featured Deals
+                <h3>Featured Deals</h3>
             </div>
-            <div class="card-body">
-                <div class="row justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
+            <div>
+                <div>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
 
-                    <div class="col d-flex align-items-stretch">
-                        <div class="card">
-                            <a href="@BL.Manager.DealURL1" class="profile-link" data-profile-id="Deal1" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                        <div class="col">
+                            <div class="card text-center m-2">
+                                <a href="@BL.Manager.DealURL1" class="profile-link" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col d-flex align-items-stretch">
-                        <div class="card">
-                            <a href="@BL.Manager.DealURL2" class="profile-link" data-profile-id="Deal2" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
-                        </div>
-                    </div>
-                    <div class="col d-flex align-items-stretch">
-                        <div class="card">
-                            <a href="@BL.Manager.DealURL3" class="profile-link" data-profile-id="Deal3" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
-                        </div>
-                    </div>
 
+                        <div class="col">
+                            <div class="card text-center m-2">
+                                <a href="@BL.Manager.DealURL2" class="profile-link" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card text-center m-2">
+                                <a href="@BL.Manager.DealURL3" class="profile-link" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container p-4" id="SearchStart">
-        <div class="row p-4 align-items-center rounded-3 border shadow">
+    <div class="container fluid p-4" id="search">
+        <div class="row p-4 border shadow">
             <div class="col">
                 <div class="row">
-                    <p class="h4">Search by keyword or genre</p>
+                    <h4>Search by keyword or genre</h4>
                 </div>
-                <div class="row d-grid d-md-flex">
+                <div class="row">
                     <form id="formSearchBody" class="search-form form-inline">
                         <input id="textSearchBody" class="search-input form-control text-center" type="search" placeholder="examples: steamy romance, cozy mystery, sci-fi" aria-label="Search" autocomplete="off">
                     </form>
@@ -138,10 +148,13 @@
         </div>
     </div>
 
-    <div class="container p-4 text-center">
-        <div id="profilesContainer" class="row justify-content-center row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
-            @await Html.PartialAsync("_ProfilesList", Model.Profiles)
+    <div id="profilesContainer">
+        <div class="container fluid p-4">
+            <div class="card-group">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4 mx-auto d-flex justify-content-center">
+                    @await Html.PartialAsync("_ProfilesList", Model.Profiles)
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
