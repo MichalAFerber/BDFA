@@ -1,6 +1,6 @@
 ﻿@model IList<BDFA.Models.Profile>
 
-@if (Model != null)
+@if (Model != null && Model.Count>0)
 {
     @foreach (var profile in Model)
     {
@@ -79,10 +79,6 @@
             </div>
         </div>
     }
-}
-else
-{
-    <p>No profiles available.</p>
 }
 <script>
     $(document).ready(function () {

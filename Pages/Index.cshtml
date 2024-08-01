@@ -109,24 +109,33 @@
                 <div>
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
 
-                        <div class="col">
-                            <div class="card text-center m-2">
-                                <a href="@BL.Manager.DealURL1" class="profile-link" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                        @if (@BL.Manager.DealURL1 != null && @BL.Manager.DealURL1.Length > 0)
+                        {
+                            <div class="col">
+                                <div class="card text-center m-2">
+                                    <a href="@BL.Manager.DealURL1" class="profile-link" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                                </div>
                             </div>
-                        </div>
+                        }
 
-                        <div class="col">
-                            <div class="card text-center m-2">
-                                <a href="@BL.Manager.DealURL2" class="profile-link" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                        @if (@BL.Manager.DealURL2 != null && @BL.Manager.DealURL2.Length > 0)
+                        {
+                            <div class="col">
+                                <div class="card text-center m-2">
+                                    <a href="@BL.Manager.DealURL2" class="profile-link" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                                </div>
                             </div>
-                        </div>
+                        }
 
-                        <div class="col">
-                            <div class="card text-center m-2">
-                                <a href="@BL.Manager.DealURL3" class="profile-link" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                        @if (@BL.Manager.DealURL3 != null && @BL.Manager.DealURL3.Length > 0)
+                        {
+
+                            <div class="col">
+                                <div class="card text-center m-2">
+                                    <a href="@BL.Manager.DealURL3" class="profile-link" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                                </div>
                             </div>
-                        </div>
-
+                        }
                     </div>
                 </div>
             </div>
@@ -149,9 +158,9 @@
     </div>
 
     <div id="profilesContainer">
-        <div class="container fluid p-4">
-            <div class="card-group">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4 mx-auto d-flex justify-content-center">
+        <div class="container p-4">
+            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                <div class="card-group">
                     @await Html.PartialAsync("_ProfilesList", Model.Profiles)
                 </div>
             </div>

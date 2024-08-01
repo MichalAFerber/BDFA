@@ -15,7 +15,7 @@ namespace BDFA.BL
         private static string _SMTPFromName;
         private static string _SMTPUserName;
         private static string _SMTPPassword;
-        private static string  _SMTPHost;
+        private static string _SMTPHost;
         private static int _SMTPPort = 25;
         private static bool _SMTPSSL = true;
 
@@ -146,6 +146,30 @@ namespace BDFA.BL
                 using (var command = new SQLiteCommand("DELETE from Profiles WHERE rowid = " + ProfileID, connection))
                 {
                     command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteDeal(int DealNum, int SiteID)
+        {
+            using (var connection = new SQLiteConnection(_ConnectionString))
+            {
+                connection.Open();
+
+                switch (DealNum)
+                {
+                    case 1:
+                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage1 = NULL, DealURL1 = NULL WHERE ID = " + SiteID, connection))
+                            command.ExecuteNonQuery();
+                        break;
+                    case 2:
+                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage2 = NULL, DealURL2 = NULL WHERE ID = " + SiteID, connection))
+                            command.ExecuteNonQuery();
+                        break;
+                    case 3:
+                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage3 = NULL, DealURL3 = NULL WHERE ID = " + SiteID, connection))
+                            command.ExecuteNonQuery();
+                        break;
                 }
             }
         }

@@ -3,11 +3,6 @@ using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Diagnostics;
-using System.Security.Policy;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BDFA.Pages
 {
@@ -79,6 +74,12 @@ namespace BDFA.Pages
                         break;
                     case "delete":
                         BL.Manager.DeleteProfile(idParam);
+                        break;
+                        case "deleteDeal":
+                        // Set values NULL for the deal image and URL
+                        BL.Manager.DeleteDeal(idParam, _ConfigSiteID);
+                        // Retrieve the updated site settings
+                        BL.Manager.GetSiteSettings(_ConfigSiteID);
                         break;
                     default:
                         break;

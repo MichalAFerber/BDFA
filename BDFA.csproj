@@ -99,7 +99,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\i\image_350x350.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\site.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -110,6 +110,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\i\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
