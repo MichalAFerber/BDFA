@@ -11,9 +11,9 @@
         console.error("SearchStart or searchQuery element not found");
     }
 
-    $(document).ready(function () {
-        $('#searchButton').click(function () {
-            var searchQuery = $('#searchQuery').val();
+    function performSearch() {
+        var searchQuery = $('#searchQuery').val();
+        {
             $.ajax({
                 url: '/Index?handler=ProfilesPartial',
                 type: 'GET',
@@ -25,13 +25,23 @@
                     console.error("Error: " + error);
                 }
             });
-        });
-    });
-
-    $('#searchQuery').keypress(function (event) {
-        if (event.which === 13) { // 13 is the Enter key code
-            event.preventDefault(); // Prevent the default form submission
-            $('#searchButton').click(); // Trigger the search button click event
         }
+    }
+
+    $(document).ready(function () {
+        $('#searchButton').click(function () {
+            performSearch();
+        });
+
+        $('#searchQuery').on('input', function () {
+            performSearch();
+        });
+
+        $('#searchQuery').keypress(function (event) {
+            if (event.which === 13) { // 13 is the Enter key code
+                event.preventDefault(); // Prevent the default form submission
+                $('#searchButton').click(); // Trigger the search button click event
+            }
+        });
     });
 });

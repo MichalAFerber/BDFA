@@ -100,9 +100,6 @@
     <Content Update="wwwroot\img\email-header.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\i\image_350x350.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\js\site.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

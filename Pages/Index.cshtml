@@ -150,9 +150,7 @@
                 </div>
                 <div class="input-group">
                     <input id="searchQuery" class="search-input form-control text-center" type="text" placeholder="examples: steamy romance, cozy mystery, sci-fi">
-                        <div class="input-group-append">
-                        <button id="searchButton" class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass m-2"></i></button>
-                        </div>
+                    <button id="searchButton" class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass m-2"></i></button>
                 </div>
             </div>
         </div>
@@ -161,7 +159,7 @@
     <div id="profilesContainer">
         <div class="container p-4">
             <div id="profilesList" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 justify-content-center">
-                    @await Html.PartialAsync("_ProfilesList", Model.Profiles)
+                @await Html.PartialAsync("_ProfilesList", Model.Profiles)
             </div>
         </div>
     </div>
