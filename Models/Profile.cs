@@ -5,13 +5,15 @@ namespace BDFA.Models
     public class Profile
     {
         [Key]
-        public string Email { get; set; }
-        public int RowId { get; set; }
+        public int Id { get; set; }
         public bool Active { get; set; }
         public bool FeaturedAuthor { get; set; }
-        public bool FeaturedDeal { get; set; }
-        public string Image { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string AuthToken { get; set; }
+        public DateTime Expires { get; set; }
         public string Author { get; set; }
+        public string Image { get; set; }
         public string Tagline { get; set; }
         public string Tags { get; set; }
         public string UrlStore { get; set; }
@@ -24,9 +26,7 @@ namespace BDFA.Models
         public string UrlX { get; set; }
         public string UrlReam { get; set; }
         public string UrlPatreon { get; set; }
-        public string UrlOther { get; set; }
         public string UrlYouTube { get; set; }
-        public string AuthToken { get; set; }
-        public DateTime Expires { get; set; }
+        public string UrlOther { get; set; }
     }
 }

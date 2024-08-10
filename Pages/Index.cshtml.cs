@@ -33,8 +33,8 @@ namespace BDFA.Pages
 
             // Get all active profiles
             Profiles = await _context.Profiles
-                .Where(p => p.Active)
-                .OrderBy(p => p.RowId)
+                .Where(p => p.Active && p.Author.Length > 0)
+                .OrderBy(p => p.Id)
                 .ToListAsync();
 
             return Page();
@@ -46,8 +46,8 @@ namespace BDFA.Pages
             {
                 // Fetch profiles if they are not already loaded
                 Profiles = _context.Profiles
-                    .Where(p => p.Active)
-                    .OrderByDescending(p => p.RowId)
+                    .Where(p => p.Active && p.Author.Length > 0)
+                    .OrderByDescending(p => p.Id)
                     .ToList();
             }
 

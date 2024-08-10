@@ -89,7 +89,7 @@ namespace BDFA.Pages
                         TempData["CallFunction"] = _function;
 
                         // Fetch the Profile object from the database
-                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == profileId);
+                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == profileId);
                         _email = profile.Email;
                     }
                 }
@@ -98,7 +98,7 @@ namespace BDFA.Pages
                     if(_idKey != null)
                     {
                         // Fetch the Profile object from the database
-                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == _idKey);
+                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == _idKey);
                         _email = profile.Email;
                     }
                     else
@@ -165,7 +165,7 @@ namespace BDFA.Pages
                     TempData["CallFunction"] = _function;
 
                     // Fetch the Profile object from the database
-                    profile = await _context.Profiles.FirstOrDefaultAsync(p => p.RowId == profileId);
+                    profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == profileId);
                     _email = profile.Email;
                 }
             }

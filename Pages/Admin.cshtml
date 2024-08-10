@@ -29,26 +29,26 @@
                     @foreach (var profile in Model.Profiles)
                     {
                         <tr>
-                            <td nowrap><a href="profile?function=edit&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
-                            <td><a href="profile?function=edit&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
+                            <td nowrap><a href="profile?function=edit&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
+                            <td><a href="profile?function=edit&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
                             @if (profile.Active)
                             {
-                                <td align="center"><a href="?function=status&status=0&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
+                                <td align="center"><a href="?function=status&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
                             }
                             else
                             {
-                                <td align="center"><a href="?function=status&status=1&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
+                                <td align="center"><a href="?function=status&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
                             }
                             @if (profile.FeaturedAuthor)
                             {
-                                <td align="center"><a href="?function=featured&status=0&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
+                                <td align="center"><a href="?function=featured&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
                             }
                             else
                             {
-                                <td align="center"><a href="?function=featured&status=1&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
+                                <td align="center"><a href="?function=featured&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
                             }
-                            <td align="center"><a href="profile?function=stats&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
-                            <td align="center"><a href="?function=delete&id=@profile.RowId" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
+                            <td align="center"><a href="profile?function=stats&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
+                            <td align="center"><a href="?function=delete&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
                         </tr>
                     }
                 </tbody>

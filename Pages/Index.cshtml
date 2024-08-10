@@ -22,7 +22,7 @@
                                 <div class="card text-center m-2">
                                     @if (featuredAuthor.UrlStore != null)
                                     {
-                                        <a href="@featuredAuthor.UrlStore" class="profile-link" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile" alt="@featuredAuthor.Author"></a>
+                                        <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile" alt="@featuredAuthor.Author"></a>
                                     }
                                     <div class="card-body">
                                         @if (featuredAuthor.Author != null)
@@ -42,52 +42,52 @@
                                     <div class="card-link" style="padding: 5px;">
                                         @if (featuredAuthor.UrlStore != null)
                                         {
-                                            <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link btn btn-primary" data-profile-id="@featuredAuthor.RowId">Author's Direct Store</a></p>
-                                            <a href="@featuredAuthor.UrlStore" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                            <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link open-in-new-tab btn btn-primary" data-profile-id="@featuredAuthor.Id">Author's Direct Store</a></p>
+                                            <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlNewsletter != null)
                                         {
-                                            <a href="@featuredAuthor.UrlNewsletter" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
+                                            <a href="@featuredAuthor.UrlNewsletter" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlFBPage != null)
                                         {
-                                            <a href="@featuredAuthor.UrlFBPage" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                            <a href="@featuredAuthor.UrlFBPage" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlFBGroup != null)
                                         {
-                                            <a href="@featuredAuthor.UrlFBGroup" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                                            <a href="@featuredAuthor.UrlFBGroup" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlIG != null)
                                         {
-                                            <a href="@featuredAuthor.UrlIG" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                                            <a href="@featuredAuthor.UrlIG" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlTikTok != null)
                                         {
-                                            <a href="@featuredAuthor.UrlTikTok" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                                            <a href="@featuredAuthor.UrlTikTok" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlThreads != null)
                                         {
-                                            <a href="@featuredAuthor.UrlThreads" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                                            <a href="@featuredAuthor.UrlThreads" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlX != null)
                                         {
-                                            <a href="@featuredAuthor.UrlX" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                                            <a href="@featuredAuthor.UrlX" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlReam != null)
                                         {
-                                            <a href="@featuredAuthor.UrlReam" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                                            <a href="@featuredAuthor.UrlReam" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlPatreon != null)
                                         {
-                                            <a href="@featuredAuthor.UrlPatreon" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                                            <a href="@featuredAuthor.UrlPatreon" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlYouTube != null)
                                         {
-                                            <a href="@featuredAuthor.UrlYouTube" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i></a>
+                                            <a href="@featuredAuthor.UrlYouTube" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i></a>
                                         }
                                         @if (featuredAuthor.UrlOther != null)
                                         {
-                                            <a href="@featuredAuthor.UrlOther" class="profile-link me-1" data-profile-id="@featuredAuthor.RowId" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                                            <a href="@featuredAuthor.UrlOther" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
                                         }
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                         {
                             <div class="col">
                                 <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL1" class="profile-link" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                                    <a href="@BL.Manager.DealURL1" class="profile-link open-in-new-tab" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
                                 </div>
                             </div>
                         }
@@ -122,7 +122,7 @@
                         {
                             <div class="col">
                                 <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL2" class="profile-link" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                                    <a href="@BL.Manager.DealURL2" class="profile-link open-in-new-tab" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
                                 </div>
                             </div>
                         }
@@ -132,7 +132,7 @@
 
                             <div class="col">
                                 <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL3" class="profile-link" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                                    <a href="@BL.Manager.DealURL3" class="profile-link open-in-new-tab" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
                                 </div>
                             </div>
                         }
@@ -142,16 +142,17 @@
         </div>
     </div>
 
-    <div class="container fluid p-4" id="search">
+    <div class="container p-4" id="search">
         <div class="row p-4 border shadow">
             <div class="col">
                 <div class="row">
                     <h4>Search by keyword or genre</h4>
                 </div>
-                <div class="row">
-                    <form id="formSearchBody" class="search-form form-inline">
-                        <input id="textSearchBody" class="search-input form-control text-center" type="search" placeholder="examples: steamy romance, cozy mystery, sci-fi" aria-label="Search" autocomplete="off">
-                    </form>
+                <div class="input-group">
+                    <input id="searchQuery" class="search-input form-control text-center" type="text" placeholder="examples: steamy romance, cozy mystery, sci-fi">
+                        <div class="input-group-append">
+                        <button id="searchButton" class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass m-2"></i></button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -159,10 +160,8 @@
 
     <div id="profilesContainer">
         <div class="container p-4">
-            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
-                <div class="card-group">
+            <div id="profilesList" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 justify-content-center">
                     @await Html.PartialAsync("_ProfilesList", Model.Profiles)
-                </div>
             </div>
         </div>
     </div>

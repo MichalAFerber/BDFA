@@ -23,7 +23,7 @@ namespace BDFA.Pages
         public void OnGet()
         {
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Error - Buy Direct From Authors";
-            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Error";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "";
 
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }

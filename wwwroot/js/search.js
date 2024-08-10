@@ -1,34 +1,37 @@
-﻿document.querySelectorAll('.search-input').forEach(input => {
-    input.addEventListener('input', function () {
-        var searchQuery = input.value;
-
-        fetch(`/Index?handler=ProfilesPartial&searchQuery=${encodeURIComponent(searchQuery)}`)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('profilesContainer').innerHTML = html;
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    var searchInput = document.getElementById("textSearchBody");
-
-    // Event listener for pressing the Enter key
-    searchInput.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();         }
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
     var searchStart = document.getElementById("SearchStart");
-    var textSearchBody = document.getElementById("textSearchBody");
+    var txtSearch = document.getElementById("searchQuery");
 
-    if (searchStart && textSearchBody) {
+    if (searchStart && searchQuery) {
         searchStart.addEventListener("click", function (event) {
             event.preventDefault(); // Prevent the default anchor behavior
-            textSearchBody.focus(); // Set focus to the textSearchBody element
+            txtSearch.focus(); // Set focus to the textSearchBody element
         });
+    } else {
+        console.error("SearchStart or searchQuery element not found");
     }
+
+    $(document).ready(function () {
+        $('#searchButton').click(function () {
+            var searchQuery = $('#searchQuery').val();
+            $.ajax({
+                url: '/Index?handler=ProfilesPartial',
+                type: 'GET',
+                data: { searchQuery: searchQuery },
+                success: function (result) {
+                    $('#profilesList').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        });
+    });
+
+    $('#searchQuery').keypress(function (event) {
+        if (event.which === 13) { // 13 is the Enter key code
+            event.preventDefault(); // Prevent the default form submission
+            $('#searchButton').click(); // Trigger the search button click event
+        }
+    });
 });

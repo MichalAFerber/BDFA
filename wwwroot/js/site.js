@@ -10,6 +10,8 @@
             const linkHref = this.getAttribute('href');
             const clickDateTime = new Date().toISOString();
 
+            const newWindow = window.open(linkHref, '_blank');
+
             fetch('/track-click', {
                 method: 'POST',
                 headers: {
@@ -20,17 +22,6 @@
                     Link: linkHref,
                     ClickDateTime: clickDateTime
                 })
-            }).then(response => {
-                if (response.ok) {
-                    console.log('Click tracked successfully');
-                    window.open(linkHref, '_blank');
-                } else {
-                    console.error('Failed to track click');
-                    window.open(linkHref, '_blank');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                window.open(linkHref, '_blank');
             });
         });
     });
