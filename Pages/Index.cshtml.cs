@@ -47,7 +47,7 @@ namespace BDFA.Pages
                 // Fetch profiles if they are not already loaded
                 Profiles = _context.Profiles
                     .Where(p => p.Active && p.Author.Length > 0)
-                    .OrderByDescending(p => p.Id)
+                    .OrderBy(p => p.Id)
                     .ToList();
             }
 

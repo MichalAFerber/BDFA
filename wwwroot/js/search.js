@@ -4,15 +4,19 @@
 
     if (searchStart && searchQuery) {
         searchStart.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent the default anchor behavior
-            txtSearch.focus(); // Set focus to the textSearchBody element
+            event.preventDefault();
+            txtSearch.focus();
         });
-    } else {
-        console.error("SearchStart or searchQuery element not found");
     }
 
     function performSearch() {
         var searchQuery = $('#searchQuery').val();
+
+        if (searchQuery.length === 0) {
+            location.reload();
+            return;
+        }
+
         {
             $.ajax({
                 url: '/Index?handler=ProfilesPartial',
@@ -39,8 +43,8 @@
 
         $('#searchQuery').keypress(function (event) {
             if (event.which === 13) { // 13 is the Enter key code
-                event.preventDefault(); // Prevent the default form submission
-                $('#searchButton').click(); // Trigger the search button click event
+                event.preventDefault();
+                $('#searchButton').click();
             }
         });
     });
