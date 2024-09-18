@@ -1,3 +1,4 @@
+using BDFA.BL;
 using BDFA.Data;
 using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -47,19 +48,14 @@ namespace BDFA.Pages
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Admin Dashboard - Buy Direct From Authors";
             ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Admin Dashboard";
 
-            var _isAuth = HttpContext.Session.GetInt32("IsAuth");
-            var _isAdmin = HttpContext.Session.GetInt32("IsAdmin");
-            var _email = HttpContext.Session.GetString("EmailKey");
-            // Retrieve the site ID from the appsettings.json file
             var _ConfigSiteID = Convert.ToInt32(_configuration["Settings:SiteID"]);
 
-            if ((_isAuth == null || _isAuth == 0) || (_isAdmin == null || _isAdmin == 0))
+            if (!Globals.isAuth || !Globals.isAdmin)
             {
                 return RedirectToPage("./Login");
             }
             else
             {
-                int idParam = Convert.ToInt32(Request.Query["id"]);
                 string functionParam = Request.Query["function"];
                 int functionStatus = Convert.ToInt32(Request.Query["status"]);
 
@@ -67,17 +63,17 @@ namespace BDFA.Pages
                 switch (functionParam)
                 {
                     case "status":
-                        BL.Manager.ChangeProfileStatus(idParam, Convert.ToBoolean(functionStatus));
+                        BL.Manager.ChangeProfileStatus(Globals.pId, Convert.ToBoolean(functionStatus));
                         break;
                     case "featured":
-                        BL.Manager.ChangeFeaturedStatus(idParam, Convert.ToBoolean(functionStatus));
+                        BL.Manager.ChangeFeaturedStatus(Globals.pId, Convert.ToBoolean(functionStatus));
                         break;
                     case "delete":
-                        BL.Manager.DeleteProfile(idParam);
+                        BL.Manager.DeleteProfile(Globals.pId);
                         break;
                         case "deleteDeal":
                         // Set values NULL for the deal image and URL
-                        BL.Manager.DeleteDeal(idParam, _ConfigSiteID);
+                        BL.Manager.DeleteDeal(Globals.pId, _ConfigSiteID);
                         // Retrieve the updated site settings
                         BL.Manager.GetSiteSettings(_ConfigSiteID);
                         break;

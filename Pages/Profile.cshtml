@@ -1,11 +1,14 @@
 ﻿@page
 @model BDFA.Pages.ProfileModel
+@using System.Data
+@using BDFA.BL
+@using BDFA.Models
 
-<nav class="navbar bg-body-tertiary mb-5">
+<nav class="navbar bg-body-tertiary mb-1">
     <form class="container-fluid justify-content-start">
-        <button id="showView" class="btn btn-outline-success me-2 active" type="button">View Profile</button>
-        <button id="showEdit" class="btn btn-outline-success me-2" type="button">Edit Profile</button>
-        <button id="showStats" class="btn btn-outline-success me-2" type="button">View Stats</button>
+        <a id="showView" class="btn btn-outline-success me-2 active" type="button" href="?tab=View">View Profile</a>
+        <a id="showEdit" class="btn btn-outline-success me-2" type="button" href="?tab=Edit">Edit Profile</a>
+        <a id="showStats" class="btn btn-outline-success me-2" type="button" href="?tab=Stats">View Stats</a>
     </form>
 </nav>
 
@@ -229,41 +232,144 @@
     </div>
 
     <div id="Stats" class="row" style="display:none;">
-        <div class="col-12">
-            
+        @{
+            List<string> links = await Model.GetDistinctLinksAsync();
+            List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
+            clickDataGroups = await Model.GetClickDataAsync(BL.Globals.pId, Model.fClickedLink, Model.fStartDate, Model.fEndDate);
 
+            // Sorting logic
+            var sortColumn = Request.Query["sortColumn"];
+            var sortOrder = Request.Query["sortOrder"];
+
+            if (clickDataGroups != null)
+            {
+                switch (sortColumn)
+                {
+                    case "Link":
+                        clickDataGroups = sortOrder == "asc"
+                        ? clickDataGroups.OrderBy(c => c.Link).ToList()
+                        : clickDataGroups.OrderByDescending(c => c.Link).ToList();
+                        break;
+                    case "Clicks":
+                        clickDataGroups = sortOrder == "asc"
+                        ? clickDataGroups.OrderBy(c => c.ClickCount).ToList()
+                        : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList();
+                        break;
+                }
+            }
+        }
+
+        <nav class="navbar bg-body-tertiary">
+            <form method="post" asp-page="Profile">
+                <span class="p-4"><b>Filter:</b></span>
+                <label asp-for="fClickedLink" class="me-2">Link</label>
+                <select id="fClickedLink" asp-for="fClickedLink" required class="me-2">
+                    <option value="0">All Links</option>
+                    @if (clickDataGroups != null)
+                    {
+                        foreach (var link in links)
+                        {
+                            <option value="@link">@link</option>
+                        }
+                    }
+                    else
+                    {
+                        <p>No data available.</p>
+                    }
+                </select>
+                <label asp-for="fStartDate" class="me-2">Start Date:</label>
+                <input type="date" id="fStartDate" asp-for="fStartDate" required class="me-2" />
+                <label asp-for="fEndDate" class="me-2">End Date:</label>
+                <input type="date" id="fEndDate" asp-for="fEndDate" required class="me-2" />
+                <button type="submit" class="btn btn-primary me-2">Filter</button>
+            </form>
+        </nav>
+
+        <div class="col-12 p-1">
+            <div class="row">
+                <div class="col-12 p-2">
+                    @if (clickDataGroups != null)
+                    {
+                        <table>
+                            <thead>
+                                <tr class="bg-body-tertiary">
+                                    <th>
+                                        <a href="?tab=Stats&sortColumn=Link&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Link</a>
+                                    </th>
+                                    <th align="center">
+                                        <a href="?tab=Stats&sortColumn=Clicks&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")">Clicks</a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var group in clickDataGroups)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="px-4">@group.Link</td>
+                                        <td align="center">@group.ClickCount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <span class="information">
+                            <p>No data available.</p>
+                        </span>
+                    }
+                </div>
+            </div>
         </div>
     </div>
-
+    @if (Globals.isAdmin)
+    {
+        <div class="pt-3 mb-1">
+            <a href="/Admin" class="btn btn-outline-success me-2" type="button">
+                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>
+                Return to admin dashboard
+            </a>
+        </div>
+    }
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#showView").click(function () {
-            $("#showView").addClass("active");
-            $("#showEdit").removeClass("active");
-            $("#showStats").removeClass("active");
-            $("#View").show();
-            $("#Edit").hide();
-            $("#Stats").hide();
-        });
-        $("#showEdit").click(function () {
-            $("#showView").removeClass("active");
-            $("#showEdit").addClass("active");
-            $("#showStats").removeClass("active");
-            $("#View").hide();
-            $("#Edit").show();
-            $("#Stats").hide();
-        });
-        $("#showStats").click(function () {
-            $("#showView").removeClass("active");
-            $("#showEdit").removeClass("active");
-            $("#showStats").addClass("active");
-            $("#View").hide();
-            $("#Edit").hide();
-            $("#Stats").show();
-        });
+        function updateViewBasedOnQuery() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var tab = urlParams.get('tab');
+
+            switch (tab) {
+                case 'Edit':
+                    $("#showView").removeClass("active");
+                    $("#showEdit").addClass("active");
+                    $("#showStats").removeClass("active");
+                    $("#View").hide();
+                    $("#Edit").show();
+                    $("#Stats").hide();
+                    break;
+                case 'Stats':
+                    $("#showView").removeClass("active");
+                    $("#showEdit").removeClass("active");
+                    $("#showStats").addClass("active");
+                    $("#View").hide();
+                    $("#Edit").hide();
+                    $("#Stats").show();
+                    break;
+                default:
+                    $("#showView").addClass("active");
+                    $("#showEdit").removeClass("active");
+                    $("#showStats").removeClass("active");
+                    $("#View").show();
+                    $("#Edit").hide();
+                    $("#Stats").hide();
+                    break;
+            }
+        }
+
+        // Call the function on page load
+        updateViewBasedOnQuery();
     });
 
     $("form").submit(function (event) {
@@ -272,28 +378,5 @@
             var action = $(this).attr("action");
             $(this).attr("action", action + queryString);
         }
-    })
-
-    @if (TempData["CallFunction"] != null)
-    {
-        <text>
-            $(document).ready(function () {
-                var functionToCall = "@TempData["CallFunction"]";
-                switch (functionToCall) {
-                    case "view":
-                        $("#showView").click();
-                        break;
-                    case "edit":
-                        $("#showEdit").click();
-                        break;
-                    case "stats":
-                        $("#showStats").click();
-                        break;
-                    default:
-                        $("#showView").click();
-                        break;
-                }
-            });
-        </text>
-    }
+    });
 </script>

@@ -11,8 +11,10 @@ public class Program
             {
                 webBuilder.UseStartup<Startup>(); // This line specifies the Startup class to use
             })
-            .ConfigureAppConfiguration((hostingContext, config) =>
+            .ConfigureLogging(logging =>
             {
-                // Additional configuration can go here
+                logging.ClearProviders();
+                logging.AddConsole();
+                logging.AddDebug();
             });
 }

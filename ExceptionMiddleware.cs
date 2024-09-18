@@ -1,11 +1,6 @@
 using BDFA.BL;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace BDFA
 {
@@ -30,15 +25,30 @@ namespace BDFA
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
+                _logger.LogError(ex, "An unexpected error occurred while processing the request for {Path}", httpContext.Request.Path);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            var errorDetails = new StringBuilder();
+            errorDetails.AppendLine("<h1>Error Details</h1>");
+            errorDetails.AppendLine($"<p>{exception.Message}</p>");
+            if (exception.InnerException != null)
+            {
+                errorDetails.AppendLine($"<p>Inner Exception: {exception.InnerException.Message}</p>");
+            }
+            errorDetails.AppendLine($"<p>Request Method: {context.Request.Method}</p>");
+            errorDetails.AppendLine($"<p>Request Path: {context.Request.Path}</p>");
+            errorDetails.AppendLine($"<p>Request Query String: {context.Request.QueryString}</p>");
+            errorDetails.AppendLine($"<p>Source: {exception.Source}</p>");
+            errorDetails.AppendLine($"<p>Stack Trace: {exception.StackTrace}</p>");
+            errorDetails.AppendLine($"<p>Target Site: {exception.TargetSite}</p>");
+            errorDetails.AppendLine($"<p>Timestamp: {DateTime.Now.ToString()}</p>");
+
             // Log the error and send an email
-            Manager.SendMail("support@ari-integration.com", "BDFA Application Error", $"<h1>Error Details</h1><p>{exception.Message}</p><hr><p>{exception.StackTrace}</p><hr><p>End of message.</p>");
+            Manager.SendMail("support@ari-integration.com", "BDFA Application Error", errorDetails.ToString());
 
             // Set the response status code
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

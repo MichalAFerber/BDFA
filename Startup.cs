@@ -2,6 +2,7 @@
 using BDFA.Data;
 using BDFA.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using System.Text.Json;
 
 public class Startup
@@ -29,8 +30,11 @@ public class Startup
 
         services.AddRazorPages();
 
-        services.AddDbContext<DirectoryContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DirectoryContext")));
+        services.AddDbContext<DirectoryContext>((serviceProvider, options) =>
+        {
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            options.UseSqlite(configuration.GetConnectionString("DirectoryContext"));
+        });
 
         services.AddControllers();
 
@@ -97,7 +101,7 @@ public class Startup
                     return;
                 }
 
-                dbContext.Clicks.Add(new ClickData { ProfileId = clickData.ProfileId.ToString(), Link = clickData.Link, ClickDateTime = clickDateTime });
+                dbContext.Clicks.Add(new ClickData { ProfileId = clickData.ProfileId, Link = clickData.Link, ClickDateTime = clickDateTime });
                 await dbContext.SaveChangesAsync();
 
                 context.Response.ContentType = "application/json";

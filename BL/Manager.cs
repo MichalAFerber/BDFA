@@ -1,7 +1,9 @@
 ﻿using BDFA.Data;
 using BDFA.Models;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.Net;
 using System.Net.Mail;
 
@@ -9,6 +11,13 @@ namespace BDFA.BL
 {
     public class Manager
     {
+        private readonly DirectoryContext _context;
+
+        public Manager(DirectoryContext context)
+        {
+            _context = context;
+        }
+
         // local variables
         private static string _ConnectionString;
         private static string _SMTPFrom;
@@ -26,6 +35,13 @@ namespace BDFA.BL
         public static string DealURL2 { get; set; }
         public static string DealImage3 { get; set; }
         public static string DealURL3 { get; set; }
+
+        public static string GenerateOneTimeCode()
+        {
+            Random random = new();
+            string _authCode = random.Next(100000, 999999).ToString();
+            return _authCode;
+        }
 
         public static void InitializeSMTPSettings(IConfiguration configuration)
         {
@@ -54,10 +70,10 @@ namespace BDFA.BL
         public static Setting GetSiteSettings(int id)
         {
             Setting record = null;
-            using (var connection = new SQLiteConnection(_ConnectionString))
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SQLiteCommand("SELECT * FROM Settings WHERE Id = " + id, connection))
+                using (var command = new SqliteCommand("SELECT * FROM Settings WHERE Id = @Id", connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     using (var reader = command.ExecuteReader())
@@ -103,23 +119,23 @@ namespace BDFA.BL
             client.Send(mailMessage);
         }
 
-        public static async Task<bool> IsAdminAsync(DirectoryContext context, string email)
+        public static async Task<bool> IsAdmin(DirectoryContext context, string email)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email cannot be null or whitespace.", nameof(email));
-
-            // Check if any admin has the specified email.
-            return await context.Admins.AnyAsync(admin => admin.Email == email);
+            var admin = await context.Admins
+                         .Where(u => u.Email == email)
+                         .FirstOrDefaultAsync();
+            return admin != null;
         }
 
         public static void ChangeProfileStatus(int ProfileID, bool Active)
         {
-            using (var connection = new SQLiteConnection(_ConnectionString))
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SQLiteCommand("UPDATE Profiles SET Active = " + Active + " WHERE rowid = " + ProfileID, connection))
+                using (var command = new SqliteCommand("UPDATE Profiles SET Active = @Active WHERE rowid = @ProfileID", connection))
                 {
-                    command.Parameters.AddWithValue("@rowid", ProfileID);
+                    command.Parameters.AddWithValue("@Active", Active);
+                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
             }
@@ -127,24 +143,38 @@ namespace BDFA.BL
 
         public static void ChangeFeaturedStatus(int ProfileID, bool Active)
         {
-            using (var connection = new SQLiteConnection(_ConnectionString))
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SQLiteCommand("UPDATE Profiles SET FeaturedAuthor = " + Active + " WHERE rowid = " + ProfileID, connection))
+                using (var command = new SqliteCommand("UPDATE Profiles SET FeaturedAuthor = @Active WHERE rowid = @ProfileID", connection))
                 {
-                    command.Parameters.AddWithValue("@rowid", ProfileID);
+                    command.Parameters.AddWithValue("@Active", Active);
+                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
             }
         }
 
+        public static async Task<bool> ProfileExistsById(DirectoryContext _context, int ProfileId)
+        {
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == ProfileId);
+            return profile != null;
+        }
+
+        public static async Task<int> ProfileExistsByEmail(DirectoryContext _context, string ProfileEmail)
+        {
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == ProfileEmail);
+            return profile?.Id ?? 0;
+        }
+
         public static void DeleteProfile(int ProfileID)
         {
-            using (var connection = new SQLiteConnection(_ConnectionString))
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SQLiteCommand("DELETE from Profiles WHERE rowid = " + ProfileID, connection))
+                using (var command = new SqliteCommand("DELETE from Profiles WHERE rowid = @ProfileID", connection))
                 {
+                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
             }
@@ -152,23 +182,32 @@ namespace BDFA.BL
 
         public static void DeleteDeal(int DealNum, int SiteID)
         {
-            using (var connection = new SQLiteConnection(_ConnectionString))
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
 
                 switch (DealNum)
                 {
                     case 1:
-                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage1 = NULL, DealURL1 = NULL WHERE ID = " + SiteID, connection))
+                        using (var command = new SqliteCommand("UPDATE Settings SET DealImage1 = NULL, DealURL1 = NULL WHERE ID = @SiteID", connection))
+                        {
+                            command.Parameters.AddWithValue("@SiteID", SiteID);
                             command.ExecuteNonQuery();
+                        }
                         break;
                     case 2:
-                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage2 = NULL, DealURL2 = NULL WHERE ID = " + SiteID, connection))
+                        using (var command = new SqliteCommand("UPDATE Settings SET DealImage2 = NULL, DealURL2 = NULL WHERE ID = @SiteID", connection))
+                        {
+                            command.Parameters.AddWithValue("@SiteID", SiteID);
                             command.ExecuteNonQuery();
+                        }
                         break;
                     case 3:
-                        using (var command = new SQLiteCommand("UPDATE Settings SET DealImage3 = NULL, DealURL3 = NULL WHERE ID = " + SiteID, connection))
+                        using (var command = new SqliteCommand("UPDATE Settings SET DealImage3 = NULL, DealURL3 = NULL WHERE ID = @SiteID", connection))
+                        {
+                            command.Parameters.AddWithValue("@SiteID", SiteID);
                             command.ExecuteNonQuery();
+                        }
                         break;
                 }
             }

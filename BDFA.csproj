@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+    
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -61,19 +61,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />-->
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Content Update="wwwroot\android-chrome-192x192.png">
@@ -111,6 +109,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\i\" />
     <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
   </ItemGroup>
 
 </Project>

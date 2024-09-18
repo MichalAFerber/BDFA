@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using BDFA.BL;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BDFA.Pages
 {
     public class LoginModel : PageModel
     {
+        #region Properties
         public bool ShowSendCode { get; set; } = true;
         public bool ShowSignIn { get; set; } = false;
         public string Email { get; set; }
@@ -28,6 +31,7 @@ namespace BDFA.Pages
 
         private readonly ILogger<LoginModel> _logger;
         private readonly DirectoryContext _context;
+        #endregion
 
         public LoginModel(ILogger<LoginModel> logger, DirectoryContext context)
         {
@@ -39,121 +43,116 @@ namespace BDFA.Pages
         {
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Login - Buy Direct From Authors";
             ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
+
+            //Logout and reset global variables
+            Globals.isAuth = false;
+            Globals.isAdmin = false;
+            Globals.pId = 0;
+            Globals.pEmail = string.Empty;
         }
 
         public async Task<IActionResult> OnPostSendCodeAsync()
         {
-            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Login - Buy Direct From Authors";
-            ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
-
             if (!ModelState.IsValid)
             {
-                // Update what is visible on the page
                 ShowSignIn = false;
                 ShowSendCode = true;
-
-                AuthCode = string.Empty;
-                HttpContext.Session.SetInt32("IsAdmin", 0);
-                HttpContext.Session.SetInt32("IsAuth", 0);
-                HttpContext.Session.SetInt32("IdKey", 0);
-                HttpContext.Session.SetString("EmailKey", string.Empty);
                 return Page();
-            }
-
-            // Update what is visible on the page
-            ShowSignIn = true;
-            ShowSendCode = false;
-
-            // Generate a new AuthCode
-            AuthCode = GenerateOneTimeCode();
-
-            // Check if the email is an admin
-            if (await BL.Manager.IsAdminAsync(_context, InputEmail))
-            {
-                HttpContext.Session.SetInt32("IsAdmin", 1);
             }
             else
             {
-                HttpContext.Session.SetInt32("IsAdmin", 0);
-            }
+                /////
+                // Determine if the email is an admin or a profile
+                // Send the auth code to the email
+                /////
 
-            // Create a new Profile object with the given email and AuthCode
-            if (HttpContext.Session.GetInt32("IsAdmin") == 0) {
-                var existingProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == InputEmail);
+                ShowSignIn = true;
+                ShowSendCode = false;
 
-                if (existingProfile == null)
+                Globals.pEmail = InputEmail;
+                Globals.isAdmin = await Manager.IsAdmin(_context, InputEmail);
+                Globals.pId = await Manager.ProfileExistsByEmail(_context, InputEmail);
+
+                string AuthCode = Manager.GenerateOneTimeCode();
+
+                ////
+                // Check to see if the profile exists
+                // If it does not exist, create a new profile
+                // If it does exist, update the existing profile with auth code and expiration
+                // Send the email with the auth code
+                // Save the profile to the database
+                // Return to the page to allow the user to enter the code sent to them via email
+                ////
+              
+                if (!Globals.isAdmin)
                 {
-                    // If no existing profile is found, add a new one
-                    // Instantiate the Profile object
-                    Profile = new Profile
+                    // Look up the profile by email
+                    var existingProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == InputEmail);
+
+                    if (existingProfile == null)
                     {
-                        // Populate the Profile properties with data
-                        Active = true,
-                        FeaturedAuthor = false,
-                        Email = InputEmail,
-                        Password = AuthCode,
-                        AuthToken = AuthCode,
-                        Expires = DateTime.UtcNow.AddMinutes(15)
-                    };
-                    // Now, you can add the instantiated Profile to the database context
-                    _context.Profiles.Add(Profile);
+                        // If no existing profile is found, create a new one
+                        Profile = new Profile
+                        {
+                            // Populate the Profile properties with initial data
+                            Active = true,
+                            FeaturedAuthor = false,
+                            Email = InputEmail,
+                            Password = AuthCode,
+                            AuthToken = AuthCode,
+                            Expires = DateTime.UtcNow.AddMinutes(15)
+                        };
+                        _context.Profiles.Add(Profile);
+                    }
+                    else
+                    {
+                        // If an existing profile is found, update AuthCode and Expiration
+                        existingProfile.AuthToken = AuthCode;
+                        existingProfile.Expires = DateTime.UtcNow.AddMinutes(15);
+                    }
+                    // Save changes to the database
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {
-                    // If an existing profile is found, update its properties
-                    existingProfile.AuthToken = AuthCode;
-                    existingProfile.Expires = DateTime.UtcNow.AddMinutes(15);
+                    // Look up the admin by email
+                    var existingAdmin = await _context.Admins.FirstOrDefaultAsync(p => p.Email == InputEmail);
+
+                    // If an existing profile is found, update AuthCode and Expiration
+                    existingAdmin.AuthToken = AuthCode;
+                    existingAdmin.Expires = DateTime.UtcNow.AddMinutes(15);
+
+                    // Save changes to the database
+                    await _context.SaveChangesAsync();
                 }
 
-                // Set session variable for the email
-                HttpContext.Session.SetString("EmailKey", InputEmail);
+                // Send the email with the auth code
+                Manager.SendMail(InputEmail, "Login code requested from BDFA", GenerateEmail(AuthCode));
 
-                // Save changes to the database
-                await _context.SaveChangesAsync();
+                // Return to page to allow the user to enter the code sent to them via email
+                return Page();
             }
-            else
-            {
-                var existingAdmin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == InputEmail);
-
-                if (existingAdmin == null)
-                {
-                    // Handle the case where no admin is found with the given email
-                    // This might involve setting an error message or returning to the page
-                    return Page();
-                }
-
-                // Set session variable for the email
-                HttpContext.Session.SetString("EmailKey", InputEmail);
-
-                // If an existing profile is found, update its properties
-                existingAdmin.AuthToken = AuthCode;
-                existingAdmin.Expires = DateTime.UtcNow.AddMinutes(15);
-
-                // Save changes to the database
-                await _context.SaveChangesAsync();
-            }
-
-            BL.Manager.SendMail(InputEmail, "Login code requested from BDFA", GenerateEmail(AuthCode));
-
-            // Return to page to allow the user to enter the code sent to them via email
-            return Page();
         }
 
         public async Task<IActionResult> OnPostSignInAsync()
         {
-            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Login - Buy Direct From Authors";
-            ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
-
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (HttpContext.Session.GetInt32("IsAdmin") == 0)
+            ////
+            // Check to see if the profile exists
+            // If it does not exist, return an error
+            // If it does exist, check the auth code and expiration
+            // If the auth code is correct and the expiration has not passed, proceed to the profile page
+            // If the auth code is incorrect or the expiration has passed, return an error
+            ////
+            
+            if (!Globals.isAdmin)
             {
                 // Look up the profile by email
-                var profile = await _context.Profiles
-                                        .FirstOrDefaultAsync(p => p.Email == HttpContext.Session.GetString("EmailKey"));
+                var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == Globals.pEmail);
 
                 if (profile == null)
                 {
@@ -161,59 +160,49 @@ namespace BDFA.Pages
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
-
-                // Check if the AuthCode matches and the Expires timestamp has not passed
-                if (profile.AuthToken == InputAuthCode && profile.Expires > DateTime.UtcNow)
-                {
-                    HttpContext.Session.SetInt32("IsAuth", 1);
-                    // Authentication successful
-                    // Proceed with sign-in or further actions
-
-                    return RedirectToPage("./Profile"); // Redirect to a success page or another appropriate action
-                }
                 else
                 {
-                    // Authentication failed
-                    ModelState.AddModelError(string.Empty, "Invalid authentication code or code has expired.");
-                    return Page();
+                    // Check if the AuthCode matches and the expiration has not passed
+                    if (profile.AuthToken == InputAuthCode && profile.Expires > DateTime.UtcNow)
+                    {
+                        Globals.isAuth = true;
+                        return RedirectToPage("./Profile");
+                    }
+                    else
+                    {
+                        // Authentication failed
+                        ModelState.AddModelError(string.Empty, "Invalid authentication code or code has expired.");
+                        return Page();
+                    }
                 }
             }
             else
             {
                 // Look up the admin by email
-                var existingAdmin = await _context.Admins
-                                        .FirstOrDefaultAsync(p => p.Email == HttpContext.Session.GetString("EmailKey"));
+                var profile = await _context.Admins.FirstOrDefaultAsync(p => p.Email == Globals.pEmail);
 
-                if (existingAdmin == null)
-                {
+                if(profile == null) {
                     // No profile found with the given email
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
-
-                // Check if the AuthCode matches and the Expires timestamp has not passed
-                if (existingAdmin.AuthToken == InputAuthCode && existingAdmin.Expires > DateTime.UtcNow)
-                {
-                    HttpContext.Session.SetInt32("IsAuth", 1);
-                    // Authentication successful
-                    // Proceed with sign-in or further actions
-
-                    return RedirectToPage("./Admin"); // Redirect to a success page or another appropriate action
-                }
                 else
                 {
-                    // Authentication failed
-                    ModelState.AddModelError(string.Empty, "Invalid authentication code or code has expired.");
-                    return Page();
+                    // Check if the AuthCode matches and the expiration has not passed
+                    if (profile.AuthToken == InputAuthCode && profile.Expires > DateTime.UtcNow)
+                    {
+                        Globals.isAuth = true;
+                        Globals.isAdmin = true;
+                        return RedirectToPage("./Admin");
+                    }
+                    else
+                    {
+                        // Authentication failed
+                        ModelState.AddModelError(string.Empty, "Invalid authentication code or code has expired.");
+                        return Page();
+                    }
                 }
             }
-        }
-
-        private static string GenerateOneTimeCode()
-        {
-            Random random = new();
-            string _authCode = random.Next(100000, 999999).ToString();
-            return _authCode;
         }
 
         private static string GenerateEmail(string _authToken)

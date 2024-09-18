@@ -1,13 +1,24 @@
+using BDFA.BL;
 using BDFA.Data;
 using BDFA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
+using System.Data;
+using System.Runtime.InteropServices;
 
 namespace BDFA.Pages
 {
     public class ProfileModel : PageModel
     {
+        #region Properties
+        [BindProperty]
+        public string fStartDate { get; set; }
+        [BindProperty]
+        public string fEndDate { get; set; }
+        [BindProperty]
+        public string fClickedLink { get; set; }
         [BindProperty]
         public IFormFile ImageFile { get; set; }
         [BindProperty]
@@ -44,18 +55,23 @@ namespace BDFA.Pages
         public string UrlYouTube { get; set; }
         [BindProperty]
         public string UrlOther { get; set; }
+        [BindProperty]
 
-        // Add a property to store the filename
-        public string ImageFilename { get; set; }
+        public string ImageFilename { get; set; } // Add a property to store the filename
 
-        private readonly ILogger<ProfileModel> _logger;
+        public int isAuth { get; set; } = 0;
+        public string pEmail { get; set; } = string.Empty;
+        public int pId { get; set; } = 0;
+        #endregion
+
         private readonly DirectoryContext _context;
+        private readonly ILogger<ProfileModel> _logger;
         private readonly IWebHostEnvironment _hostenvironment;
 
         public ProfileModel(ILogger<ProfileModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment)
         {
-            _logger = logger;
             _context = context;
+            _logger = logger;
             _hostenvironment = hostenvironment;
         }
 
@@ -64,59 +80,27 @@ namespace BDFA.Pages
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "My Profile - Buy Direct From Authors";
             ViewData["TitleBody"] = ViewData["TitleBody"] ?? "My Profile";
 
-            var _isAuth = HttpContext.Session.GetInt32("IsAuth");
-            var _email = HttpContext.Session.GetString("EmailKey");
-            var _idKey = HttpContext.Session.GetInt32("IdKey");
-
-            if (_isAuth == 0 || _email == null)
+            if (!Globals.isAuth)
             {
                 return RedirectToPage("./Login");
             }
             else
             {
-                string idParam = Request.Query["id"];
-                string _function = Request.Query["function"];
+                if (Globals.pId == 0)
+                {
+                    if (!StringValues.IsNullOrEmpty(Request.Query["id"]))
+                    {
+                        Globals.pId = Convert.ToInt32(Request.Query["id"]);
+                    }
+                }
+
                 Profile profile = null;
-
-                if (!string.IsNullOrEmpty(idParam))
-                {
-                    if (int.TryParse(idParam, out int profileId))
-                    {
-                        // Set the session value for the IdKey
-                        HttpContext.Session.SetInt32("IdKey", profileId);
-
-                        // Set a flag in TempData to call the showEdit function
-                        TempData["CallFunction"] = _function;
-
-                        // Fetch the Profile object from the database
-                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == profileId);
-                        _email = profile.Email;
-                    }
-                }
-                else
-                {
-                    if(_idKey != null)
-                    {
-                        // Fetch the Profile object from the database
-                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == _idKey);
-                        _email = profile.Email;
-                    }
-                    else
-                    {
-                        // Fetch the Profile object from the database
-                        profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == _email);
-                    }
-                }
-
-                if (profile == null)
-                {
-                    return NotFound("Profile not found.");
-                }
+                profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == Globals.pId);
 
                 // Populate the bound properties with the profile data
                 Image = profile.Image;
                 Author = profile.Author;
-                Email = _email;
+                Email = profile.Email;
                 Tagline = profile.Tagline;
                 Tags = profile.Tags;
                 UrlStore = profile.UrlStore;
@@ -142,43 +126,72 @@ namespace BDFA.Pages
             {
                 return Page();
             }
-
-            var _email = HttpContext.Session.GetString("EmailKey");
-            string idParam = Request.Query["id"];
+            string _tab = Request.Query["tab"];
             string _function = Request.Query["function"];
-            Profile profile = null;
 
-            // Debugging statements
-            Console.WriteLine($"Email from session: {_email}");
-            Console.WriteLine($"ID from query string: {idParam}");
-
-            if (string.IsNullOrEmpty(_email))
+            if (_tab == "Stats")
             {
-                return BadRequest("Email is not provided.");
+                await GetClickDataAsync(Globals.pId, fClickedLink, fStartDate, fEndDate);
             }
 
-            if (idParam != null)
+            if (_tab == "Edit")
             {
-                if (int.TryParse(idParam, out int profileId))
-                {
-                    // Set a flag in TempData to call the showEdit function
-                    TempData["CallFunction"] = _function;
+                await SaveProfile();
+            }
 
-                    // Fetch the Profile object from the database
-                    profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == profileId);
-                    _email = profile.Email;
+            return Page();
+        }
+
+        public async Task<List<ClickDataGroup>> GetClickDataAsync(int profileId, [Optional] string clickedLink, [Optional] string startDate, [Optional] string endDate)
+        {
+            var query = _context.Clicks.AsQueryable();
+
+            query = query.Where(cd => cd.ProfileId == profileId);
+
+            if (!string.IsNullOrEmpty(clickedLink))
+            {
+                if (clickedLink == "0")
+                {
+                    clickedLink = "0";
+                }
+                else
+                {
+                    query = query.Where(cd => cd.Link == clickedLink);
                 }
             }
-            else
+
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
             {
-                // Fetch the Profile object from the database
-                profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == _email);
+                DateTime startDateTime = Convert.ToDateTime(startDate);
+                DateTime endDateTime = Convert.ToDateTime(endDate);
+
+                query = query.Where(cd => cd.ClickDateTime >= startDateTime && cd.ClickDateTime <= endDateTime);
             }
 
-            if (profile == null)
-            {
-                return NotFound("Profile not found.");
-            }
+            var groupedData = await query
+                .GroupBy(cd => cd.Link)
+                .Select(g => new ClickDataGroup
+                {
+                    Link = g.Key,
+                    ClickCount = g.Count()
+                })
+                .ToListAsync();
+
+            return groupedData;
+        }
+
+        private async Task SaveProfile()
+        {
+            var _email = HttpContext.Session.GetString("EmailKey");
+            Profile profile = null;
+
+            //if (_idKey != null && _idKey.HasValue)
+            //{
+            // Set a flag in TempData to call the showEdit function
+            //TempData["CallFunction"] = _function;
+
+            // Fetch the Profile object from the database
+            profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == Globals.pId);
 
             // Handle file upload
             if (ImageFile != null && ImageFile.Length > 0)
@@ -219,10 +232,17 @@ namespace BDFA.Pages
 
             // Save the changes to the database
             await _context.SaveChangesAsync();
-            var queryString = HttpContext.Request.QueryString.Value;
+        }
 
-            var url = Url.Page("./Profile") + HttpContext.Request.QueryString.Value;
-            return Redirect(url);
+        public async Task<List<string>> GetDistinctLinksAsync()
+        {
+            var distinctLinks = await _context.Clicks
+                .Where(cd => cd.ProfileId == Globals.pId)
+                .Select(cd => cd.Link)
+                .Distinct()
+                .ToListAsync();
+
+            return distinctLinks;
         }
     }
 }
