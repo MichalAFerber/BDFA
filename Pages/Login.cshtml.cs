@@ -106,16 +106,19 @@ namespace BDFA.Pages
                             Expires = DateTime.UtcNow.AddMinutes(15)
                         };
                         _context.Profiles.Add(Profile);
+                        // Save changes to the database
+                        await _context.SaveChangesAsync();
+                        Globals.pId = Profile.Id;
                     }
                     else
                     {
                         // If an existing profile is found, update AuthCode and Expiration
                         existingProfile.AuthToken = AuthCode;
                         existingProfile.Expires = DateTime.UtcNow.AddMinutes(15);
+                        // Save changes to the database
+                        await _context.SaveChangesAsync();
+                        Globals.pId = existingProfile.Id;
                     }
-                    // Save changes to the database
-                    await _context.SaveChangesAsync();
-                    Globals.pId = existingProfile.Id;
                 }
                 else
                 {
