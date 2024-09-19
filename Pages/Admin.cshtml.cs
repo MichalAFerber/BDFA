@@ -59,27 +59,31 @@ namespace BDFA.Pages
             {
                 string functionParam = Request.Query["function"];
                 int functionStatus = Convert.ToInt32(Request.Query["status"]);
+                int _Id = Convert.ToInt32(Request.Query["id"]);
 
-                // Handle different cases based on the function query string parameter
-                switch (functionParam)
+                if (!_Id.Equals(null))
                 {
-                    case "status":
-                        BL.Manager.ChangeProfileStatus(Globals.pId, Convert.ToBoolean(functionStatus));
-                        break;
-                    case "featured":
-                        BL.Manager.ChangeFeaturedStatus(Globals.pId, Convert.ToBoolean(functionStatus));
-                        break;
-                    case "delete":
-                        BL.Manager.DeleteProfile(Globals.pId);
-                        break;
+                    // Handle different cases based on the function query string parameter
+                    switch (functionParam)
+                    {
+                        case "status":
+                            Manager.ChangeProfileStatus(_Id, Convert.ToBoolean(functionStatus));
+                            break;
+                        case "featured":
+                            Manager.ChangeFeaturedStatus(_Id, Convert.ToBoolean(functionStatus));
+                            break;
+                        case "delete":
+                            Manager.DeleteProfile(_Id);
+                            break;
                         case "deleteDeal":
-                        // Set values NULL for the deal image and URL
-                        BL.Manager.DeleteDeal(Globals.pId, _ConfigSiteID);
-                        // Retrieve the updated site settings
-                        BL.Manager.GetSiteSettings(_ConfigSiteID);
-                        break;
-                    default:
-                        break;
+                            // Set values NULL for the deal image and URL
+                            Manager.DeleteDeal(_Id, _ConfigSiteID);
+                            // Retrieve the updated site settings
+                            Manager.GetSiteSettings(_ConfigSiteID);
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 // Get all profiles
@@ -184,7 +188,7 @@ namespace BDFA.Pages
             await _context.SaveChangesAsync();
 
             // Retrieve the updated site settings
-            BL.Manager.GetSiteSettings(_ConfigSiteID);
+            Manager.GetSiteSettings(_ConfigSiteID);
 
             // Get all profiles
             Profiles = await _context.Profiles

@@ -112,6 +112,7 @@ namespace BDFA.Pages
                     }
                     // Save changes to the database
                     await _context.SaveChangesAsync();
+                    Globals.pId = Profile.Id;
                 }
                 else
                 {
@@ -163,7 +164,7 @@ namespace BDFA.Pages
                 else
                 {
                     // Check if the AuthCode matches and the expiration has not passed
-                    if (profile.AuthToken == InputAuthCode && profile.Expires > DateTime.UtcNow)
+                    if (profile.AuthToken == InputAuthCode.Trim() && profile.Expires > DateTime.UtcNow)
                     {
                         Globals.isAuth = true;
                         return RedirectToPage("./Profile");
@@ -189,7 +190,7 @@ namespace BDFA.Pages
                 else
                 {
                     // Check if the AuthCode matches and the expiration has not passed
-                    if (profile.AuthToken == InputAuthCode && profile.Expires > DateTime.UtcNow)
+                    if (profile.AuthToken == InputAuthCode.Trim() && profile.Expires > DateTime.UtcNow)
                     {
                         Globals.isAuth = true;
                         Globals.isAdmin = true;

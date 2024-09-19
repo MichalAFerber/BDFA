@@ -72,3 +72,7 @@ html {
     max-height: 300px;
     max-width: 300px;
 }
+
+.limited-width-select {
+    max-width: 300px; /* Adjust the max-width as needed */
+}

@@ -264,7 +264,7 @@
             <form method="post" asp-page="Profile">
                 <span class="p-4"><b>Filter:</b></span>
                 <label asp-for="fClickedLink" class="me-2">Link</label>
-                <select id="fClickedLink" asp-for="fClickedLink" required class="me-2">
+                <select id="fClickedLink" asp-for="fClickedLink" required class="me-2 limited-width-select">
                     <option value="0">All Links</option>
                     @if (clickDataGroups != null)
                     {
