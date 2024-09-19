@@ -53,6 +53,9 @@ namespace BDFA.Pages
 
         public async Task<IActionResult> OnPostSendCodeAsync()
         {
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Login - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
+
             if (!ModelState.IsValid)
             {
                 ShowSignIn = false;
@@ -112,7 +115,7 @@ namespace BDFA.Pages
                     }
                     // Save changes to the database
                     await _context.SaveChangesAsync();
-                    Globals.pId = Profile.Id;
+                    Globals.pId = existingProfile.Id;
                 }
                 else
                 {
@@ -137,6 +140,9 @@ namespace BDFA.Pages
 
         public async Task<IActionResult> OnPostSignInAsync()
         {
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Login - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? string.Empty;
+
             if (!ModelState.IsValid)
             {
                 return Page();
