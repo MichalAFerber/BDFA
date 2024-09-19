@@ -86,7 +86,7 @@ namespace BDFA.Pages
             }
             else
             {
-                if (Globals.pId == 0)
+                if (Globals.pId < 0)
                 {
                     if (!StringValues.IsNullOrEmpty(Request.Query["id"]))
                     {
@@ -97,31 +97,41 @@ namespace BDFA.Pages
                 Profile profile = null;
                 profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == Globals.pId);
 
-                // Populate the bound properties with the profile data
-                Image = profile.Image;
-                Author = profile.Author;
-                Email = profile.Email;
-                Tagline = profile.Tagline;
-                Tags = profile.Tags;
-                UrlStore = profile.UrlStore;
-                UrlNewsletter = profile.UrlNewsletter;
-                UrlFBGroup = profile.UrlFBGroup;
-                UrlFBPage = profile.UrlFBPage;
-                UrlIG = profile.UrlIG;
-                UrlTikTok = profile.UrlTikTok;
-                UrlThreads = profile.UrlThreads;
-                UrlX = profile.UrlX;
-                UrlReam = profile.UrlReam;
-                UrlPatreon = profile.UrlPatreon;
-                UrlOther = profile.UrlOther;
-                UrlYouTube = profile.UrlYouTube;
+                if (profile == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    // Populate the bound properties with the profile data
+                    Image = profile.Image;
+                    Author = profile.Author;
+                    Email = profile.Email;
+                    Tagline = profile.Tagline;
+                    Tags = profile.Tags;
+                    UrlStore = profile.UrlStore;
+                    UrlNewsletter = profile.UrlNewsletter;
+                    UrlFBGroup = profile.UrlFBGroup;
+                    UrlFBPage = profile.UrlFBPage;
+                    UrlIG = profile.UrlIG;
+                    UrlTikTok = profile.UrlTikTok;
+                    UrlThreads = profile.UrlThreads;
+                    UrlX = profile.UrlX;
+                    UrlReam = profile.UrlReam;
+                    UrlPatreon = profile.UrlPatreon;
+                    UrlOther = profile.UrlOther;
+                    UrlYouTube = profile.UrlYouTube;
 
-                return Page();
+                    return Page();
+                }
             }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "My Profile - Buy Direct From Authors";
+            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "My Profile";
+
             if (!ModelState.IsValid)
             {
                 return Page();

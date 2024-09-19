@@ -47,7 +47,7 @@ namespace BDFA.Pages
             //Logout and reset global variables
             Globals.isAuth = false;
             Globals.isAdmin = false;
-            Globals.pId = 0;
+            Globals.pId = -1;
             Globals.pEmail = string.Empty;
         }
 

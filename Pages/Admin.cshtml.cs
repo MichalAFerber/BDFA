@@ -49,6 +49,7 @@ namespace BDFA.Pages
             ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Admin Dashboard";
 
             var _ConfigSiteID = Convert.ToInt32(_configuration["Settings:SiteID"]);
+            Globals.pId = -1; // Reset the profile ID
 
             if (!Globals.isAuth || !Globals.isAdmin)
             {
