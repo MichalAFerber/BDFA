@@ -1,9 +1,7 @@
 ﻿using BDFA.Data;
 using BDFA.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 
@@ -89,6 +87,7 @@ namespace BDFA.BL
                         }
                     }
                 }
+                connection.Close();
             }
             return record;
         }
@@ -132,12 +131,13 @@ namespace BDFA.BL
             using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqliteCommand("UPDATE Profiles SET Active = @Active WHERE rowid = @ProfileID", connection))
+                using (var command = new SqliteCommand("UPDATE Profiles SET Active = @Active WHERE id = @ProfileID", connection))
                 {
                     command.Parameters.AddWithValue("@Active", Active);
                     command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
 
@@ -146,12 +146,13 @@ namespace BDFA.BL
             using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqliteCommand("UPDATE Profiles SET FeaturedAuthor = @Active WHERE rowid = @ProfileID", connection))
+                using (var command = new SqliteCommand("UPDATE Profiles SET FeaturedAuthor = @Active WHERE id = @ProfileID", connection))
                 {
                     command.Parameters.AddWithValue("@Active", Active);
                     command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
 
@@ -172,11 +173,12 @@ namespace BDFA.BL
             using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
-                using (var command = new SqliteCommand("DELETE from Profiles WHERE rowid = @ProfileID", connection))
+                using (var command = new SqliteCommand("DELETE from Profiles WHERE id = @ProfileID", connection))
                 {
                     command.Parameters.AddWithValue("@ProfileID", ProfileID);
                     command.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
 
@@ -210,6 +212,8 @@ namespace BDFA.BL
                         }
                         break;
                 }
+
+                connection.Close();
             }
         }
     }

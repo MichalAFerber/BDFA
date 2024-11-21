@@ -57,13 +57,13 @@ namespace BDFA.Controllers
 
                     // Mark the Profile entity as modified
                     _context.Attach(click).State = EntityState.Modified;
-
-                    // Save the changes to the database
-                    await _context.SaveChangesAsync();
-
-                    Console.WriteLine("Click data updated successfully.");
-                    _logger.LogInformation("Click data updated successfully.");
                 }
+
+                // Save the changes to the database
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine("Click data updated successfully.");
+                _logger.LogInformation("Click data updated successfully.");
             }
             catch (Exception ex)
             {

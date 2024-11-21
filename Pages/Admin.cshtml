@@ -1,203 +1,369 @@
 ﻿@page
 @model BDFA.Pages.AdminModel
 
-<nav class="navbar bg-body-tertiary mb-5">
-    <form class="container-fluid justify-content-start">
-        <button id="showProfiles" class="btn btn-outline-success me-2 active" type="button">Profiles</button>
-        <button id="showStats" class="btn btn-outline-success me-2" type="button"><i class="fa-solid fa-chart-simple"></i></button>
-        <button id="showSettings" class="btn btn-outline-success me-2" type="button"><i class="fa-solid fa-gear"></i></button>
-        <a href="./Login" class="ms-auto me-2" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
-    </form>
-</nav>
+<div class="btn-group bg-body-tertiary mb-4" role="group" aria-label="Navigation">
+    <a id="showProfiles" class="btn btn-outline-success active" type="button" href="?tab=Profiles"><i class="fa-solid fa-user me-1"></i>List Profiles</a>
+    <a id="showSettings" class="btn btn-outline-success" type="button" href="?tab=Settings"><i class="fa-solid fa-gear me-1"></i>Edit Settings</a>
+    <a id="showStats" class="btn btn-outline-success" type="button" href="?tab=Stats&sortColumn=Clicks&sortOrder=desc"><i class="fa-solid fa-chart-simple me-1"></i>View Stats</a>
+</div>
+<a href="./Login" class="btn mb-4" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
 
 <div class="container">
 
     <div id="Profiles" class="row">
+        @{
+            List<string> profiles = await Model.GetDistinctProfilesAsync();
+            List<BDFA.Models.ProfileDataGroup> profileDataGroups = null;
+            profileDataGroups = await Model.GetProfileDataAsync();
+
+            // Sorting logic
+            var sortColumn = Request.Query["sortColumn"];
+            var sortOrder = Request.Query["sortOrder"];
+
+            if (profileDataGroups != null)
+            {
+                switch (sortColumn)
+                {
+                    case "Author":
+                        profileDataGroups = sortOrder == "asc"
+                        ? profileDataGroups.OrderBy(c => c.Author).ToList()
+                        : profileDataGroups.OrderByDescending(c => c.Author).ToList();
+                        break;
+                    case "Email":
+                        profileDataGroups = sortOrder == "asc"
+                        ? profileDataGroups.OrderBy(c => c.Email).ToList()
+                        : profileDataGroups.OrderByDescending(c => c.Email).ToList();
+                        break;
+                }
+            }
+        }
+
         <div class="table-responsive">
-            <table class="table caption-top table-hover">
-                <caption><h3>Profiles</h3></caption>
-                <thead class="table-dark">
-                    <tr>
-                        <th>Author</th>
-                        <th>Email</th>
-                        <th class="text-center">Active</th>
-                        <th class="text-center">Featured</th>
-                        <th class="text-center">Stats</th>
-                        <th class="text-center">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var profile in Model.Profiles)
-                    {
+            @if (Model.Profiles != null)
+            {
+                <table class="table caption-top table-hover">
+                    <thead>
                         <tr>
-                            <td nowrap><a href="profile?tab=Edit&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
-                            <td><a href="profile?tab=Edit&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
-                            @if (profile.Active)
-                            {
-                                <td align="center"><a href="?function=status&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
-                            }
-                            else
-                            {
-                                <td align="center"><a href="?function=status&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
-                            }
-                            @if (profile.FeaturedAuthor)
-                            {
-                                <td align="center"><a href="?function=featured&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
-                            }
-                            else
-                            {
-                                <td align="center"><a href="?function=featured&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
-                            }
-                            <td align="center"><a href="profile?tab=Stats&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
-                            <td align="center"><a href="?function=delete&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
+                            <th><a href="?tab=Stats&sortColumn=Author&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Author</a></th>
+                            <th><a href="?tab=Stats&sortColumn=Email&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Email</a></th>
+                            <th class="text-center">Active</th>
+                            <th class="text-center">Featured</th>
+                            <th class="text-center">Stats</th>
+                            <th class="text-center">Delete</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var profile in Model.Profiles)
+                        {
+                            <tr>
+                                <td nowrap><a href="profile?tab=View&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
+                                <td><a href="profile?tab=View&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
+                                @if (profile.Active)
+                                {
+                                    <td align="center"><a href="?function=status&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td align="center"><a href="?function=status&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
+                                }
+                                @if (profile.FeaturedAuthor)
+                                {
+                                    <td align="center"><a href="?function=featured&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td align="center"><a href="?function=featured&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
+                                }
+                                <td align="center"><a href="profile?tab=Stats&id=@profile.Id&sortColumn=Clicks&sortOrder=desc" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
+                                <td align="center"><a href="?function=delete&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <span class="information">
+                    No data available.
+                </span>
+            }
         </div>
     </div>
 
     <div id="Stats" class="row" style="display:none;">
-        <div class="table-responsive">
-            <table class="table caption-top table-hover">
-                <caption><h3>Site Stats</h3></caption>
-            </table>
-            Coming Soon
+        @{
+            List<string> links = await Model.GetDistinctLinksAsync();
+            List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
+            clickDataGroups = await Model.GetClickDataAsync(Model.fClickedLink, Model.fStartDate, Model.fEndDate);
+
+            // Sorting logic
+            var sColumn = Request.Query["sortColumn"];
+            var sOrder = Request.Query["sortOrder"];
+
+            if (clickDataGroups != null)
+            {
+                switch (sColumn)
+                {
+                    case "Link":
+                        clickDataGroups = sOrder == "asc"
+                        ? clickDataGroups.OrderBy(c => c.Link).ToList()
+                        : clickDataGroups.OrderByDescending(c => c.Link).ToList();
+                        break;
+                    case "Clicks":
+                        clickDataGroups = sOrder == "asc"
+                        ? clickDataGroups.OrderBy(c => c.ClickCount).ToList()
+                        : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList();
+                        break;
+                }
+            }
+        }
+
+        <nav class="navbar bg-body-tertiary">
+            <form method="post" asp-page="Admin">
+                <span class="p-4"><b>Filter:</b></span>
+                <label asp-for="fClickedLink" class="me-2">Link</label>
+                <select id="fClickedLink" asp-for="fClickedLink" required class="me-2 limited-width-select">
+                    <option value="0">All Links</option>
+                    @if (clickDataGroups != null)
+                    {
+                        foreach (var link in links)
+                        {
+                            <option value="@link">@link</option>
+                        }
+                    }
+                    else
+                    {
+                        <span class="information">
+                            No data available.
+                        </span>
+                    }
+                </select>
+                <label asp-for="fStartDate" class="me-2">Start Date:</label>
+                <input type="date" id="fStartDate" asp-for="fStartDate" required class="me-2" />
+                <label asp-for="fEndDate" class="me-2">End Date:</label>
+                <input type="date" id="fEndDate" asp-for="fEndDate" required class="me-2" />
+                <button type="submit" class="btn btn-primary me-2">Filter</button>
+            </form>
+        </nav>
+
+        <div class="col-12 p-1">
+            <div class="row">
+                <div class="col-12 p-2">
+                    @if (clickDataGroups != null)
+                    {
+                        <table>
+                            <thead>
+                                <tr class="bg-body-tertiary">
+                                    <th>
+                                        <a href="?tab=Stats&sortColumn=Link&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Link</a>
+                                    </th>
+                                    <th align="center">
+                                        <a href="?tab=Stats&sortColumn=Clicks&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")">Clicks</a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var group in clickDataGroups)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="px-4">@group.Link</td>
+                                        <td align="center">@group.ClickCount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <span class="information">
+                            No data available.
+                        </span>
+                    }
+                </div>
+
+                <div class="pt-3 mb-1">
+                    <a href="https://app.usefathom.com/share/xkbsmapx/buydirectfromauthors.com?comparison=none" target="_blank" class="btn btn-outline-success me-2" type="button">
+                        <i class="fa fa-bar-chart me-2" aria-hidden="true"></i>
+                        Website Server Analytics
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div id="Settings" class="row" style="display:none;">
-        <div class="table-responsive">
-            <table class="table caption-top table-hover">
-                <caption><h3>Site Settings</h3></caption>
-            </table>
 
-            <form asp-page="Admin" method="post" enctype="multipart/form-data">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Featured Deals
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <form asp-page="Admin" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <div asp-validation-summary="ModelOnly" class="bg-danger border-1 mb-3"></div>
 
-                <div class="card">
-                    <div class="card-header fw-bold">
-                        <h3>Featured Deals</h3>
-                    </div>
-                    <div>
-                        <div>
+                            <div class="card">
+                                <div>
+                                    <div>
 
-                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
-                                <div class="col">
-                                    <div class="card m-2">
-                                        @if (Model.DealImage1 != null)
-                                        {
-                                            <a href="?function=deleteDeal&id=1"><i class="fa-solid fa-trash m-1"></i></a>
-                                            <br />
-                                            <a href="@Model.DealURL1" target="_blank"><img src="./i/@Model.DealImage1" class="card-img-top p-1 image-profile"></a>
-                                        }
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-image"></i>
-                                            <label asp-for="Image1File" class="form-label">Image for Deal 1</label>
-                                            <input asp-for="Image1File" class="form-control" type="file" />
-                                            <span asp-validation-for="Image1File" class="text-danger"></span>
+                                        <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                            <div class="col">
+                                                <div class="card m-2">
+                                                    @if (Model.DealImage1 != null)
+                                                    {
+                                                        <a href="?function=deleteDeal&id=1"><i class="fa-solid fa-trash m-1 text-danger"></i></a>
+                                                        <br />
+                                                        <a href="@Model.DealURL1" target="_blank"><img src="./i/@Model.DealImage1" class="card-img-top p-1 image-profile"></a>
+                                                    }
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-image"></i>
+                                                        <label asp-for="Image1File" class="form-label">Image for Deal 1</label>
+                                                        <input asp-for="Image1File" class="form-control" type="file" />
+                                                        <span asp-validation-for="Image1File" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-link"></i>
+                                                        <label asp-for="DealURL1" class="form-label">URL for Deal 1</label>
+                                                        <input value="@Model.DealURL1" asp-for="DealURL1" class="form-control" type="text" />
+                                                        <span asp-validation-for="DealURL1" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-link"></i>
-                                            <label asp-for="DealURL1" class="form-label">URL for Deal 1</label>
-                                            <input value="@Model.DealURL1" asp-for="DealURL1" class="form-control" type="text" />
-                                            <span asp-validation-for="DealURL1" class="text-danger"></span>
+
+                                        <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                            <div class="col">
+                                                <div class="card m-2">
+                                                    @if (Model.DealImage2 != null)
+                                                    {
+                                                        <a href="?function=deleteDeal&id=2"><i class="fa-solid fa-trash m-1 text-danger"></i></a>
+                                                        <br />
+                                                        <a href="@Model.DealURL2" target="_blank"><img src="./i/@Model.DealImage2" class="card-img-top p-1 image-profile"></a>
+                                                    }
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-image"></i>
+                                                        <label asp-for="Image2File" class="form-label">Image for Deal 2</label>
+                                                        <input asp-for="Image2File" class="form-control" type="file" />
+                                                        <span asp-validation-for="Image2File" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-link"></i>
+                                                        <label asp-for="DealURL2" class="form-label">URL for Deal 2</label>
+                                                        <input value="@Model.DealURL2" asp-for="DealURL2" class="form-control" type="text" />
+                                                        <span asp-validation-for="DealURL2" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
+                                            <div class="col">
+                                                <div class="card m-2">
+                                                    @if (Model.DealImage3 != null)
+                                                    {
+                                                        <a href="?function=deleteDeal&id=3"><i class="fa-solid fa-trash m-1 text-danger"></i></a>
+                                                        <br />
+                                                        <a href="@Model.DealURL3" target="_blank"><img src="./i/@Model.DealImage3" class="card-img-top p-1 image-profile"></a>
+                                                    }
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-image"></i>
+                                                        <label asp-for="Image3File" class="form-label">Image for Deal 3</label>
+                                                        <input asp-for="Image3File" class="form-control" type="file" />
+                                                        <span asp-validation-for="Image3File" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <i class="fa-solid fa-link"></i>
+                                                        <label asp-for="DealURL3" class="form-label">URL for Deal 3</label>
+                                                        <input value="@Model.DealURL3" asp-for="DealURL3" class="form-control" type="text" />
+                                                        <span asp-validation-for="DealURL3" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary m-4">Update Featured Deals</button>
+
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
-                                <div class="col">
-                                    <div class="card m-2">
-                                        @if (Model.DealImage2 != null)
-                                        {
-                                            <a href="?function=deleteDeal&id=2"><i class="fa-solid fa-trash m-1"></i></a>
-                                            <br />
-                                            <a href="@Model.DealURL2" target="_blank"><img src="./i/@Model.DealImage2" class="card-img-top p-1 image-profile"></a>
-                                        }
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-image"></i>
-                                            <label asp-for="Image2File" class="form-label">Image for Deal 2</label>
-                                            <input asp-for="Image2File" class="form-control" type="file" />
-                                            <span asp-validation-for="Image2File" class="text-danger"></span>
-                                        </div>
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-link"></i>
-                                            <label asp-for="DealURL2" class="form-label">URL for Deal 2</label>
-                                            <input value="@Model.DealURL2" asp-for="DealURL2" class="form-control" type="text" />
-                                            <span asp-validation-for="DealURL2" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row row-cols-1 g-4 mx-auto d-flex justify-content-center">
-                                <div class="col">
-                                    <div class="card m-2">
-                                        @if (Model.DealImage3 != null)
-                                        {
-                                            <a href="?function=deleteDeal&id=3"><i class="fa-solid fa-trash m-1"></i></a>
-                                            <br />
-                                            <a href="@Model.DealURL3" target="_blank"><img src="./i/@Model.DealImage3" class="card-img-top p-1 image-profile"></a>
-                                        }
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-image"></i>
-                                            <label asp-for="Image3File" class="form-label">Image for Deal 3</label>
-                                            <input asp-for="Image3File" class="form-control" type="file" />
-                                            <span asp-validation-for="Image3File" class="text-danger"></span>
-                                        </div>
-                                        <div class="card-body">
-                                            <i class="fa-solid fa-link"></i>
-                                            <label asp-for="DealURL3" class="form-label">URL for Deal 3</label>
-                                            <input value="@Model.DealURL3" asp-for="DealURL3" class="form-control" type="text" />
-                                            <span asp-validation-for="DealURL3" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary m-4">Update Featured Deals</button>
-
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Facebook Pixel
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">You will be able to add/update/delete your Pixel here.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Website Server Analytics
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">You will be able to adjust the add/change/delete the code used for your server analytics here.</div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
     $(document).ready(function () {
-        $("#showProfiles").click(function () {
-            $("#showProfiles").addClass("active");
-            $("#showSettings").removeClass("active");
-            $("#showStats").removeClass("active");
-            $("#Profiles").show();
-            $("#Settings").hide();
-            $("#Stats").hide();
-        });
-        $("#showStats").click(function () {
-            $("#showProfiles").removeClass("active");
-            $("#showSettings").removeClass("active");
-            $("#showStats").addClass("active");
-            $("#Profiles").hide();
-            $("#Settings").hide();
-            $("#Stats").show();
-        });
-        $("#showSettings").click(function () {
-            $("#showProfiles").removeClass("active");
-            $("#showSettings").addClass("active");
-            $("#showStats").removeClass("active");
-            $("#Profiles").hide();
-            $("#Settings").show();
-            $("#Stats").hide();
-        });
+        function updateViewBasedOnQuery() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var tab = urlParams.get('tab');
+
+            switch (tab) {
+                case 'Settings':
+                    $("#showProfiles").removeClass("active");
+                    $("#showSettings").addClass("active");
+                    $("#showStats").removeClass("active");
+                    $("#Profiles").hide();
+                    $("#Settings").show();
+                    $("#Stats").hide();
+                    break;
+                case 'Stats':
+                    $("#showProfiles").removeClass("active");
+                    $("#showSettings").removeClass("active");
+                    $("#showStats").addClass("active");
+                    $("#Profiles").hide();
+                    $("#Settings").hide();
+                    $("#Stats").show();
+                    break;
+                default:
+                    $("#showProfiles").addClass("active");
+                    $("#showSettings").removeClass("active");
+                    $("#showStats").removeClass("active");
+                    $("#Profiles").show();
+                    $("#Settings").hide();
+                    $("#Stats").hide();
+                    break;
+            }
+        }
+
+        // Call the function on page load
+        updateViewBasedOnQuery();
+    });
+
+    $("form").submit(function (event) {
+        var queryString = window.location.search;
+        if (queryString) {
+            var action = $(this).attr("action");
+            $(this).attr("action", action + queryString);
+        }
     });
 </script>

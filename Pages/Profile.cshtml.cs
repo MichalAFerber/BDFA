@@ -129,13 +129,11 @@ namespace BDFA.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ViewData["TitlePage"] = ViewData["TitlePage"] ?? "My Profile - Buy Direct From Authors";
-            ViewData["TitleBody"] = ViewData["TitleBody"] ?? "My Profile";
-
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
             string _tab = Request.Query["tab"];
             string _function = Request.Query["function"];
 
@@ -190,6 +188,18 @@ namespace BDFA.Pages
             return groupedData;
         }
 
+        public async Task<List<string>> GetDistinctLinksAsync()
+        {
+            var distinctLinks = await _context.Clicks
+                .Where(cd => cd.ProfileId == Globals.pId)
+                .Select(cd => cd.Link)
+                .Distinct()
+                .OrderBy(link => link)
+                .ToListAsync();
+
+            return distinctLinks;
+        }
+
         private async Task SaveProfile()
         {
             var _email = HttpContext.Session.GetString("EmailKey");
@@ -242,17 +252,6 @@ namespace BDFA.Pages
 
             // Save the changes to the database
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<string>> GetDistinctLinksAsync()
-        {
-            var distinctLinks = await _context.Clicks
-                .Where(cd => cd.ProfileId == Globals.pId)
-                .Select(cd => cd.Link)
-                .Distinct()
-                .ToListAsync();
-
-            return distinctLinks;
         }
     }
 }

@@ -29,4 +29,18 @@ namespace BDFA.Models
         public string UrlYouTube { get; set; }
         public string UrlOther { get; set; }
     }
+
+    public class ProfileDataGroup
+    {
+        public string Author { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class ProfileDataFilter
+    {
+        public string Id { get; set; }
+        public string Author { get; set; }
+        public string Email { get; set; }
+    }
+
 }

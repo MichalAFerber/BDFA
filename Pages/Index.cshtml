@@ -13,6 +13,8 @@
         <a id="SearchStart" title="SearchStart" href="/#search" class="btn border-primary text-nowrap" role="button"><i class="fa-solid fa-magnifying-glass me-2"></i>Click Here to Search</a>
     </div>
 
+    @if (Model.FeaturedAuthors != null && Model.FeaturedAuthors.Any())
+    {
     <div class="container fluid p-4">
         <div class="card">
             <div class="card-header fw-bold">
@@ -105,48 +107,52 @@
             </div>
         </div>
     </div>
+    }
 
-    <div class="container fluid p-4">
-        <div class="card">
-            <div class="card-header fw-bold">
-                <h3>Featured Deals</h3>
-            </div>
-            <div>
+    @if (Model.FeaturedDeals != null && Model.FeaturedDeals.Any())
+    {
+        <div class="container fluid p-4">
+            <div class="card">
+                <div class="card-header fw-bold">
+                    <h3>Featured Deals</h3>
+                </div>
                 <div>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
+                    <div>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
 
-                        @if (@BL.Manager.DealURL1 != null && @BL.Manager.DealURL1.Length > 0)
-                        {
-                            <div class="col">
-                                <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL1" class="profile-link open-in-new-tab" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                            @if (@BL.Manager.DealURL1 != null && @BL.Manager.DealURL1.Length > 0)
+                            {
+                                <div class="col">
+                                    <div class="card text-center m-2">
+                                        <a href="@BL.Manager.DealURL1" class="profile-link open-in-new-tab" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
 
-                        @if (@BL.Manager.DealURL2 != null && @BL.Manager.DealURL2.Length > 0)
-                        {
-                            <div class="col">
-                                <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL2" class="profile-link open-in-new-tab" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                            @if (@BL.Manager.DealURL2 != null && @BL.Manager.DealURL2.Length > 0)
+                            {
+                                <div class="col">
+                                    <div class="card text-center m-2">
+                                        <a href="@BL.Manager.DealURL2" class="profile-link open-in-new-tab" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
 
-                        @if (@BL.Manager.DealURL3 != null && @BL.Manager.DealURL3.Length > 0)
-                        {
+                            @if (@BL.Manager.DealURL3 != null && @BL.Manager.DealURL3.Length > 0)
+                            {
 
-                            <div class="col">
-                                <div class="card text-center m-2">
-                                    <a href="@BL.Manager.DealURL3" class="profile-link open-in-new-tab" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                                <div class="col">
+                                    <div class="card text-center m-2">
+                                        <a href="@BL.Manager.DealURL3" class="profile-link open-in-new-tab" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 
     <div class="container p-4" id="search">
         <div class="row p-4 border shadow">
