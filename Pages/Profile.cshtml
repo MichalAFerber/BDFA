@@ -4,6 +4,7 @@
 @using BDFA.BL
 @using BDFA.Models
 
+<!-- Navigation buttons for different tabs -->
 <div class="btn-group bg-body-tertiary mb-4" role="group" aria-label="Navigation">
     <a id="showView" class="btn btn-outline-success active" type="button" href="?tab=View"><i class="fa-solid fa-user me-1"></i>View Profile</a>
     <a id="showEdit" class="btn btn-outline-success" type="button" href="?tab=Edit"><i class="fa-solid fa-gear me-1"></i>Edit Profile</a>
@@ -13,24 +14,29 @@
 
 <div class="container">
 
+    <!-- View Profile Section -->
     <div id="View" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-auto g-4">
         <div class="col-12 d-flex align-items-stretch text-center">
             <div class="card">
                 @if (Model.UrlStore != null)
                 {
+                    <!-- Display author's image with a link to their store -->
                     <a href="@Model.UrlStore" target="_blank" title="Author's Direct Store"><img src="./i/@Model.Image" class="card-img-top p-1" alt="@Model.Author"></a>
                 }
                 <div class="card-body">
                     @if (Model.Author != null)
                     {
+                        <!-- Display author's name -->
                         <h5 class="card-title">@Model.Author</h5>
                     }
                     else
                     {
+                        <!-- Prompt to create a listing if author name is not set -->
                         <p class="card-text">Click on the Edit Profile button above to create your listing.</p>
                     }
                     @if (Model.Tagline != null && Model.Tags != null)
                     {
+                        <!-- Display author's tagline and tags -->
                         <p class="card-text">
                             @Model.Tagline
                             <br /><br /><i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@Model.Tags
@@ -38,6 +44,7 @@
                     }
                 </div>
                 <div class="card-link" style="padding: 5px;">
+                    <!-- Display various social media and other links if available -->
                     @if (Model.UrlStore != null)
                     {
                         <p><a href="@Model.UrlStore" target="_blank" type="button" class="btn btn-primary">Author's Direct Store</a></p>
@@ -232,27 +239,31 @@
 
     <div id="Stats" class="row" style="display:none;">
         @{
+            // Retrieve distinct links asynchronously
             List<string> links = await Model.GetDistinctLinksAsync();
             List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
+
+            // Retrieve click data asynchronously based on provided filters
             clickDataGroups = await Model.GetClickDataAsync(BL.Globals.pId, Model.fClickedLink, Model.fStartDate, Model.fEndDate);
 
             // Sorting logic
-            var sortColumn = Request.Query["sortColumn"];
-            var sortOrder = Request.Query["sortOrder"];
+            var sortColumn = Request.Query["sortColumn"]; // Get the column to sort by from the query string
+            var sortOrder = Request.Query["sortOrder"];   // Get the sort order (asc or desc) from the query string
 
             if (clickDataGroups != null)
             {
+                // Sort the click data groups based on the specified column and order
                 switch (sortColumn)
                 {
                     case "Link":
                         clickDataGroups = sortOrder == "asc"
-                        ? clickDataGroups.OrderBy(c => c.Link).ToList()
-                        : clickDataGroups.OrderByDescending(c => c.Link).ToList();
+                        ? clickDataGroups.OrderBy(c => c.Link).ToList() // Sort by Link in ascending order
+                        : clickDataGroups.OrderByDescending(c => c.Link).ToList(); // Sort by Link in descending order
                         break;
                     case "Clicks":
                         clickDataGroups = sortOrder == "asc"
-                        ? clickDataGroups.OrderBy(c => c.ClickCount).ToList()
-                        : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList();
+                        ? clickDataGroups.OrderBy(c => c.ClickCount).ToList() // Sort by ClickCount in ascending order
+                        : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList(); // Sort by ClickCount in descending order
                         break;
                 }
             }

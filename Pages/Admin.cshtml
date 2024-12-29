@@ -1,22 +1,25 @@
 ﻿@page
 @model BDFA.Pages.AdminModel
 
+<!-- Navigation buttons for different tabs -->
 <div class="btn-group bg-body-tertiary mb-4" role="group" aria-label="Navigation">
     <a id="showProfiles" class="btn btn-outline-success active" type="button" href="?tab=Profiles"><i class="fa-solid fa-user me-1"></i>List Profiles</a>
     <a id="showSettings" class="btn btn-outline-success" type="button" href="?tab=Settings"><i class="fa-solid fa-gear me-1"></i>Edit Settings</a>
     <a id="showStats" class="btn btn-outline-success" type="button" href="?tab=Stats&sortColumn=Clicks&sortOrder=desc"><i class="fa-solid fa-chart-simple me-1"></i>View Stats</a>
 </div>
+<!-- Logout button -->
 <a href="./Login" class="btn mb-4" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
 
 <div class="container">
 
     <div id="Profiles" class="row">
         @{
+            // Retrieve distinct profiles asynchronously
             List<string> profiles = await Model.GetDistinctProfilesAsync();
             List<BDFA.Models.ProfileDataGroup> profileDataGroups = null;
             profileDataGroups = await Model.GetProfileDataAsync();
 
-            // Sorting logic
+            // Sorting logic based on query parameters
             var sortColumn = Request.Query["sortColumn"];
             var sortOrder = Request.Query["sortOrder"];
 
@@ -56,25 +59,33 @@
                         @foreach (var profile in Model.Profiles)
                         {
                             <tr>
+                                <!-- Link to edit profile by author -->
                                 <td nowrap><a href="profile?tab=View&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Author</a></td>
+                                <!-- Link to edit profile by email -->
                                 <td><a href="profile?tab=View&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Click to edit Profile">@profile.Email</a></td>
                                 @if (profile.Active)
                                 {
+                                    <!-- Link to mark profile inactive -->
                                     <td align="center"><a href="?function=status&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Inactive"><i class="fa-regular fa-circle-check"></i></a></td>
                                 }
                                 else
                                 {
+                                    <!-- Link to mark profile active -->
                                     <td align="center"><a href="?function=status&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Mark this Profile Active"><i class="fa-regular fa-circle"></i></a></td>
                                 }
                                 @if (profile.FeaturedAuthor)
                                 {
+                                    <!-- Link to remove from featured authors -->
                                     <td align="center"><a href="?function=featured&status=0&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Remove from Featured Authors"><i class="fa-regular fa-circle-check"></i></a></td>
                                 }
                                 else
                                 {
+                                    <!-- Link to add to featured authors -->
                                     <td align="center"><a href="?function=featured&status=1&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Add to Featured Authors"><i class="fa-regular fa-circle"></i></a></td>
                                 }
+                                <!-- Link to show stats for the profile -->
                                 <td align="center"><a href="profile?tab=Stats&id=@profile.Id&sortColumn=Clicks&sortOrder=desc" data-bs-toggle="tooltip" data-bs-title="Show Stats for this Profile"><i class="fa-solid fa-chart-simple"></i></a></td>
+                                <!-- Link to delete the profile -->
                                 <td align="center"><a href="?function=delete&id=@profile.Id" data-bs-toggle="tooltip" data-bs-title="Delete this Profile"><i class="fa-regular fa-circle-xmark"></i></a></td>
                             </tr>
                         }
@@ -89,110 +100,114 @@
             }
         </div>
     </div>
+<div id="Stats" class="row" style="display:none;">
+    @{
+        // Retrieve distinct links asynchronously
+        List<string> links = await Model.GetDistinctLinksAsync();
+        List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
+        clickDataGroups = await Model.GetClickDataAsync(Model.fClickedLink, Model.fStartDate, Model.fEndDate);
 
-    <div id="Stats" class="row" style="display:none;">
-        @{
-            List<string> links = await Model.GetDistinctLinksAsync();
-            List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
-            clickDataGroups = await Model.GetClickDataAsync(Model.fClickedLink, Model.fStartDate, Model.fEndDate);
+        // Sorting logic based on query parameters
+        var sColumn = Request.Query["sortColumn"];
+        var sOrder = Request.Query["sortOrder"];
 
-            // Sorting logic
-            var sColumn = Request.Query["sortColumn"];
-            var sOrder = Request.Query["sortOrder"];
-
-            if (clickDataGroups != null)
+        if (clickDataGroups != null)
+        {
+            switch (sColumn)
             {
-                switch (sColumn)
-                {
-                    case "Link":
-                        clickDataGroups = sOrder == "asc"
-                        ? clickDataGroups.OrderBy(c => c.Link).ToList()
-                        : clickDataGroups.OrderByDescending(c => c.Link).ToList();
-                        break;
-                    case "Clicks":
-                        clickDataGroups = sOrder == "asc"
-                        ? clickDataGroups.OrderBy(c => c.ClickCount).ToList()
-                        : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList();
-                        break;
-                }
+                case "Link":
+                    clickDataGroups = sOrder == "asc"
+                    ? clickDataGroups.OrderBy(c => c.Link).ToList()
+                    : clickDataGroups.OrderByDescending(c => c.Link).ToList();
+                    break;
+                case "Clicks":
+                    clickDataGroups = sOrder == "asc"
+                    ? clickDataGroups.OrderBy(c => c.ClickCount).ToList()
+                    : clickDataGroups.OrderByDescending(c => c.ClickCount).ToList();
+                    break;
             }
         }
+    }
 
-        <nav class="navbar bg-body-tertiary">
-            <form method="post" asp-page="Admin">
-                <span class="p-4"><b>Filter:</b></span>
-                <label asp-for="fClickedLink" class="me-2">Link</label>
-                <select id="fClickedLink" asp-for="fClickedLink" required class="me-2 limited-width-select">
-                    <option value="0">All Links</option>
-                    @if (clickDataGroups != null)
+    <nav class="navbar bg-body-tertiary">
+        <form method="post" asp-page="Admin">
+            <span class="p-4"><b>Filter:</b></span>
+            <label asp-for="fClickedLink" class="me-2">Link</label>
+            <select id="fClickedLink" asp-for="fClickedLink" required class="me-2 limited-width-select">
+                <option value="0">All Links</option>
+                @if (clickDataGroups != null)
+                {
+                    // Populate the dropdown with distinct links
+                    foreach (var link in links)
                     {
-                        foreach (var link in links)
-                        {
-                            <option value="@link">@link</option>
-                        }
+                        <option value="@link">@link</option>
                     }
-                    else
-                    {
-                        <span class="information">
-                            No data available.
-                        </span>
-                    }
-                </select>
-                <label asp-for="fStartDate" class="me-2">Start Date:</label>
-                <input type="date" id="fStartDate" asp-for="fStartDate" required class="me-2" />
-                <label asp-for="fEndDate" class="me-2">End Date:</label>
-                <input type="date" id="fEndDate" asp-for="fEndDate" required class="me-2" />
-                <button type="submit" class="btn btn-primary me-2">Filter</button>
-            </form>
-        </nav>
+                }
+                else
+                {
+                    <span class="information">
+                        No data available.
+                    </span>
+                }
+            </select>
+            <label asp-for="fStartDate" class="me-2">Start Date:</label>
+            <input type="date" id="fStartDate" asp-for="fStartDate" required class="me-2" />
+            <label asp-for="fEndDate" class="me-2">End Date:</label>
+            <input type="date" id="fEndDate" asp-for="fEndDate" required class="me-2" />
+            <button type="submit" class="btn btn-primary me-2">Filter</button>
+        </form>
+    </nav>
 
-        <div class="col-12 p-1">
-            <div class="row">
-                <div class="col-12 p-2">
-                    @if (clickDataGroups != null)
-                    {
-                        <table>
-                            <thead>
-                                <tr class="bg-body-tertiary">
-                                    <th>
-                                        <a href="?tab=Stats&sortColumn=Link&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Link</a>
-                                    </th>
-                                    <th align="center">
-                                        <a href="?tab=Stats&sortColumn=Clicks&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")">Clicks</a>
-                                    </th>
+    <div class="col-12 p-1">
+        <div class="row">
+            <div class="col-12 p-2">
+                @if (clickDataGroups != null)
+                {
+                    <table>
+                        <thead>
+                            <tr class="bg-body-tertiary">
+                                <th>
+                                    <!-- Link to sort by Link column -->
+                                    <a href="?tab=Stats&sortColumn=Link&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")" class="px-4">Link</a>
+                                </th>
+                                <th align="center">
+                                    <!-- Link to sort by Clicks column -->
+                                    <a href="?tab=Stats&sortColumn=Clicks&sortOrder=@(sortOrder == "asc" ? "desc" : "asc")">Clicks</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var group in clickDataGroups)
+                            {
+                                <tr class="border-bottom">
+                                    <td class="px-4">@group.Link</td>
+                                    <td align="center">@group.ClickCount</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var group in clickDataGroups)
-                                {
-                                    <tr class="border-bottom">
-                                        <td class="px-4">@group.Link</td>
-                                        <td align="center">@group.ClickCount</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <span class="information">
-                            No data available.
-                        </span>
-                    }
-                </div>
-
-                <div class="pt-3 mb-1">
-                    <a href="https://app.usefathom.com/share/xkbsmapx/buydirectfromauthors.com?comparison=none" target="_blank" class="btn btn-outline-success me-2" type="button">
-                        <i class="fa fa-bar-chart me-2" aria-hidden="true"></i>
-                        Website Server Analytics
-                    </a>
-                </div>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <span class="information">
+                        No data available.
+                    </span>
+                }
             </div>
 
+            <div class="pt-3 mb-1">
+                <!-- Link to external website server analytics -->
+                <a href="https://app.usefathom.com/share/xkbsmapx/buydirectfromauthors.com?comparison=none" target="_blank" class="btn btn-outline-success me-2" type="button">
+                    <i class="fa fa-bar-chart me-2" aria-hidden="true"></i>
+                    Website Server Analytics
+                </a>
+            </div>
         </div>
-    </div>
 
-    <div id="Settings" class="row" style="display:none;">
+    </div>
+</div>
+
+<div id="Settings" class="row" style="display:none;">
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
@@ -319,16 +334,18 @@
     </div>
 
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Function to update the view based on the query parameter 'tab'
         function updateViewBasedOnQuery() {
             var urlParams = new URLSearchParams(window.location.search);
             var tab = urlParams.get('tab');
 
+            // Switch case to handle different tabs
             switch (tab) {
                 case 'Settings':
+                    // Activate Settings tab and show Settings section
                     $("#showProfiles").removeClass("active");
                     $("#showSettings").addClass("active");
                     $("#showStats").removeClass("active");
@@ -337,6 +354,7 @@
                     $("#Stats").hide();
                     break;
                 case 'Stats':
+                    // Activate Stats tab and show Stats section
                     $("#showProfiles").removeClass("active");
                     $("#showSettings").removeClass("active");
                     $("#showStats").addClass("active");
@@ -345,6 +363,7 @@
                     $("#Stats").show();
                     break;
                 default:
+                    // Default to Profiles tab and show Profiles section
                     $("#showProfiles").addClass("active");
                     $("#showSettings").removeClass("active");
                     $("#showStats").removeClass("active");
@@ -355,10 +374,11 @@
             }
         }
 
-        // Call the function on page load
+        // Call the function on page load to set the initial view
         updateViewBasedOnQuery();
     });
 
+    // Append query string to form action on form submission
     $("form").submit(function (event) {
         var queryString = window.location.search;
         if (queryString) {

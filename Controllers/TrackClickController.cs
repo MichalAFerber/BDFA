@@ -21,6 +21,7 @@ namespace BDFA.Controllers
         [HttpPost]
         public async Task<IActionResult> TrackClick([FromBody] ClickData clickData)
         {
+            // Validate the incoming click data
             if (clickData == null || string.IsNullOrEmpty(clickData.Link) || string.IsNullOrEmpty(clickData.ClickDateTime.ToString()))
             {
                 Console.WriteLine("Invalid data received.");
@@ -28,6 +29,7 @@ namespace BDFA.Controllers
                 return BadRequest("Invalid data received.");
             }
 
+            // Save the click data asynchronously
             await SaveClickDataAsync(clickData);
 
             return Ok(new { success = true });
@@ -37,7 +39,7 @@ namespace BDFA.Controllers
         {
             try
             {
-                // Fetch the Profile object from the database
+                // Fetch the first ClickData object from the database
                 var click = await _context.Clicks.FirstOrDefaultAsync();
 
                 // Log the result of the query
@@ -51,11 +53,12 @@ namespace BDFA.Controllers
                     Console.WriteLine("Click data found. Updating the record.");
                     _logger.LogInformation("Click data found. Updating the record.");
 
+                    // Update the click data with the new values
                     click.ProfileId = clickData.ProfileId;
                     click.Link = clickData.Link;
                     click.ClickDateTime = clickData.ClickDateTime;
 
-                    // Mark the Profile entity as modified
+                    // Mark the ClickData entity as modified
                     _context.Attach(click).State = EntityState.Modified;
                 }
 

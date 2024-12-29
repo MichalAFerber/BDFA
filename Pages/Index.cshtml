@@ -15,135 +15,168 @@
 
     @if (Model.FeaturedAuthors != null && Model.FeaturedAuthors.Any())
     {
-    <div class="container fluid p-4">
-        <div class="card">
-            <div class="card-header fw-bold">
-                <h3>Featured Authors</h3>
-            </div>
-            <div>
+        <div class="container fluid p-4">
+            <div class="card">
+                <div class="card-header fw-bold">
+                    <h3>Featured Authors</h3> <!-- Header for the Featured Authors section -->
+                </div>
                 <div>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
-
-                        @foreach (var featuredAuthor in Model.FeaturedAuthors)
-                        {
-                            <div class="col">
-                                <div class="card text-center m-2">
-                                    @if (featuredAuthor.UrlStore != null)
-                                    {
-                                        <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store"><img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile" alt="@featuredAuthor.Author"></a>
-                                    }
-                                    <div class="card-body">
-                                        @if (featuredAuthor.Author != null)
-                                        {
-                                            <h4 class="card-title">@featuredAuthor.Author</h4>
-                                        }
-                                        @if (featuredAuthor.Tagline != null && featuredAuthor.Tags != null)
-                                        {
-                                            <h5 class="card-subtitle text-muted">
-                                                @featuredAuthor.Tagline
-                                            </h5>
-                                            <h6 class="card-text">
-                                                <i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@featuredAuthor.Tags
-                                            </h6>
-                                        }
-                                    </div>
-                                    <div class="card-link" style="padding: 5px;">
+                    <div>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
+                            <!-- Loop through each featured author in the Model.FeaturedAuthors collection -->
+                            @foreach (var featuredAuthor in Model.FeaturedAuthors)
+                            {
+                                <div class="col">
+                                    <div class="card text-center m-2">
+                                        <!-- If the author has a store URL, display their image as a link to the store -->
                                         @if (featuredAuthor.UrlStore != null)
                                         {
-                                            <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link open-in-new-tab btn btn-primary" data-profile-id="@featuredAuthor.Id">Author's Direct Store</a></p>
-                                            <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                                            <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store">
+                                                <img src="./i/@featuredAuthor.Image" class="card-img-top p-1 image-profile" alt="@featuredAuthor.Author">
+                                            </a>
                                         }
-                                        @if (featuredAuthor.UrlNewsletter != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlNewsletter" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlFBPage != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlFBPage" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlFBGroup != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlFBGroup" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlIG != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlIG" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlTikTok != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlTikTok" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlThreads != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlThreads" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlX != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlX" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlReam != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlReam" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlPatreon != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlPatreon" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlYouTube != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlYouTube" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i></a>
-                                        }
-                                        @if (featuredAuthor.UrlOther != null)
-                                        {
-                                            <a href="@featuredAuthor.UrlOther" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
-                                        }
+                                        <div class="card-body">
+                                            <!-- Display the author's name if available -->
+                                            @if (featuredAuthor.Author != null)
+                                            {
+                                                <h4 class="card-title">@featuredAuthor.Author</h4>
+                                            }
+                                            <!-- Display the author's tagline and tags if available -->
+                                            @if (featuredAuthor.Tagline != null && featuredAuthor.Tags != null)
+                                            {
+                                                <h5 class="card-subtitle text-muted">
+                                                    @featuredAuthor.Tagline
+                                                </h5>
+                                                <h6 class="card-text">
+                                                    <i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@featuredAuthor.Tags
+                                                </h6>
+                                            }
+                                        </div>
+                                        <div class="card-link" style="padding: 5px;">
+                                            <!-- Display various social media and store links if available -->
+                                            @if (featuredAuthor.UrlStore != null)
+                                            {
+                                                <p><a href="@featuredAuthor.UrlStore" type="button" class="profile-link open-in-new-tab btn btn-primary" data-profile-id="@featuredAuthor.Id">Author's Direct Store</a></p>
+                                                <a href="@featuredAuthor.UrlStore" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author's Direct Store">
+                                                    <i class="fa-solid fa-store fa-lg" style="color: #212121;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlNewsletter != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlNewsletter" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Author Newsletter">
+                                                    <i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlFBPage != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlFBPage" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Page">
+                                                    <i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlFBGroup != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlFBGroup" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Facebook Group">
+                                                    <i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlIG != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlIG" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Instagram">
+                                                    <i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlTikTok != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlTikTok" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="TikTok">
+                                                    <i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlThreads != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlThreads" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Threads">
+                                                    <i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlX != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlX" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="X">
+                                                    <i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlReam != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlReam" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Ream Stories">
+                                                    <i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlPatreon != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlPatreon" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Patreon">
+                                                    <i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlYouTube != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlYouTube" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="YouTube">
+                                                    <i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i>
+                                                </a>
+                                            }
+                                            @if (featuredAuthor.UrlOther != null)
+                                            {
+                                                <a href="@featuredAuthor.UrlOther" class="profile-link open-in-new-tab me-1" data-profile-id="@featuredAuthor.Id" title="Additional Author Link">
+                                                    <i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i>
+                                                </a>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     }
-
     @if (Model.FeaturedDeals != null && Model.FeaturedDeals.Any())
     {
         <div class="container fluid p-4">
             <div class="card">
                 <div class="card-header fw-bold">
-                    <h3>Featured Deals</h3>
+                    <h3>Featured Deals</h3> <!-- Header for the Featured Deals section -->
                 </div>
                 <div>
                     <div>
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto d-flex justify-content-center">
-
+                            <!-- Check if the first deal URL is available and display it -->
                             @if (@BL.Manager.DealURL1 != null && @BL.Manager.DealURL1.Length > 0)
                             {
                                 <div class="col">
                                     <div class="card text-center m-2">
-                                        <a href="@BL.Manager.DealURL1" class="profile-link open-in-new-tab" data-profile-id="9999991" title=""><img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured"></a>
+                                        <a href="@BL.Manager.DealURL1" class="profile-link open-in-new-tab" data-profile-id="9999991" title="">
+                                            <img src="./i/@BL.Manager.DealImage1" class="card-img-top p-1 image-profile-featured">
+                                        </a>
                                     </div>
                                 </div>
                             }
-
+                            <!-- Check if the second deal URL is available and display it -->
                             @if (@BL.Manager.DealURL2 != null && @BL.Manager.DealURL2.Length > 0)
                             {
                                 <div class="col">
                                     <div class="card text-center m-2">
-                                        <a href="@BL.Manager.DealURL2" class="profile-link open-in-new-tab" data-profile-id="9999992" title=""><img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured"></a>
+                                        <a href="@BL.Manager.DealURL2" class="profile-link open-in-new-tab" data-profile-id="9999992" title="">
+                                            <img src="./i/@BL.Manager.DealImage2" class="card-img-top p-1 image-profile-featured">
+                                        </a>
                                     </div>
                                 </div>
                             }
-
+                            <!-- Check if the third deal URL is available and display it -->
                             @if (@BL.Manager.DealURL3 != null && @BL.Manager.DealURL3.Length > 0)
                             {
-
                                 <div class="col">
                                     <div class="card text-center m-2">
-                                        <a href="@BL.Manager.DealURL3" class="profile-link open-in-new-tab" data-profile-id="9999993" title=""><img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured"></a>
+                                        <a href="@BL.Manager.DealURL3" class="profile-link open-in-new-tab" data-profile-id="9999993" title="">
+                                            <img src="./i/@BL.Manager.DealImage3" class="card-img-top p-1 image-profile-featured">
+                                        </a>
                                     </div>
                                 </div>
                             }
@@ -158,10 +191,12 @@
         <div class="row p-4 border shadow">
             <div class="col">
                 <div class="row">
-                    <h4>Search by keyword or genre</h4>
+                    <h4>Search by keyword or genre</h4> <!-- Header for the search section -->
                 </div>
                 <div class="input-group">
+                    <!-- Input field for search queries -->
                     <input id="searchQuery" class="search-input form-control text-center" type="text" placeholder="examples: steamy romance, cozy mystery, sci-fi">
+                    <!-- Button to trigger the search -->
                     <button id="searchButton" class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass m-2"></i></button>
                 </div>
             </div>
@@ -171,10 +206,11 @@
     <div id="profilesContainer">
         <div class="container p-4">
             <div id="profilesList" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 justify-content-center">
+                <!-- Render the profiles list partial view -->
                 @await Html.PartialAsync("_ProfilesList", Model.Profiles)
             </div>
         </div>
     </div>
 </div>
 
-<script src="~/js/search.js" asp-append-version="true"></script>
+<script src="~/js/search.js" asp-append-version="true"></script> <!-- Include the search script -->

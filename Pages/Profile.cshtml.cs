@@ -10,9 +10,13 @@ using System.Runtime.InteropServices;
 
 namespace BDFA.Pages
 {
+    /// <summary>
+    /// The ProfileModel class represents the model for the Profile page.
+    /// </summary>
     public class ProfileModel : PageModel
     {
         #region Properties
+        // Properties are defined here
         [BindProperty]
         public string fStartDate { get; set; }
         [BindProperty]
@@ -68,6 +72,12 @@ namespace BDFA.Pages
         private readonly ILogger<ProfileModel> _logger;
         private readonly IWebHostEnvironment _hostenvironment;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfileModel"/> class.
+        /// </summary>
+        /// <param name="logger">The logger instance to log information.</param>
+        /// <param name="context">The database context.</param>
+        /// <param name="hostenvironment">The web host environment.</param>
         public ProfileModel(ILogger<ProfileModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment)
         {
             _context = context;
@@ -75,6 +85,10 @@ namespace BDFA.Pages
             _hostenvironment = hostenvironment;
         }
 
+        /// <summary>
+        /// Handles GET requests to the Profile page.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         public async Task<IActionResult> OnGetAsync()
         {
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "My Profile - Buy Direct From Authors";
@@ -127,6 +141,10 @@ namespace BDFA.Pages
             }
         }
 
+        /// <summary>
+        /// Handles POST requests to the Profile page.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -150,6 +168,14 @@ namespace BDFA.Pages
             return Page();
         }
 
+        /// <summary>
+        /// Retrieves click data for the specified profile.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <param name="clickedLink">The clicked link to filter by (optional).</param>
+        /// <param name="startDate">The start date to filter by (optional).</param>
+        /// <param name="endDate">The end date to filter by (optional).</param>
+        /// <returns>A list of <see cref="ClickDataGroup"/> objects representing the click data.</returns>
         public async Task<List<ClickDataGroup>> GetClickDataAsync(int profileId, [Optional] string clickedLink, [Optional] string startDate, [Optional] string endDate)
         {
             var query = _context.Clicks.AsQueryable();
@@ -188,6 +214,10 @@ namespace BDFA.Pages
             return groupedData;
         }
 
+        /// <summary>
+        /// Retrieves distinct links for the current profile.
+        /// </summary>
+        /// <returns>A list of distinct links.</returns>
         public async Task<List<string>> GetDistinctLinksAsync()
         {
             var distinctLinks = await _context.Clicks
@@ -200,15 +230,13 @@ namespace BDFA.Pages
             return distinctLinks;
         }
 
+        /// <summary>
+        /// Saves the profile data to the database.
+        /// </summary>
         private async Task SaveProfile()
         {
             var _email = HttpContext.Session.GetString("EmailKey");
             Profile profile = null;
-
-            //if (_idKey != null && _idKey.HasValue)
-            //{
-            // Set a flag in TempData to call the showEdit function
-            //TempData["CallFunction"] = _function;
 
             // Fetch the Profile object from the database
             profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == Globals.pId);

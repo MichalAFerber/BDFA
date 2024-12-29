@@ -1,6 +1,6 @@
 ﻿@model IList<BDFA.Models.Profile>
 
-@if (Model != null && Model.Count>0)
+@if (Model != null && Model.Count > 0)
 {
     @foreach (var profile in Model)
     {
@@ -8,18 +8,24 @@
             <div class="card text-center m-2">
                 @if (profile.UrlStore != null)
                 {
-                    <a href="@profile.UrlStore" class="profile-link open-in-new-tab" data-profile-id="@profile.Id" title="Author's Direct Store"><img src="./i/@profile.Image" class="card-img-top p-1 image-profile" alt="@profile.Author"></a>
+                    <!-- Link to the author's direct store with profile image -->
+                    <a href="@profile.UrlStore" class="profile-link open-in-new-tab" data-profile-id="@profile.Id" title="Author's Direct Store">
+                        <img src="./i/@profile.Image" class="card-img-top p-1 image-profile" alt="@profile.Author">
+                    </a>
                 }
                 <div class="card-body">
                     @if (profile.Author != null)
                     {
+                        <!-- Display author's name -->
                         <h4 class="card-title">@profile.Author</h4>
                     }
                     @if (profile.Tagline != null && profile.Tags != null)
                     {
+                        <!-- Display author's tagline -->
                         <h5 class="card-subtitle text-muted">
                             @profile.Tagline
                         </h5>
+                        <!-- Display author's tags -->
                         <h6 class="card-text">
                             <i class="fa-solid fa-hashtag fa-lg"></i>&nbsp;@profile.Tags
                         </h6>
@@ -28,52 +34,90 @@
                 <div class="card-link" style="padding: 5px;">
                     @if (profile.UrlStore != null)
                     {
-                        <p class="text-nowrap"><a href="@profile.UrlStore" data-profile-id="@profile.Id" type="button" class="btn btn-primary profile-link open-in-new-tab">Author's Direct Store</a></p>
-                        <a href="@profile.UrlStore" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Author's Direct Store"><i class="fa-solid fa-store fa-lg" style="color: #212121;"></i></a>
+                        <!-- Button and icon link to the author's direct store -->
+                        <p class="text-nowrap">
+                            <a href="@profile.UrlStore" data-profile-id="@profile.Id" type="button" class="btn btn-primary profile-link open-in-new-tab">Author's Direct Store</a>
+                        </p>
+                        <a href="@profile.UrlStore" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Author's Direct Store">
+                            <i class="fa-solid fa-store fa-lg" style="color: #212121;"></i>
+                        </a>
                     }
                     @if (profile.UrlNewsletter != null)
                     {
-                        <a href="@profile.UrlNewsletter" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Author Newsletter"><i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i></a>
+                        <!-- Icon link to the author's newsletter -->
+                        <a href="@profile.UrlNewsletter" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Author Newsletter">
+                            <i class="fa-solid fa-envelope-open fa-lg" style="color: #25D366;"></i>
+                        </a>
                     }
                     @if (profile.UrlFBPage != null)
                     {
-                        <a href="@profile.UrlFBPage" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Facebook Page"><i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i></a>
+                        <!-- Icon link to the author's Facebook page -->
+                        <a href="@profile.UrlFBPage" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Facebook Page">
+                            <i class="fa-brands fa-facebook fa-lg" style="color: #1877F2;"></i>
+                        </a>
                     }
                     @if (profile.UrlFBGroup != null)
                     {
-                        <a href="@profile.UrlFBGroup" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Facebook Group"><i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i></a>
+                        <!-- Icon link to the author's Facebook group -->
+                        <a href="@profile.UrlFBGroup" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Facebook Group">
+                            <i class="fa-brands fa-square-facebook fa-lg" style="color: #1877F2;"></i>
+                        </a>
                     }
                     @if (profile.UrlIG != null)
                     {
-                        <a href="@profile.UrlIG" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Instagram"><i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i></a>
+                        <!-- Icon link to the author's Instagram -->
+                        <a href="@profile.UrlIG" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Instagram">
+                            <i class="fa-brands fa-instagram fa-lg" style="color: #E4405F;"></i>
+                        </a>
                     }
                     @if (profile.UrlTikTok != null)
                     {
-                        <a href="@profile.UrlTikTok" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="TikTok"><i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i></a>
+                        <!-- Icon link to the author's TikTok -->
+                        <a href="@profile.UrlTikTok" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="TikTok">
+                            <i class="fa-brands fa-tiktok fa-lg" style="color: #69C9D0;"></i>
+                        </a>
                     }
                     @if (profile.UrlThreads != null)
                     {
-                        <a href="@profile.UrlThreads" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Threads"><i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i></a>
+                        <!-- Icon link to the author's Threads -->
+                        <a href="@profile.UrlThreads" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Threads">
+                            <i class="fa-brands fa-threads fa-lg" style="color: #1877F2;"></i>
+                        </a>
                     }
                     @if (profile.UrlX != null)
                     {
-                        <a href="@profile.UrlX" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="X"><i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i></a>
+                        <!-- Icon link to the author's X (formerly Twitter) -->
+                        <a href="@profile.UrlX" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="X">
+                            <i class="fa-brands fa-x-twitter fa-lg" style="color: #000000;"></i>
+                        </a>
                     }
                     @if (profile.UrlReam != null)
                     {
-                        <a href="@profile.UrlReam" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Ream Stories"><i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i></a>
+                        <!-- Icon link to the author's Ream Stories -->
+                        <a href="@profile.UrlReam" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Ream Stories">
+                            <i class="fa-solid fa-layer-group fa-lg" style="color: #9838FF;"></i>
+                        </a>
                     }
                     @if (profile.UrlPatreon != null)
                     {
-                        <a href="@profile.UrlPatreon" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Patreon"><i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i></a>
+                        <!-- Icon link to the author's Patreon -->
+                        <a href="@profile.UrlPatreon" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Patreon">
+                            <i class="fa-brands fa-patreon fa-lg" style="color: #FF424D;"></i>
+                        </a>
                     }
                     @if (profile.UrlYouTube != null)
                     {
-                        <a href="@profile.UrlYouTube" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="YouTube"><i class="fa-brands fa-youtube fa-lg" style="color: #CD201F ;"></i></a>
+                        <!-- Icon link to the author's YouTube -->
+                        <a href="@profile.UrlYouTube" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="YouTube">
+                            <i class="fa-brands fa-youtube fa-lg" style="color: #CD201F;"></i>
+                        </a>
                     }
                     @if (profile.UrlOther != null)
                     {
-                        <a href="@profile.UrlOther" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Additional Author Link"><i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i></a>
+                        <!-- Icon link to an additional author link -->
+                        <a href="@profile.UrlOther" class="profile-link open-in-new-tab me-1" data-profile-id="@profile.Id" title="Additional Author Link">
+                            <i class="fa-solid fa-link fa-lg" style="color: #FF4500;"></i>
+                        </a>
                     }
                 </div>
             </div>
@@ -82,6 +126,7 @@
 }
 <script>
     $(document).ready(function () {
+        // Attach event listeners to profile links when the document is ready
         attachProfileLinkListeners();
     });
 </script>

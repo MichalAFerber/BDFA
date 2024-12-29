@@ -37,13 +37,19 @@ namespace BDFA.Pages
         public string DealURL3 { get; set; }
         #endregion
 
+        // Logger for logging information and errors
         private readonly ILogger<AdminModel> _logger;
+        // Database context for accessing the database
         private readonly DirectoryContext _context;
+        // Environment for accessing web hosting information
         private readonly IWebHostEnvironment _hostenvironment;
+        // Configuration for accessing configuration settings
         private readonly IConfiguration _configuration;
 
+        // List of profiles to be displayed on the page
         public IList<Profile> Profiles { get; set; }
 
+        // Constructor to initialize the AdminModel with dependencies
         public AdminModel(ILogger<AdminModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment, IConfiguration configuration)
         {
             _logger = logger;
@@ -52,20 +58,27 @@ namespace BDFA.Pages
             _configuration = configuration;
         }
 
+        // Method to handle GET requests
         public async Task<IActionResult> OnGetAsync()
         {
+            // Set the title for the page and body
             ViewData["TitlePage"] = ViewData["TitlePage"] ?? "Admin Dashboard - Buy Direct From Authors";
             ViewData["TitleBody"] = ViewData["TitleBody"] ?? "Admin Dashboard";
 
+            // Check if the user is authenticated and is an admin
             if (!Globals.isAuth || !Globals.isAdmin)
             {
+                // Redirect to the login page if not authenticated or not an admin
                 return RedirectToPage("./Login");
             }
             else
             {
+                // Retrieve the site ID from the configuration
                 var _ConfigSiteID = Convert.ToInt32(_configuration["Settings:SiteID"]);
-                Globals.pId = -1; // Reset the profile ID
+                // Reset the profile ID
+                Globals.pId = -1;
 
+                // Retrieve query parameters
                 string functionParam = Request.Query["function"];
                 int functionStatus = Convert.ToInt32(Request.Query["status"]);
                 int _Id = Convert.ToInt32(Request.Query["id"]);
@@ -76,26 +89,29 @@ namespace BDFA.Pages
                     switch (functionParam)
                     {
                         case "status":
-                            Manager.ChangeProfileStatus(_Id, Convert.ToBoolean(functionStatus));
+                            // Change the profile status
+                            await Manager.ChangeProfileStatusAsync(_Id, Convert.ToBoolean(functionStatus));
                             break;
                         case "featured":
-                            Manager.ChangeFeaturedStatus(_Id, Convert.ToBoolean(functionStatus));
+                            // Change the featured status of the profile
+                            await Manager.ChangeFeaturedStatusAsync(_Id, Convert.ToBoolean(functionStatus));
                             break;
                         case "delete":
-                            Manager.DeleteProfile(_Id);
+                            // Delete the profile
+                            await Manager.DeleteProfileAsync(_Id);
                             break;
                         case "deleteDeal":
                             // Set values NULL for the deal image and URL
-                            Manager.DeleteDeal(_Id, _ConfigSiteID);
+                            await Manager.DeleteDealAsync(_Id, _ConfigSiteID);
                             // Retrieve the updated site settings
-                            Manager.GetSiteSettings(_ConfigSiteID);
+                            await Manager.GetSiteSettingsAsync(_ConfigSiteID);
                             break;
                         default:
                             break;
                     }
                 }
 
-                // Get all profiles
+                // Get all profiles and order them by author
                 Profiles = await _context.Profiles
                                          .OrderBy(p => p.Author)
                                          .ToListAsync();
@@ -106,6 +122,7 @@ namespace BDFA.Pages
 
                 if (siteSettings == null)
                 {
+                    // Return not found if site settings are not found
                     return NotFound("Site settings not found.");
                 }
 
@@ -117,34 +134,39 @@ namespace BDFA.Pages
                 DealImage3 = siteSettings.DealImage3;
                 DealURL3 = siteSettings.DealURL3;
 
+                // Return the page
                 return Page();
             }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // Check if the model state is valid
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
+            // Retrieve query parameters
             string _tab = Request.Query["tab"];
             string _function = Request.Query["function"];
 
-            if(_tab == "Profiles" || _tab == null || _tab == string.Empty)
+            // If the tab is "Profiles" or not specified, get all profiles
+            if (_tab == "Profiles" || _tab == null || _tab == string.Empty)
             {
-                // Get all profiles
                 Profiles = await _context.Profiles
                                          .OrderBy(p => p.Author)
                                          .ToListAsync();
             }
 
+            // If the tab is "Settings", handle settings update
             if (_tab == "Settings")
             {
                 // Retrieve the site ID from the appsettings.json file
                 var _ConfigSiteID = Convert.ToInt32(_configuration["Settings:SiteID"]);
 
-                Setting siteSettings = null;
-                siteSettings = await _context.Settings.FirstOrDefaultAsync(p => p.ID == _ConfigSiteID);
+                // Retrieve the site settings from the database
+                Setting siteSettings = await _context.Settings.FirstOrDefaultAsync(p => p.ID == _ConfigSiteID);
 
                 if (siteSettings == null)
                 {
@@ -214,9 +236,10 @@ namespace BDFA.Pages
                 await _context.SaveChangesAsync();
 
                 // Retrieve the updated site settings
-                Manager.GetSiteSettings(_ConfigSiteID);
+                await Manager.GetSiteSettingsAsync(_ConfigSiteID);
             }
 
+            // If the tab is "Stats", get click data
             if (_tab == "Stats")
             {
                 await GetClickDataAsync(fClickedLink, fStartDate, fEndDate);
@@ -227,8 +250,10 @@ namespace BDFA.Pages
 
         public async Task<List<ProfileDataGroup>> GetProfileDataAsync()
         {
+            // Create a queryable object for Profiles
             var query = _context.Profiles.AsQueryable();
 
+            // Group the data by author and email
             var groupedData = await query
                 .GroupBy(cd => new { cd.Author, cd.Email })
                 .Select(g => new ProfileDataGroup
@@ -243,6 +268,7 @@ namespace BDFA.Pages
 
         public async Task<List<string>> GetDistinctProfilesAsync()
         {
+            // Get distinct authors from the Profiles table
             var distinctProfiles = await _context.Profiles
                 .Select(cd => cd.Author)
                 .Distinct()
@@ -253,8 +279,10 @@ namespace BDFA.Pages
 
         public async Task<List<ClickDataGroup>> GetClickDataAsync([Optional] string clickedLink, [Optional] string startDate, [Optional] string endDate)
         {
+            // Create a queryable object for Clicks
             var query = _context.Clicks.AsQueryable();
 
+            // Filter by clicked link if provided
             if (!string.IsNullOrEmpty(clickedLink))
             {
                 if (clickedLink == "0")
@@ -267,6 +295,7 @@ namespace BDFA.Pages
                 }
             }
 
+            // Filter by date range if both start and end dates are provided
             if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
             {
                 DateTime startDateTime = Convert.ToDateTime(startDate);
@@ -275,6 +304,7 @@ namespace BDFA.Pages
                 query = query.Where(cd => cd.ClickDateTime >= startDateTime && cd.ClickDateTime <= endDateTime);
             }
 
+            // Group the data by link and count the clicks
             var groupedData = await query
                 .GroupBy(cd => cd.Link)
                 .Select(g => new ClickDataGroup
@@ -289,10 +319,13 @@ namespace BDFA.Pages
 
         public async Task<List<ClickDataGroup>> GetClickDataAsync(int profileId, [Optional] string clickedLink, [Optional] string startDate, [Optional] string endDate)
         {
+            // Create a queryable object for Clicks
             var query = _context.Clicks.AsQueryable();
 
+            // Filter by profile ID
             query = query.Where(cd => cd.ProfileId == profileId);
 
+            // Filter by clicked link if provided
             if (!string.IsNullOrEmpty(clickedLink))
             {
                 if (clickedLink == "0")
@@ -305,6 +338,7 @@ namespace BDFA.Pages
                 }
             }
 
+            // Filter by date range if both start and end dates are provided
             if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
             {
                 DateTime startDateTime = Convert.ToDateTime(startDate);
@@ -313,6 +347,7 @@ namespace BDFA.Pages
                 query = query.Where(cd => cd.ClickDateTime >= startDateTime && cd.ClickDateTime <= endDateTime);
             }
 
+            // Group the data by link and count the clicks
             var groupedData = await query
                 .GroupBy(cd => cd.Link)
                 .Select(g => new ClickDataGroup
@@ -327,6 +362,7 @@ namespace BDFA.Pages
 
         public async Task<List<string>> GetDistinctLinksAsync()
         {
+            // Get distinct links from the Clicks table and order them
             var distinctLinks = await _context.Clicks
                 .Select(cd => cd.Link)
                 .Distinct()

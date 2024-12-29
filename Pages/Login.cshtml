@@ -1,7 +1,19 @@
 ﻿@page
 @model BDFA.Pages.LoginModel
 
-<p>Please enter your email address below to create your Buy Direct From Authors account. This will generate a code that will be emailed to you and allow you to log into your BDFA author portal. Once logged in, you will see clear instructions on how to create your BDFA listing. We recommend creating your listing on a desktop/laptop and ensuring you have a few minutes to upload your listing information. Please email any questions to <a href="mailto:admin@buydirectfromauthors.com">admin@buydirectfromauthors.com</a>.</p>
+<!-- 
+    This page allows users to create an account and log into the BDFA author portal.
+    Users can enter their email address to receive an authorization code via email.
+    Once they receive the code, they can enter it to log in.
+-->
+
+<p>
+    Please enter your email address below to create your Buy Direct From Authors account. 
+    This will generate a code that will be emailed to you and allow you to log into your BDFA author portal. 
+    Once logged in, you will see clear instructions on how to create your BDFA listing. 
+    We recommend creating your listing on a desktop/laptop and ensuring you have a few minutes to upload your listing information. 
+    Please email any questions to <a href="mailto:admin@buydirectfromauthors.com">admin@buydirectfromauthors.com</a>.
+</p>
 
 <p>Thank you for joining and we look forward to growing our stores together!</p>
 
@@ -9,6 +21,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-signin pt-6 mb-3">
+        @* Show the email input field and send code button if ShowSendCode is true *@
         @if (Model.ShowSendCode)
         {
             <label for="InputEmail">Email Address</label>
@@ -16,6 +29,7 @@
             <input type="submit" asp-page-handler="SendCode" class="mt-3 w-100 btn btn-lg btn-primary" value="Send Code" />
         }
 
+        @* Show the authorization code input field and sign-in button if ShowSignIn is true *@
         @if (Model.ShowSignIn)
         {
             <label for="InputAuthCode">Authorization Code</label>

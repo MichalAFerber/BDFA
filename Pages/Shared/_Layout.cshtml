@@ -4,53 +4,97 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["TitlePage"]</title>
+    <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap JS bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- FontAwesome CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css" rel="stylesheet" integrity="sha256-XfA0ppGOANs88Ds+9FqVLy3xIGzT/25K/VLmRRxE9ow=" crossorigin="anonymous">
+    <!-- FontAwesome JS -->
     <script src="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.6.0/js/all.min.js" integrity="sha256-qq1ob4lpAizCQs1tkv5gttMXUlgpiHyvG3JcCIktRvs=" crossorigin="anonymous"></script>
+    <!-- Site-specific JavaScript -->
     <script src="~/js/site.js" type="text/javascript" asp-append-version="true"></script>
+    <!-- Custom CSS -->
     <link href="~/css/custom.css" rel="stylesheet" asp-append-version="true">
+    <!-- Apple touch icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Favicon 32x32 -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <!-- Favicon 16x16 -->
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <!-- Web manifest -->
     <link rel="manifest" href="/site.webmanifest">
+    <!-- Fathom - beautiful, simple website analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="XKBSMAPX" defer></script>
+    <!-- / Fathom -->
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '989104642660681');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=989104642660681&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
 
     <header>
         <div class="container text-center">
             <div class="p-4">
-                <a title="Buy Direct From Authors" href="/" class="navbar-brand"><img src="img/banner.png" class="img-fluid border shadow" alt="Buy Direct From Authors" /></a>
+                <!-- Site banner linking to the homepage -->
+                <a title="Buy Direct From Authors" href="/" class="navbar-brand">
+                    <img src="img/banner.png" class="img-fluid border shadow" alt="Buy Direct From Authors" />
+                </a>
             </div>
         </div>
     </header>
 
     <div class="container">
+        <!-- Page title -->
         <div><h1>@ViewData["TitleBody"]</h1></div>
 
         <main role="main" class="pb-4 pt-4">
+            <!-- Main content of the page -->
             @RenderBody()
         </main>
     </div>
 
     <footer class="footer">
         <div class="text-muted justify-content-center text-center ps-4 pe-4">
+            <!-- Contact information for authors -->
             Authors, please email <a href="mailto:admin@buydirectfromauthors.com">admin@buydirectfromauthors.com</a> if you would like to list your direct store on our site.
         </div>
 
         <nav class="navbar">
             <div class="container-fluid">
                 <span class="navbar-text text-muted">
+                    <!-- Copyright information -->
                     &copy; @DateTime.Now.Year Buy Direct From Authors. All rights reserved.
                 </span>
                 <span class="nav-link text-muted justify-content-center text-center">
+                    <!-- Links to Privacy and Terms pages -->
                     <a asp-page="/Privacy">Privacy</a> - <a asp-page="/Terms">Terms</a>
                 </span>
             </div>
         </nav>
     </footer>
 
+    <!-- Optional section for additional scripts -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

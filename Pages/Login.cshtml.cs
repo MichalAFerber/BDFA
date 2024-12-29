@@ -74,7 +74,7 @@ namespace BDFA.Pages
 
                 Globals.pEmail = InputEmail;
                 Globals.isAdmin = await Manager.IsAdmin(_context, InputEmail);
-                Globals.pId = await Manager.ProfileExistsByEmail(_context, InputEmail);
+                Globals.pId = await Manager.ProfileExistsByEmailAsync(_context, InputEmail);
 
                 string AuthCode = Manager.GenerateOneTimeCode();
 
