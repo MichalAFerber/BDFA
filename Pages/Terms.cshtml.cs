@@ -7,15 +7,11 @@ namespace BDFA.Pages
     /// </summary>
     public class TermsModel : PageModel
     {
-        private readonly ILogger<TermsModel> _logger;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TermsModel"/> class.
         /// </summary>
-        /// <param name="logger">The logger instance to log information.</param>
-        public TermsModel(ILogger<TermsModel> logger)
+        public TermsModel()
         {
-            _logger = logger;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace BDFA.Pages
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     // Ignore the antiforgery token validation for this page
     [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
+    public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
     {
         // Property to store the request ID
         public string RequestId { get; set; }
@@ -17,13 +17,7 @@ namespace BDFA.Pages
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         // Logger instance for logging purposes
-        private readonly ILogger<ErrorModel> _logger;
-
-        // Constructor to initialize the logger
-        public ErrorModel(ILogger<ErrorModel> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<ErrorModel> _logger = logger;
 
         // Method to handle GET requests
         public void OnGet()

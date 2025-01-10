@@ -7,16 +7,10 @@ namespace BDFA.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TrackClickController : ControllerBase
+    public class TrackClickController(DirectoryContext context, ILogger<TrackClickController> logger) : ControllerBase
     {
-        private readonly DirectoryContext _context;
-        private readonly ILogger<TrackClickController> _logger;
-
-        public TrackClickController(DirectoryContext context, ILogger<TrackClickController> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly DirectoryContext _context = context;
+        private readonly ILogger<TrackClickController> _logger = logger;
 
         [HttpPost]
         public async Task<IActionResult> TrackClick([FromBody] ClickData clickData)

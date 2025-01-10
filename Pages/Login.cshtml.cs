@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BDFA.Pages
 {
-    public class LoginModel : PageModel
+    public class LoginModel(ILogger<LoginModel> logger, DirectoryContext context) : PageModel
     {
         #region Properties
         public bool ShowSendCode { get; set; } = true;
@@ -29,15 +29,10 @@ namespace BDFA.Pages
         // Setup Admin sqllite table
         public Admin Admin { get; set; }
 
-        private readonly ILogger<LoginModel> _logger;
-        private readonly DirectoryContext _context;
-        #endregion
+        private readonly ILogger<LoginModel> _logger = logger;
+        private readonly DirectoryContext _context = context;
 
-        public LoginModel(ILogger<LoginModel> logger, DirectoryContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
+        #endregion
 
         public void OnGet()
         {
@@ -86,7 +81,7 @@ namespace BDFA.Pages
                 // Save the profile to the database
                 // Return to the page to allow the user to enter the code sent to them via email
                 ////
-              
+
                 if (!Globals.isAdmin)
                 {
                     // Look up the profile by email
@@ -134,10 +129,26 @@ namespace BDFA.Pages
                 }
 
                 // Send the email with the auth code
-                Manager.SendMail(InputEmail, "Login code requested from BDFA", GenerateEmail(AuthCode));
-
-                // Return to page to allow the user to enter the code sent to them via email
-                return Page();
+                try
+                {
+                    if (Manager.SendMail(InputEmail, "Login code requested from BDFA", GenerateEmail(AuthCode)))
+                    {
+                        // Email sent successfully
+                        return Page();
+                    }
+                    else
+                    {
+                        // Email sending failed
+                        ModelState.AddModelError(string.Empty, "Failed to send email.");
+                        return Page();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while sending the email.");
+                    ModelState.AddModelError(string.Empty, $"An unexpected error occurred while sending the email: {ex.Message}");
+                    return Page();
+                }
             }
         }
 

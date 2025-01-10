@@ -3,12 +3,9 @@ namespace BDFA.Pages
 {
     public class PrivacyModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
-
         // Constructor to initialize the logger
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public PrivacyModel()
         {
-            _logger = logger;
         }
 
         // Method to handle GET requests

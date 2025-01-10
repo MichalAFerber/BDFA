@@ -4,18 +4,11 @@ using System.Text;
 
 namespace BDFA
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IConfiguration configuration)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddleware> _logger;
-        private readonly IConfiguration _configuration;
-
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IConfiguration configuration)
-        {
-            _next = next;
-            _logger = logger;
-            _configuration = configuration;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ExceptionMiddleware> _logger = logger;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task InvokeAsync(HttpContext httpContext)
         {

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BDFA.Data
 {
-    public class DirectoryContext : DbContext
+    public class DirectoryContext(DbContextOptions<DirectoryContext> options, IConfiguration configuration) : DbContext(options)
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration = configuration;
 
         // DbSet representing the Admins table
         public DbSet<Admin> Admins { get; set; }
@@ -15,12 +15,6 @@ namespace BDFA.Data
         public DbSet<Profile> Profiles { get; set; }
         // DbSet representing the Settings table
         public DbSet<Setting> Settings { get; set; }
-
-        public DirectoryContext(DbContextOptions<DirectoryContext> options, IConfiguration configuration)
-        : base(options)
-        {
-            _configuration = configuration;
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

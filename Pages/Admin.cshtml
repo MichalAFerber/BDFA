@@ -105,7 +105,7 @@
         // Retrieve distinct links asynchronously
         List<string> links = await Model.GetDistinctLinksAsync();
         List<BDFA.Models.ClickDataGroup> clickDataGroups = null;
-        clickDataGroups = await Model.GetClickDataAsync(Model.fClickedLink, Model.fStartDate, Model.fEndDate);
+        clickDataGroups = await Model.GetClickDataAsync(Model.FClickedLink, Model.FStartDate, Model.FEndDate);
 
         // Sorting logic based on query parameters
         var sColumn = Request.Query["sortColumn"];
@@ -132,8 +132,8 @@
     <nav class="navbar bg-body-tertiary">
         <form method="post" asp-page="Admin">
             <span class="p-4"><b>Filter:</b></span>
-            <label asp-for="fClickedLink" class="me-2">Link</label>
-            <select id="fClickedLink" asp-for="fClickedLink" required class="me-2 limited-width-select">
+            <label asp-for="FClickedLink" class="me-2">Link</label>
+            <select id="fClickedLink" asp-for="FClickedLink" required class="me-2 limited-width-select">
                 <option value="0">All Links</option>
                 @if (clickDataGroups != null)
                 {
@@ -150,10 +150,10 @@
                     </span>
                 }
             </select>
-            <label asp-for="fStartDate" class="me-2">Start Date:</label>
-            <input type="date" id="fStartDate" asp-for="fStartDate" required class="me-2" />
-            <label asp-for="fEndDate" class="me-2">End Date:</label>
-            <input type="date" id="fEndDate" asp-for="fEndDate" required class="me-2" />
+            <label asp-for="FStartDate" class="me-2">Start Date:</label>
+            <input type="date" id="fStartDate" asp-for="FStartDate" required class="me-2" />
+            <label asp-for="FEndDate" class="me-2">End Date:</label>
+            <input type="date" id="fEndDate" asp-for="FEndDate" required class="me-2" />
             <button type="submit" class="btn btn-primary me-2">Filter</button>
         </form>
     </nav>

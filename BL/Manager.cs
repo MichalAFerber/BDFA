@@ -9,12 +9,12 @@ namespace BDFA.BL
 {
     public class Manager
     {
-        private readonly DirectoryContext _context;
+        //private readonly DirectoryContext _context;
 
-        public Manager(DirectoryContext context)
-        {
-            _context = context;
-        }
+        //public Manager(DirectoryContext context)
+        //{
+        //    _context = context;
+        //}
 
         // Local variables for SMTP and database settings
         private static string _ConnectionString;
@@ -76,51 +76,57 @@ namespace BDFA.BL
             using (var connection = new SqliteConnection(_ConnectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqliteCommand("SELECT * FROM Settings WHERE Id = @Id", connection))
+                using var command = new SqliteCommand("SELECT * FROM Settings WHERE Id = @Id", connection);
+                command.Parameters.AddWithValue("@Id", id);
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
                 {
-                    command.Parameters.AddWithValue("@Id", id);
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            DealImage1 = reader["DealImage1"].ToString();
-                            DealURL1 = reader["DealURL1"].ToString();
-                            DealImage2 = reader["DealImage2"].ToString();
-                            DealURL2 = reader["DealURL2"].ToString();
-                            DealImage3 = reader["DealImage3"].ToString();
-                            DealURL3 = reader["DealURL3"].ToString();
-                        }
-                    }
+                    DealImage1 = reader["DealImage1"].ToString();
+                    DealURL1 = reader["DealURL1"].ToString();
+                    DealImage2 = reader["DealImage2"].ToString();
+                    DealURL2 = reader["DealURL2"].ToString();
+                    DealImage3 = reader["DealImage3"].ToString();
+                    DealURL3 = reader["DealURL3"].ToString();
                 }
             }
             return record;
         }
 
         // Send an email using SMTP settings
-        public static void SendMail(string toEmail, string subject, string body)
+        public static bool SendMail(string toEmail, string subject, string body)
         {
             if (string.IsNullOrEmpty(_SMTPHost) || _SMTPPort == 0)
             {
                 throw new InvalidOperationException("SMTP settings are not initialized.");
             }
 
-            SmtpClient client = new(_SMTPHost, _SMTPPort)
+            try
             {
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_SMTPUserName, _SMTPPassword),
-                EnableSsl = _SMTPSSL
-            };
+                SmtpClient client = new(_SMTPHost, _SMTPPort)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(_SMTPUserName, _SMTPPassword),
+                    EnableSsl = _SMTPSSL
+                };
 
-            MailMessage mailMessage = new()
+                MailMessage mailMessage = new()
+                {
+                    From = new MailAddress(_SMTPFrom, _SMTPFromName),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                mailMessage.To.Add(toEmail);
+
+                client.Send(mailMessage);
+                return true; // Email sent successfully
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress(_SMTPFrom, _SMTPFromName),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
-            mailMessage.To.Add(toEmail);
-
-            client.Send(mailMessage);
+                // Log the exception if needed
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                return false; // Email sending failed
+            }
         }
 
         // Check if an admin exists by email
@@ -135,31 +141,23 @@ namespace BDFA.BL
         // Change the active status of a profile
         public static async Task ChangeProfileStatusAsync(int ProfileID, bool Active)
         {
-            using (var connection = new SqliteConnection(_ConnectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqliteCommand("UPDATE Profiles SET Active = @Active WHERE id = @ProfileID", connection))
-                {
-                    command.Parameters.AddWithValue("@Active", Active);
-                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            using var connection = new SqliteConnection(_ConnectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("UPDATE Profiles SET Active = @Active WHERE id = @ProfileID", connection);
+            command.Parameters.AddWithValue("@Active", Active);
+            command.Parameters.AddWithValue("@ProfileID", ProfileID);
+            await command.ExecuteNonQueryAsync();
         }
 
         // Change the featured author status of a profile
         public static async Task ChangeFeaturedStatusAsync(int ProfileID, bool Active)
         {
-            using (var connection = new SqliteConnection(_ConnectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqliteCommand("UPDATE Profiles SET FeaturedAuthor = @Active WHERE id = @ProfileID", connection))
-                {
-                    command.Parameters.AddWithValue("@Active", Active);
-                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            using var connection = new SqliteConnection(_ConnectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("UPDATE Profiles SET FeaturedAuthor = @Active WHERE id = @ProfileID", connection);
+            command.Parameters.AddWithValue("@Active", Active);
+            command.Parameters.AddWithValue("@ProfileID", ProfileID);
+            await command.ExecuteNonQueryAsync();
         }
 
         // Check if a profile exists by ID
@@ -178,38 +176,30 @@ namespace BDFA.BL
         // Delete a profile by ID
         public static async Task DeleteProfileAsync(int ProfileID)
         {
-            using (var connection = new SqliteConnection(_ConnectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqliteCommand("DELETE from Profiles WHERE id = @ProfileID", connection))
-                {
-                    command.Parameters.AddWithValue("@ProfileID", ProfileID);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            using var connection = new SqliteConnection(_ConnectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("DELETE from Profiles WHERE id = @ProfileID", connection);
+            command.Parameters.AddWithValue("@ProfileID", ProfileID);
+            await command.ExecuteNonQueryAsync();
         }
 
         // Delete a deal by deal number and site ID
         public static async Task DeleteDealAsync(int DealNum, int SiteID)
         {
-            using (var connection = new SqliteConnection(_ConnectionString))
+            using var connection = new SqliteConnection(_ConnectionString);
+            await connection.OpenAsync();
+
+            string query = DealNum switch
             {
-                await connection.OpenAsync();
+                1 => "UPDATE Settings SET DealImage1 = NULL, DealURL1 = NULL WHERE ID = @SiteID",
+                2 => "UPDATE Settings SET DealImage2 = NULL, DealURL2 = NULL WHERE ID = @SiteID",
+                3 => "UPDATE Settings SET DealImage3 = NULL, DealURL3 = NULL WHERE ID = @SiteID",
+                _ => throw new ArgumentException("Invalid DealNum", nameof(DealNum))
+            };
 
-                string query = DealNum switch
-                {
-                    1 => "UPDATE Settings SET DealImage1 = NULL, DealURL1 = NULL WHERE ID = @SiteID",
-                    2 => "UPDATE Settings SET DealImage2 = NULL, DealURL2 = NULL WHERE ID = @SiteID",
-                    3 => "UPDATE Settings SET DealImage3 = NULL, DealURL3 = NULL WHERE ID = @SiteID",
-                    _ => throw new ArgumentException("Invalid DealNum", nameof(DealNum))
-                };
-
-                using (var command = new SqliteCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@SiteID", SiteID);
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@SiteID", SiteID);
+            await command.ExecuteNonQueryAsync();
         }
     }
 }

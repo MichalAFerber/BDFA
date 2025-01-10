@@ -6,22 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BDFA.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(ILogger<IndexModel> logger, DirectoryContext context) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        private readonly DirectoryContext _context;
+        private readonly ILogger<IndexModel> _logger = logger;
+        private readonly DirectoryContext _context = context;
 
         // Properties to hold featured authors, deals, and profiles
         public IList<Profile> FeaturedAuthors { get; set; }
         public IList<string> FeaturedDeals { get; set; }
         public IList<Profile> Profiles { get; set; }
-
-        // Constructor to initialize logger and database context
-        public IndexModel(ILogger<IndexModel> logger, DirectoryContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
 
         // Method to handle GET requests asynchronously
         public async Task<IActionResult> OnGetAsync()
@@ -56,14 +49,10 @@ namespace BDFA.Pages
         // Method to handle partial GET requests for profiles based on a search query
         public IActionResult OnGetProfilesPartial(string searchQuery)
         {
-            if (Profiles == null)
-            {
-                // Fetch profiles if they are not already loaded
-                Profiles = _context.Profiles
-                    .Where(p => p.Active && p.Author.Length > 0) // Filter active profiles with non-empty author names
-                    .OrderBy(p => p.Id) // Order by profile ID
-                    .ToList();
-            }
+            // Fetch profiles if they are not already loaded
+            Profiles ??= [.. _context.Profiles
+                .Where(p => p.Active && p.Author.Length > 0) // Filter active profiles with non-empty author names
+                .OrderBy(p => p.Id)];
 
             // Filter profiles based on the search query
             var filteredProfiles = string.IsNullOrEmpty(searchQuery)

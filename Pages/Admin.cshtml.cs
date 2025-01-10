@@ -8,15 +8,15 @@ using System.Runtime.InteropServices;
 
 namespace BDFA.Pages
 {
-    public class AdminModel : PageModel
+    public class AdminModel(ILogger<AdminModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment, IConfiguration configuration) : PageModel
     {
         #region Properties
         [BindProperty]
-        public string fStartDate { get; set; }
+        public string FStartDate { get; set; }
         [BindProperty]
-        public string fEndDate { get; set; }
+        public string FEndDate { get; set; }
         [BindProperty]
-        public string fClickedLink { get; set; }
+        public string FClickedLink { get; set; }
         [BindProperty]
         public IFormFile Image1File { get; set; }
         [BindProperty]
@@ -38,25 +38,16 @@ namespace BDFA.Pages
         #endregion
 
         // Logger for logging information and errors
-        private readonly ILogger<AdminModel> _logger;
+        private readonly ILogger<AdminModel> _logger = logger;
         // Database context for accessing the database
-        private readonly DirectoryContext _context;
+        private readonly DirectoryContext _context = context;
         // Environment for accessing web hosting information
-        private readonly IWebHostEnvironment _hostenvironment;
+        private readonly IWebHostEnvironment _hostenvironment = hostenvironment;
         // Configuration for accessing configuration settings
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration = configuration;
 
         // List of profiles to be displayed on the page
         public IList<Profile> Profiles { get; set; }
-
-        // Constructor to initialize the AdminModel with dependencies
-        public AdminModel(ILogger<AdminModel> logger, DirectoryContext context, IWebHostEnvironment hostenvironment, IConfiguration configuration)
-        {
-            _logger = logger;
-            _context = context;
-            _hostenvironment = hostenvironment;
-            _configuration = configuration;
-        }
 
         // Method to handle GET requests
         public async Task<IActionResult> OnGetAsync()
@@ -242,7 +233,7 @@ namespace BDFA.Pages
             // If the tab is "Stats", get click data
             if (_tab == "Stats")
             {
-                await GetClickDataAsync(fClickedLink, fStartDate, fEndDate);
+                await GetClickDataAsync(FClickedLink, FStartDate, FEndDate);
             }
 
             return Page();
